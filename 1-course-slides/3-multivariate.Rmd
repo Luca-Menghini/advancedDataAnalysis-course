@@ -1,0 +1,96 @@
+---
+title: 'ADVANCED DATA ANALYSIS \newline FOR PSYCHOLOGICAL SCIENCE'
+subtitle: 'Part 2. Introduction to multivariate modeling'
+author:  |
+ |
+ | **Luca Menghini Ph.D.** \fontsize{9pt}{7.2}\selectfont
+ |
+ | luca.menghini@unipd.it
+ |
+ |
+ | ***
+ | Master degree in Developmental and Educational Psychology 
+ |
+ | University of Padova
+ |
+ | 2023-2024
+ |
+ | ![](img/logo.PNG){width=1.7in}
+output:
+  beamer_presentation:
+    fonttheme: serif
+    theme: Singapore
+    slide_level: 2
+    includes:
+      in_header: mystyle.tex
+---
+
+## Outline of Part 2
+
+\fontsize{8pt}{12}\selectfont
+- **`sem()` intro**: Gentle introduction to the world of structural equation modeling (SEM)
+
+- **Path analysis**: Introduction to path analysis (aka SEM with observed variables) and focus on *mediation models*
+
+- **Data structure**: How to approach a multivariate data structure, how to manipulate and pre-process multivariate data `r fontawesome::fa(name = "r-project", height = "1em")`
+
+- **Model fit & evaluation**: How to fit a path analysis in R, to evaluate model fit, compare multiple models, and interpret model results `r fontawesome::fa(name = "r-project", height = "1em")`
+
+- **`cfa()`**: How to conduct a confirmatory factor analysis (CFA) and to interpret its results `r fontawesome::fa(name = "r-project", height = "1em")`
+
+- \color{blue} **Related topics**: In-depth topics related to multivariate modeling (e.g., cross-lagged panel models, multilevel and Bayesian SEM) `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")`
+
+___ \newline \fontsize{5pt}{12}\selectfont \color{blue}
+`r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` = not for the exam \color{black} \newline `r fontawesome::fa(name = "r-project", height = "1em")` = exercises with R (bring your laptop!)
+
+# sem() intro
+
+# Path analysis
+
+# Data structure
+
+# Model fit & evaluation
+
+# cfa()
+
+## Factor analysis: rationale
+
+## Exploratory vs. Confirmatory factor analysis
+
+## Exploratory factor analysis `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")`
+
+Principal component analysis vs. Common factor analysis(?)
+
+## Confirmatory factor analysis
+
+## Case study: Validation of AMMSA Scale in Mexican University Students
+
+https://osf.io/pkm4f/
+
+# Related topics
+
+# Resources
+
+## Credits
+
+\fontsize{8pt}{12}\selectfont
+The present slides are partially based on: \fontsize{6pt}{12}\selectfont
+
+- Altoè, G. (2023) Corso Modelli lineari generalizzati ad effetti misti - 2023. \color{blue} https://osf.io/b7tkp/ \color{black}
+
+- Beaujean, A. A. (2014) Latent Variable Modeling Using R. A Step-by-Step Guide. New York: Routledge
+
+- Finch, W. H., Bolin, J. E., Kelley, K. (2014). Multilevel Modeling Using R (2nd edition). Boca Raton: CRC Press
+
+- Pastore, M. (2015). Analisi dei dati in psicologie (e applicazioni in R). Il Mulino.
+
+## Useful resources
+
+\fontsize{6pt}{12}\selectfont
+- Baayen, R. H., Davidson, D. J., & Bates, D. M. (2008). Mixed-effects modeling with crossed random effects for subjects and items. *Journal of memory and language, 59*(4), 390-412.
+
+- Bliese, P. (2022). Multilevel modeling in R (2.7). \color{blue}https://cran.r-project.org/doc/contrib/Bliese_Multilevel.pdf \color{black}
+
+- McElreath, R. (2020). Statistical rethinking: A Bayesian course with examples in R and Stan. Chapman and Hall/CRC.
+
+- Pinheiro, J., & Bates, D. (2006). Mixed-effects models in S and S-PLUS. Springer science & business media. \newline see also Bates, D. (2022). lme4: Mixed-effects modeling with R. \color{blue} https://stat.ethz.ch/~maechler/MEMo-pages/lMMwR.pdf \color{black}

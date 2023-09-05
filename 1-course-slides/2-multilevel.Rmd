@@ -1,0 +1,598 @@
+---
+title: 'ADVANCED DATA ANALySIS \newline FOR PSYCHOLOGICAL SCIENCE'
+subtitle: 'Part 1. Introduction to multilevel modeling'
+author:  |
+ |
+ | **Luca Menghini Ph.D.** \fontsize{9pt}{7.2}\selectfont
+ |
+ | luca.menghini@unipd.it
+ |
+ |
+ | ***
+ | Master degree in Developmental and Educational Psychology 
+ |
+ | University of Padova
+ |
+ | 2023-2024
+ |
+ | ![](img/logo.PNG){width=1.7in}
+output:
+  beamer_presentation:
+    fonttheme: serif
+    theme: Singapore
+    slide_level: 2
+    includes:
+      in_header: mystyle.tex
+---
+
+## Outline of Part 1
+
+```{r echo=FALSE,fig.width=4.5,fig.height=2.5,out.width="200px"}
+rm(list=ls())
+```
+
+\fontsize{8pt}{12}\selectfont
+- **`lm()` recap**: Short recap of linear regression modeling `r fontawesome::fa(name = "r-project", height = "1em")`
+
+- **`lmer()`**: Introduction to multilevel modeling (aka *linear mixed-effects regression*, LMER)
+
+- **Data structure**: How to approach a multilevel data structure, how to manipulate and pre-process multilevel data `r fontawesome::fa(name = "r-project", height = "1em")`
+
+- **Model fit**: How to fit a multilevel model in R, to evaluate model diagnostics, to interpret model results `r fontawesome::fa(name = "r-project", height = "1em")`
+
+- **Model evaluation**: How to evaluate a model, compare multiple models, and select the best model `r fontawesome::fa(name = "r-project", height = "1em")`
+
+- \color{blue} **Related topics**: In-depth topics related to multilevel modeling (e.g., generalized and Bayesian LMER, power analysis) `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")`
+
+___ \newline \fontsize{5pt}{12}\selectfont \color{blue}
+`r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` = not for the exam \color{black} \newline `r fontawesome::fa(name = "r-project", height = "1em")` = exercises with R (bring your laptop!)
+
+# lm() recap
+
+## Linear regression models
+
+\fontsize{7pt}{12}\selectfont 
+**Linear regression models** allow to determinate the link between two variables as expressed by a linear function: \fontsize{10pt}{12}\selectfont \color{red} $y_i = \beta_0 + \beta_1 x_i + \epsilon_i$ \fontsize{7pt}{12}\selectfont \color{black} \newline Such a function can be graphically represented as a **straight line** where \newline \color{red} $\beta_0$ \color{black} is the **intercept** (value assumed by `y` when `x` = 0) \newline \color{red} $\beta_1$ \color{black} is the  **slope** (predicted change in `y` when `x` increases by 1 unit) \newline \color{red} $\epsilon$ \color{black} is the **residual variance** (distance from the regression line)
+
+```{r echo=FALSE,fig.width=4,fig.height=2,out.width="170px"}
+par(mar=c(5, 4, 0, 2) + 0.1)
+x <- rnorm(n = 100)
+y <- x + rnorm(n = 100)
+plot(y~x,pch=19,col="gray",cex=0.8)
+abline(lm(y~x),col="red",lwd=2)
+abline(v=0,lty=2,col="gray")
+abline(h=summary(lm(y~x))$coefficients[1,1],lty=2,col="gray")
+text(x=0.5,y=summary(lm(y~x))$coefficients[1,1],labels=paste("B0 =",round(summary(lm(y~x))$coefficients[1,1],2)))
+text(x=min(x)+0.5,y=min(y)+0.5,labels=paste("B1 =",round(summary(lm(y~x))$coefficients[2,1],2)))
+```
+
+\fontsize{6pt}{12}\selectfont _Notes_: ______ \newline 
+\color{red}$x_i$\color{black} and \color{red}$y_i$\color{black} are the values of individual *i* for the **casual variables** $x$ and $y$ \newline
+\color{red}$\beta_0$\color{black}, \color{red}$\beta_1$\color{black}, and  \color{red}$\epsilon$ \color{black}are called "**model parameters**" or "**coefficients**"
+
+## Fitting linear models in R
+
+\fontsize{7pt}{12}\selectfont
+R uses the `lm()` function to fit linear models with the arguments `formula` \newline (`y ~ x1 + x2 + ...`) and `data` (identifying the dataframe with the model variables). \fontsize{6.5pt}{12}\selectfont
+```{r }
+data("children", package = "npregfast") # loading children dataset from npregfast pkg
+```
+
+\begincols
+  \begincol{.5\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+**Null model** \newline \fontsize{6pt}{12}\selectfont Children' `height` is only predicted by the model **intercept** $b_0$ = expected (i.e., mean) value of `height` in the sample.
+```{r }
+m0 <- lm(formula = height ~ 1, 
+         data = children)
+coefficients(m0) # model coefficients
+```
+
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+**Simple regression model** \fontsize{6pt}{12}\selectfont \newline `height` is now predicted by the **intercept** $b_0$ \newline (mean value when `age` is 0) and the **slope** $b_1$ (expected change for 1-unit increase in `age`) 
+```{r }
+m1 <- lm(formula = height ~ age, 
+         data = children)
+coefficients(m1) # model coefficients
+```
+
+  \endcol
+\endcols
+
+```{r , echo = FALSE, out.width = "5px"}
+knitr::include_graphics("img/white.png")
+```
+
+\fontsize{6pt}{12}\selectfont _Notes_: ______ \newline 
+\fontsize{10pt}{12}\selectfont `~` \fontsize{6pt}{12}\selectfont = tilde, on Windows: `Alt + 126`.
+
+## Multiple regression & interactions
+
+\fontsize{7pt}{12}\selectfont
+LM also allow to include **multiple predictors** and the **interactions** among them. This is done by estimating a separate slope (thus, a separate line) for each predictor \newline by *holding constant* the value of the other predictors, which are fixed to zero. \newline
+
+\begincols
+  \begincol{.5\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+**Multiple regression model** \newline \fontsize{6pt}{12}\selectfont $b_0$ = expected value in girls with `age` = 0 \newline $b_1$ = `age` effect \color{blue}within the same `sex`\color{black} \newline $b_2$ = `sex` difference when `age` = 0 \fontsize{6pt}{12}\selectfont
+```{r }
+m2 <- lm(formula = height ~ age + sex, 
+         data = children)
+coefficients(m2)
+```
+
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+**Interactive model**  \newline \fontsize{6pt}{12}\selectfont $b_1$ = `age` effect \color{blue}in girls\color{black} \newline $b_2$ = `sex` difference in `height` when `age` = 0 \newline $b_3$ = `sex` difference in `age` effect (**interaction**)
+```{r }
+m3 <- lm(formula = height ~ age * sex, 
+         data = children)
+round(coefficients(m3),2)
+```
+
+  \endcol
+\endcols
+
+\fontsize{4pt}{12}\selectfont \color{white}p \newline \color{black} 
+\fontsize{6pt}{12}\selectfont _Notes_: ______ \newline 
+- In this context, "effect" is used as a synonym of "relationship" (not a *causal* effect). \newline - The interaction (used in moderation analysis) is computed as the product of $x_1$ and $x_2$.
+
+## Model comparison & model selection
+
+\begincols
+  \begincol{.55\textwidth}
+
+\fontsize{6.5pt}{12}\selectfont
+**Likelihood ratio test** \newline Testing the ratio of the log-*likelihoods* of two nested models (one model includes all predictors of the other model and the Y variable is the same)
+```{r fig.width=8,fig.height=3.5,warning=FALSE,message=FALSE,eval=FALSE}
+library(lmtest)
+lrtest(m0,m1,m2,m3)
+```
+\fontsize{6pt}{12}\selectfont
+```{r fig.width=8,fig.height=3.5,warning=FALSE,message=FALSE,echo=FALSE}
+library(lmtest)
+knitr::kable(lrtest(m0,m1,m2,m3),digits=2)
+```
+  \endcol
+\begincol{.45\textwidth}
+
+\fontsize{6.5pt}{12}\selectfont
+**Information criteria** \newline The Akaike (AIC) and the Bayesian Information Criterion (BIC) account for both likelihood and *parsimony* (the lower number of parameters the better)
+```{r fig.width=5,fig.height=4,eval=FALSE}
+# AIC: the lower the better
+AIC(m0,m1,m2,m3)
+```
+```{r fig.width=5,fig.height=4,echo=FALSE}
+AIC(m0,m1,m2,m3)$AIC
+```
+```{r fig.width=5,fig.height=4}
+# Akaike weights: from 0 (-) to 1 (+)
+library(MuMIn)
+Weights(AIC(m0,m1,m2,m3)) # Aw
+```
+
+  \endcol
+\endcols
+
+\fontsize{6pt}{12}\selectfont _Notes_: ______ \newline 
+__Likelihood__ = probability of observing your data given your set of parameters, \newline sometimes reffered as the *evidence* of a model.
+
+## Parameter estimation in linear regression models
+
+\fontsize{7pt}{12}\selectfont
+\color{red}$b_0$ \color{black}and \color{red}$b_1$ \color{black} must be **estimated** using sample data taken from a population.
+
+There are several ways to estimate unknown parameters (e.g., maximum likelihood, Bayesian approach), including the widely popular **ordinary least squares** (OLS), which aims at minimizing the sum of the squared residuals. 
+
+\begincols
+  \begincol{.40\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+Linear model: \newline
+$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$ \newline
+
+Predicted values: \newline
+$\hat{y}_i = \beta_0 + \beta_1 x_i$ \newline 
+
+Observed values: \newline
+$y_i = \hat{y}_i + \epsilon_i$ \newline
+
+Residuals = observed - predicted \newline $\epsilon_i = y_i - \hat{y}_i$
+
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{7pt}{12}\selectfont But what are **residuals**? \fontsize{6pt}{12}\selectfont 
+```{r fig.width=8,fig.height=3}
+head(data.frame(observed = children$height,
+                predicted = fitted(m3),
+                residuals = residuals(m3) ))
+```
+
+  \endcol
+\endcols
+
+## Statistical inference on regression coefficients
+
+\fontsize{6.5pt}{12}\selectfont
+Based on NHST, it is possible to test the **statistical significance** of each regression coefficient (*two-tail t-test*), which is automatically done by R in the summary of the model.
+```{r eval=FALSE}
+summary(m3) # model results
+```
+```{r echo=FALSE}
+summary(m3)$coefficients
+```
+
+\begincols
+  \begincol{.37\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+**Effect size**: \newline Coefficient of determination \newline $R^2$ = 1 - SS residuals/SS total
+```{r eval=FALSE}
+summary(m3)$r.squared 
+```
+```{r echo=FALSE}
+round(summary(m3)$r.squared,2)
+```
+
+\fontsize{7pt}{12}\selectfont The model explains 79% of the variance in height.
+
+  \endcol
+\begincol{.6\textwidth}
+
+\fontsize{1pt}{12}\selectfont \color{white}p \color{black} \newline
+\fontsize{7pt}{12}\selectfont
+**Plotting effects**: \fontsize{6pt}{12}\selectfont
+```{r out.width="150px",fig.width=4,fig.height=2}
+sjPlot::plot_model(m3,type="pred",terms=c("age","sex"))
+```
+
+  \endcol
+\endcols
+
+## Hands on `r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`
+
+\fontsize{6.5pt}{12}\selectfont
+\color{blue}1.  \color{black}Download & read the dataset from the *Pregnancy during the COVID-19 pandemics* study \fontsize{6pt}{12}\selectfont \newline \color{blue}
+`depr` = postnatal depression, `age` = mother's age, `NICU` = intensive care, `threat` = fear of COVID \color{black}
+```{r out.width="150px",fig.width=4,fig.height=2,results=FALSE,message=FALSE,warning=FALSE}
+library(osfr) # package to interact with the Open Science Framework platform
+proj <- "https://osf.io/ha5dp/" # link to the OSF project (see protocol paper & data dictionary)
+osf_download(osf_ls_files(osf_retrieve_node(proj))[2, ],conflicts="overwrite") # download
+preg <- na.omit(read.csv("OSFData_Upload_2023_Mar30.csv",stringsAsFactors=TRUE)) # read dataset
+colnames(preg)[c(2,5,12,14)] <- c("age","depr","NICU","threat") # shortening variable names
+```
+
+\begincols
+  \begincol{.5\textwidth}
+
+\fontsize{6pt}{12}\selectfont
+
+2. Explore the the variables `depr`, `threat`, `NICU`, and `age` (descr., corr., & plots)
+
+3. Fit a null model `m0` of `depr`
+
+4. Fit a simple regression model `m1` with `depr` being predicted by `threat`
+
+5. Fit a multiple regression model `m2` \newline also controlling for `NICU` and `age`
+
+6. Fit an interactive model `m3` to check whether `age` moderates the relationship between `threat` and `depr`.
+
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{6.5pt}{12}\selectfont
+
+7. Compare the models with AIC and likelihood ratio test: which is the best model?
+
+8. Print & interpret the coefficients estimated by the selected model
+
+9. Print & interpret the statistical significance of the estimated coefficients
+
+10. Plot the effects of the selected model
+
+11. Compute the determination coefficient of the selected model
+
+  \endcol
+\endcols
+
+## One step back: LM assumptions
+
+\fontsize{7.5pt}{12}\selectfont
+Core assumptions: \newline
+\fontsize{6.5pt}{12}\selectfont
+**1. Linearity**: $x_i$ and $y_i$ are linearly associated &rightarrow; the expected (mean) value of $\epsilon_i$ is zero
+
+**2. Normality**: $\epsilon_i$ are normally distributed &rightarrow; $\epsilon_i \sim \mathcal{N}(0,\,\sigma^{2})$
+
+**3. Homoscedasticity**: $\epsilon_i$ variance is constant over the levels of $x_i$ (homogeneity of variance)
+
+**4. Independence of predictors & errors**: $x_i$ is unrelated to $\epsilon_i$
+
+**5. Independence of observations**: for any two observations $i$ and $j$ with $i \neq j$, \newline the residual terms $\epsilon_i$ and $\epsilon_j$ are independent \newline
+
+\fontsize{7.5pt}{12}\selectfont
+Additional assumptions: \newline
+\fontsize{6.5pt}{12}\selectfont
+**6. Absence of influential observations** (multivariate outliers)
+
+**7. Absence of collinearity (for multiple regression)**: \newline lack of linear relationship between $x_1$ and $x_2$
+
+## LM diagnostics: Assessing LM assumptions
+
+\begincols
+  \begincol{.5\textwidth}
+  
+\fontsize{6.5pt}{12}\selectfont Normality & linearity `r fontawesome::fa(name = "face-smile",fill="green", height = "0.8em")`
+```{r out.width="150px",fig.width=4,fig.height=2,eval=FALSE}
+hist(residuals(m3))
+qqnorm(residuals(m3)); qqline(residuals(m3))
+```
+```{r out.width="150px",fig.width=8,fig.height=3,echo=FALSE}
+par(mfrow=c(1,2))
+hist(residuals(m3),main="Histogram of res.")
+qqnorm(residuals(m3),cex=0.5,pch=20)
+qqline(residuals(m3),col="red")
+```
+
+Homoscedasticity & independence $x,\epsilon$ `r fontawesome::fa(name = "face-smile",fill="green", height = "0.8em")`
+```{r out.width="150px",fig.width=4,fig.height=2,eval=FALSE}
+plot(residuals(m3) ~ children$sex)
+plot(residuals(m3) ~ children$age)
+```
+```{r out.width="150px",fig.width=8,fig.height=3,echo=FALSE}
+par(mfrow=c(1,2))
+plot(residuals(m3) ~ children$sex,xlab="",main="Residuals by sex")
+plot(residuals(m3) ~ children$age,pch=20,col="gray",main="Residuals by age")
+abline(lm(residuals(m3) ~ children$age),
+       col="red")
+```
+
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{6.5pt}{12}\selectfont Absence of influential cases `r fontawesome::fa(name = "face-smile",fill="green", height = "0.8em")`
+```{r out.width="150px",fig.width=6,fig.height=3.2}
+plot(m3,which=5)
+```
+
+Absence of collinearity (multiple regr.) `r fontawesome::fa(name = "face-frown",fill="orange", height = "0.8em")`
+```{r out.width="150px",fig.width=4,fig.height=1.5,warning=FALSE,message=FALSE}
+sjPlot::plot_model(m3,"diag")[[1]]
+```
+
+  \endcol
+\endcols
+
+\fontsize{6.5pt}{12}\selectfont
+\color{red} **Independence of observations** `r fontawesome::fa(name = "circle-question",fill="red", height = "0.8em")` \newline _Are the unmeasured factors influencing `y` unrelated from one individual to another?_
+
+# lmer()
+
+## Cluster variables & nested data
+
+\fontsize{8pt}{12}\selectfont
+In many cases, the *sampling method* creates **clusters** of *individual observations*
+
+\fontsize{6.5pt}{12}\selectfont
+- students &rightarrow; schools
+
+- children &rightarrow; families &rightarrow; neighborhoods &rightarrow; cities &rightarrow; regions &rightarrow; states &rightarrow; planets `r fontawesome::fa(name = "rocket", height = "0.8em")` 
+
+\fontsize{8pt}{12}\selectfont
+**Nested data structure** (~ *multilevel* or *hierarchical* data structure)\newline = when data points at the **individual level** appear *in only one group* \newline of the **cluster level** variable 
+
+&rightarrow; individual observations are ***nested*** within clusters 
+
+\fontsize{7pt}{12}\selectfont
+`r fontawesome::fa(name = "microscope",fill="blue", height = "0.8em")` \color{blue} vs. 'crossed data structure' = individuals can appear in multiple clusters \fontsize{6.5pt}{12}\selectfont \newline e.g., after-school activities: a student can be enrolled in multiple activities \color{black}
+
+\fontsize{6pt}{12}\selectfont _Notes_: ______ \newline 
+**Individual observation = statistical unit** = individual entity within a sample or population that is the subject of data collection & analysis (not necessarily a person)
+
+## Case study: Innovative math teaching program 
+
+\fontsize{7pt}{12}\selectfont 
+`r fontawesome::fa(name = "school",fill="blue", height = "0.8em")`
+\color{blue}We're hired by a school principal to assess whether an innovative teaching program can improve in first-year high-school students' achievement in math. \color{black}
+
+\begincols
+  \begincol{.5\textwidth}
+  
+\fontsize{7pt}{12}\selectfont 
+```{r out.width="150px",fig.width=5,fig.height=3,warning=FALSE,message=FALSE,eval=FALSE}
+table(itp[,c("classID","tp")]) 
+```
+```{r out.width="150px",fig.width=5,fig.height=2,warning=FALSE,message=FALSE,echo=FALSE}
+itp <- read.csv("data/studentData.csv")
+knitr::kable(table(itp[,c("classID","tp")]) )
+```
+```{r out.width="150px",fig.width=5,fig.height=3,warning=FALSE,message=FALSE,eval=FALSE}
+boxplot(math_grade ~ tp, data=itp)
+```
+```{r out.width="150px",fig.width=5,fig.height=2,warning=FALSE,message=FALSE,echo=FALSE}
+par(mai=c(1,1,0,1))
+boxplot(math_grade ~ tp, data=itp)
+```
+
+  \endcol
+\begincol{.5\textwidth}
+
+The teaching program `tp` was delivered over the first semester to 2 out of 4 `classID` and we got the students' end-of-semester `math_grade` (1-10). \newline
+
+\fontsize{6.5pt}{12}\selectfont 
+**Nested data structure**: students are *nested* within classes, with each student only belonging to one class. \newline
+
+Note: The **cluster variable** is related to both \color{red}*x* \color{black} (program delivered at the class level) and \color{red}*y* \color{black} (grades will be more similar between students belonging to the same class).
+
+  \endcol
+\endcols
+
+## Non-independence of observations with nested data
+
+\begincols
+  \begincol{.5\textwidth}
+  
+\fontsize{7pt}{12}\selectfont 
+Let's try with a **linear regression model**:
+```{r out.width="150px",fig.width=5,fig.height=3,warning=FALSE,message=FALSE,eval=FALSE}
+m <- lm(math_grade ~ tp, data=itp)
+summary(m)$coefficients[,1:3]
+```
+```{r out.width="150px",fig.width=5,fig.height=3,warning=FALSE,message=FALSE,echo=FALSE}
+m <- lm(math_grade ~ tp, data = itp)
+round(summary(m)$coefficients[,1:3],2)
+```
+```{r out.width="150px",fig.width=5,fig.height=3,warning=FALSE,message=FALSE,eval=FALSE}
+hist(residuals(m)); qqnorm(residuals(m))
+boxplot(residuals(m)~itp$tp); plot(m,5)
+```
+```{r out.width="150px",fig.width=5,fig.height=3,warning=FALSE,message=FALSE,echo=FALSE}
+par(mfrow=c(2,2),mai=c(1,1,1,1),mar=c(4,4,2,1))
+hist(residuals(m))
+qqnorm(residuals(m))
+boxplot(residuals(m) ~ itp$tp)
+plot(m,which=5)
+```
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+- Coefficient meaning? \newline
+
+- Linear model assumptions? \newline \color{red}
+
+- **Independent observations**? 
+
+ \color{red} _Are_ $\epsilon_i$ _and_ $\epsilon_j$ _independent for any_ $i \neq j$? \newline _Are the unmeasured factors influencing `y` unrelated from one individual to another?_ \newline \color{black}
+
+__NO__: students are nested within classes and such cluster variable is likely to explain differences in the \color{red}*y* \color{black}variable as well as in the relationship between \color{red}*x* \color{black} and \color{red}*y* \color{black}\newline
+
+Thus, we cannot rely on linear models to analyze these data.
+
+  \endcol
+\endcols
+
+## Local dependencies
+
+## Mixed-effects models
+
+Multilevel models are part of the largest mixed-effects family
+
+E.g., when a subject changes group over time, it is still a mixed-effects model but not a multilevel model
+
+# Data structure
+
+## Nested data & Multilevel data structure
+
+## Case study: Adolescent insomnia
+
+# Model fit
+
+## Fitting a multilevel model (in R)
+
+## Case study: Adolescent insomnia
+
+## LMER assumptions
+
+# Model evaluation
+
+## Diagnostics
+
+pacchetti performance e sjPlot
+
+## Model comparison
+
+AIC e BIC, weights
+
+likelihood ratio test
+
+# Related topics
+
+## Some topics related to multilevel modeling
+
+\fontsize{8pt}{12}\selectfont
+- *Power analysis* of multilevel models
+
+- *Generalized* linear mixed-effects regression (GLMER)
+
+- *Bayesian* linear mixed-effects regression (BLMER)
+
+## Power analysis of multilevel models
+
+## glmer(): Generalized multilevel modeling (1/3) \newline Rationale
+
+\fontsize{9pt}{12}\selectfont
+Generalized linear mixed-effects models (GLMER) are a **generalization** of LMER:
+
+\fontsize{7pt}{12}\selectfont
+In addition to modeling normally distributed quantitative dependent variables (like classic LMER), they can also manage **non-normally distributed variables** such as:
+
+- quantitative variables that only take positive values &leftarrow; **Gamma**
+
+- count variables &leftarrow; **Poisson**
+
+- binary/dichotomic variables &leftarrow; **Binomial**
+
+\fontsize{9pt}{12}\selectfont
+How is that possible?
+
+## glmer(): Generalized multilevel modeling (2/3) \newline Components of a GLMER model
+
+\fontsize{9pt}{12}\selectfont
+GLMER models allow to model multiple types of dependent variables thanks to their three components:
+
+\fontsize{7pt}{12}\selectfont
+- A **probability distribution** for the expected value of the y variable (e.g., normal, Gamma, Poisson, binomial)
+
+- A **linear model** of the model predictors, including both *fixed* and *random* effects (LMER)
+
+- A **link function** that translates the expected values of the y variable into the values predicted by the linear model
+
+## glmer(): Generalized multilevel modeling (3/3) \newline Example with Logistic regression
+
+\fontsize{9pt}{12}\selectfont
+Logistic regression ...
+
+## stan_glmer(): Bayesian multilevel modeling
+
+Dire solo che esiste, fare un esempio con il pacchetto rstanarm,
+
+Dire che convergono meglio xk lmer ha problemi di convergenza
+
+Van de Schoot, R., Kaplan, D., Denissen, J., Asendorpf, J. B., Neyer, F. J., & Van Aken, M. A. (2014). A gentle introduction to Bayesian analysis: Applications to developmental research. Child development, 85(3), 842-860.
+
+# Resources
+
+## Credits
+
+\fontsize{8pt}{12}\selectfont
+The present slides are partially based on: \fontsize{6pt}{12}\selectfont
+
+- Altoè, G. (2023) Corso Modelli lineari generalizzati ad effetti misti - 2023. \color{blue} https://osf.io/b7tkp/ \color{black}
+
+- Beaujean, A. A. (2014) Latent Variable Modeling Using R. A Step-by-Step Guide. New york: Routledge
+
+- Finch, W. H., Bolin, J. E., Kelley, K. (2014). Multilevel Modeling Using R (2nd edition). Boca Raton: CRC Press
+
+- Pastore, M. (2015). Analisi dei dati in psicologie (e applicazioni in R). Il Mulino.
+
+## Useful resources
+
+\fontsize{6pt}{12}\selectfont
+- Bates, D. (2022). lme4: Mixed-effects modeling with R. \color{blue} https://stat.ethz.ch/~maechler/MEMo-pages/lMMwR.pdf \color{black}
+
+- Baayen, R. H., Davidson, D. J., & Bates, D. M. (2008). Mixed-effects modeling with crossed random effects for subjects and items. *Journal of memory and language, 59*(4), 390-412.
+
+- Bliese, P. (2022). Multilevel modeling in R (2.7). \color{blue}https://cran.r-project.org/doc/contrib/Bliese_Multilevel.pdf \color{black}
+
+- McElreath, R. (2020). Statistical rethinking: A Bayesian course with examples in R and Stan. Chapman and Hall/CRC.
+
+- Pinheiro, J., & Bates, D. (2006). Mixed-effects models in S and S-PLUS. Springer science & business media.
