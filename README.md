@@ -1,4 +1,4 @@
-# ADVANCED DATA ANALYSIS FOR PSYCHOLOGICAL SCIENCE
+# Advanced data analysis for psychological science
 Slides and materials of the course "Advanced data analysis for psychological science" held at the University of Padova (academic year 2023-24) for the Master degree in Developmental and Educational Psychology).
 
 ## Course slides
