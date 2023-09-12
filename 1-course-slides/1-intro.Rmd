@@ -134,11 +134,6 @@ Students should have good knowledge about basic concepts linked to probability t
 
 ## Course contents
 
-```{r , echo = FALSE,warning=FALSE,message=FALSE}
-library(icons)
-icon <- fontawesome$solid$rocket
-```
-
 \begincols
   \begincol{.5\textwidth}
 

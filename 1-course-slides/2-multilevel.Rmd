@@ -1,5 +1,5 @@
 ---
-title: 'ADVANCED DATA ANALySIS \newline FOR PSYCHOLOGICAL SCIENCE'
+title: 'ADVANCED DATA ANALYSIS \newline FOR PSYCHOLOGICAL SCIENCE'
 subtitle: 'Part 1. Introduction to multilevel modeling'
 author:  |
  |
@@ -52,7 +52,7 @@ ___ \newline \fontsize{5pt}{12}\selectfont \color{blue}
 ## Linear regression models
 
 \fontsize{7pt}{12}\selectfont 
-**Linear regression models** allow to determinate the link between two variables as expressed by a linear function: \fontsize{10pt}{12}\selectfont \color{red} $y_i = \beta_0 + \beta_1 x_i + \epsilon_i$ \fontsize{7pt}{12}\selectfont \color{black} \newline Such a function can be graphically represented as a **straight line** where \newline \color{red} $\beta_0$ \color{black} is the **intercept** (value assumed by `y` when `x` = 0) \newline \color{red} $\beta_1$ \color{black} is the  **slope** (predicted change in `y` when `x` increases by 1 unit) \newline \color{red} $\epsilon$ \color{black} is the **residual variance** (distance from the regression line)
+**Linear regression models** allow to determinate the link between two variables as expressed by a linear function: \fontsize{10pt}{12}\selectfont \color{violet} $y_i = \beta_0 + \beta_1 x_i + \epsilon_i$ \fontsize{7pt}{12}\selectfont \color{black} \newline Such a function can be graphically represented as a **straight line** where \newline \color{violet} $\beta_0$ \color{black} is the **intercept** (value assumed by `y` when `x` = 0) \newline \color{violet} $\beta_1$ \color{black} is the  **slope** (predicted change in `y` when `x` increases by 1 unit) \newline \color{violet} $\epsilon_i$ \color{black} is the **residual variance** (distance between the observation $i$ and the regression line)
 
 ```{r echo=FALSE,fig.width=4,fig.height=2,out.width="170px"}
 par(mar=c(5, 4, 0, 2) + 0.1)
@@ -66,9 +66,9 @@ text(x=0.5,y=summary(lm(y~x))$coefficients[1,1],labels=paste("B0 =",round(summar
 text(x=min(x)+0.5,y=min(y)+0.5,labels=paste("B1 =",round(summary(lm(y~x))$coefficients[2,1],2)))
 ```
 
-\fontsize{6pt}{12}\selectfont _Notes_: ______ \newline 
-\color{red}$x_i$\color{black} and \color{red}$y_i$\color{black} are the values of individual *i* for the **casual variables** $x$ and $y$ \newline
-\color{red}$\beta_0$\color{black}, \color{red}$\beta_1$\color{black}, and  \color{red}$\epsilon$ \color{black}are called "**model parameters**" or "**coefficients**"
+\fontsize{6pt}{12}\selectfont __*Notes*__: \newline 
+\color{violet}$x_i$ \color{black} and \color{violet}$y_i$ \color{black} are the values of individual *i* for the **casual variables** $x$ and $y$, while \newline
+\color{violet}$\beta_0$\color{black}, \color{violet}$\beta_1$\color{black}, and  \color{violet}$\epsilon_i$ \color{black}are called "**model parameters**" or "**coefficients**", applying to the whole population.
 
 ## Fitting linear models in R
 
@@ -83,7 +83,7 @@ data("children", package = "npregfast") # loading children dataset from npregfas
 
 \fontsize{7pt}{12}\selectfont
 **Null model** \newline \fontsize{6pt}{12}\selectfont Children' `height` is only predicted by the model **intercept** $b_0$ = expected (i.e., mean) value of `height` in the sample.
-```{r }
+```{r comment=NA}
 m0 <- lm(formula = height ~ 1, 
          data = children)
 coefficients(m0) # model coefficients
@@ -94,7 +94,7 @@ coefficients(m0) # model coefficients
 
 \fontsize{7pt}{12}\selectfont
 **Simple regression model** \fontsize{6pt}{12}\selectfont \newline `height` is now predicted by the **intercept** $b_0$ \newline (mean value when `age` is 0) and the **slope** $b_1$ (expected change for 1-unit increase in `age`) 
-```{r }
+```{r comment=NA}
 m1 <- lm(formula = height ~ age, 
          data = children)
 coefficients(m1) # model coefficients
@@ -107,8 +107,8 @@ coefficients(m1) # model coefficients
 knitr::include_graphics("img/white.png")
 ```
 
-\fontsize{6pt}{12}\selectfont _Notes_: ______ \newline 
-\fontsize{10pt}{12}\selectfont `~` \fontsize{6pt}{12}\selectfont = tilde, on Windows: `Alt + 126`.
+\fontsize{6pt}{12}\selectfont __*Notes*__: \newline -
+\fontsize{10pt}{12}\selectfont "`~`" \fontsize{6pt}{12}\selectfont is the tilde symbol, interpretable as "by" (Windows: `ALT + 126`, Mac: `ALT + 5`) \newline - although not returned by `coefficients()`, a further model parameter is the residual term $\epsilon$, indicated by the \color{violet} **variance of the residuals** $\sigma^2$ \color{black}(in R: `var(resid(model_name))` )
 
 ## Multiple regression & interactions
 
@@ -120,7 +120,7 @@ LM also allow to include **multiple predictors** and the **interactions** among 
 
 \fontsize{7pt}{12}\selectfont
 **Multiple regression model** \newline \fontsize{6pt}{12}\selectfont $b_0$ = expected value in girls with `age` = 0 \newline $b_1$ = `age` effect \color{blue}within the same `sex`\color{black} \newline $b_2$ = `sex` difference when `age` = 0 \fontsize{6pt}{12}\selectfont
-```{r }
+```{r comment=NA}
 m2 <- lm(formula = height ~ age + sex, 
          data = children)
 coefficients(m2)
@@ -131,7 +131,7 @@ coefficients(m2)
 
 \fontsize{7pt}{12}\selectfont
 **Interactive model**  \newline \fontsize{6pt}{12}\selectfont $b_1$ = `age` effect \color{blue}in girls\color{black} \newline $b_2$ = `sex` difference in `height` when `age` = 0 \newline $b_3$ = `sex` difference in `age` effect (**interaction**)
-```{r }
+```{r comment=NA}
 m3 <- lm(formula = height ~ age * sex, 
          data = children)
 round(coefficients(m3),2)
@@ -141,8 +141,8 @@ round(coefficients(m3),2)
 \endcols
 
 \fontsize{4pt}{12}\selectfont \color{white}p \newline \color{black} 
-\fontsize{6pt}{12}\selectfont _Notes_: ______ \newline 
-- In this context, "effect" is used as a synonym of "relationship" (not a *causal* effect). \newline - The interaction (used in moderation analysis) is computed as the product of $x_1$ and $x_2$.
+\fontsize{6pt}{12}\selectfont __*Notes*__: \newline 
+- In this context, "effect" is used as a synonym of "relationship" (not a *causal* effect). \newline - The **interaction** (used in moderation analysis) is computed as the **product of $x_1$ and $x_2$**.
 
 ## Model comparison & model selection
 
@@ -153,12 +153,14 @@ round(coefficients(m3),2)
 **Likelihood ratio test** \newline Testing the ratio of the log-*likelihoods* of two nested models (one model includes all predictors of the other model and the Y variable is the same)
 ```{r fig.width=8,fig.height=3.5,warning=FALSE,message=FALSE,eval=FALSE}
 library(lmtest)
-lrtest(m0,m1,m2,m3)
+lrtest(m0,m1,m2,m3) # returns Chisq statistic
 ```
 \fontsize{6pt}{12}\selectfont
-```{r fig.width=8,fig.height=3.5,warning=FALSE,message=FALSE,echo=FALSE}
+```{r fig.width=8,fig.height=3.5,warning=FALSE,message=FALSE,echo=FALSE,comment=NA}
 library(lmtest)
-knitr::kable(lrtest(m0,m1,m2,m3),digits=2)
+p <- lrtest(m0,m1,m2,m3)
+p[,2:4] <- round(p[,2:4],2)
+as.data.frame(p)
 ```
   \endcol
 \begincol{.45\textwidth}
@@ -166,8 +168,7 @@ knitr::kable(lrtest(m0,m1,m2,m3),digits=2)
 \fontsize{6.5pt}{12}\selectfont
 **Information criteria** \newline The Akaike (AIC) and the Bayesian Information Criterion (BIC) account for both likelihood and *parsimony* (the lower number of parameters the better)
 ```{r fig.width=5,fig.height=4,eval=FALSE}
-# AIC: the lower the better
-AIC(m0,m1,m2,m3)
+AIC(m0,m1,m2,m3) # AIC: the lower the better
 ```
 ```{r fig.width=5,fig.height=4,echo=FALSE}
 AIC(m0,m1,m2,m3)$AIC
@@ -175,60 +176,103 @@ AIC(m0,m1,m2,m3)$AIC
 ```{r fig.width=5,fig.height=4}
 # Akaike weights: from 0 (-) to 1 (+)
 library(MuMIn)
-Weights(AIC(m0,m1,m2,m3)) # Aw
+Weights(AIC(m0,m1,m2,m3))
 ```
 
   \endcol
 \endcols
 
-\fontsize{6pt}{12}\selectfont _Notes_: ______ \newline 
-__Likelihood__ = probability of observing your data given your set of parameters, \newline sometimes reffered as the *evidence* of a model.
+\fontsize{6pt}{12}\selectfont __*Notes*__: \newline 
+__Likelihood__ = probability of observing your data given your set of parameters, \newline sometimes referred as the *evidence* of a model.
 
 ## Parameter estimation in linear regression models
 
-\fontsize{7pt}{12}\selectfont
-\color{red}$b_0$ \color{black}and \color{red}$b_1$ \color{black} must be **estimated** using sample data taken from a population.
+\fontsize{6.5pt}{12}\selectfont
+\color{violet}$\beta_0$ \color{black}and \color{violet}$\beta_1$ \color{black} must be **estimated** using sample data taken from a population (\color{violet}$\hat\beta_0$ \color{black} = \color{violet}$b_0$\color{black}; \color{violet}$\hat\beta_1$ \color{black} = \color{violet} $b_1$\color{black}). There are several methods to estimate unknown parameters (called '**estimators**'), such as:
 
-There are several ways to estimate unknown parameters (e.g., maximum likelihood, Bayesian approach), including the widely popular **ordinary least squares** (OLS), which aims at minimizing the sum of the squared residuals. 
+\fontsize{6.5pt}{12}\selectfont
+- **Ordinary least squares (OLS)**: finds the *parameter values* that *minimize the sum of the squared residuals* (default LM estimator in most statistical software)
+
+- **Maximum likelihood estimator (MLE)**: finds the *parameter values* that *maximize the model likelihood*, making the observed data the most probable under that model
+
+- **Bayesian estimator**: finds the *parameter posterior distributions* based on prior knowledge/beliefs (*prior*) and observed data (*likelihood*)
+
+In all of these methods, parameters values (or distributions) are always accompanied with a measure of the **uncertainty/precision** associated with their estimate: \newline \color{violet} **Standard errors (SE)** = predicted *variability* in the parameter estimate if the data were collected from different random samples from the same population.\color{black}
+
+\fontsize{6pt}{12}\selectfont __*Notes*__: \newline 
+- SE are used for computing *test statistics* \fontsize{5pt}{12}\selectfont ($Est/SE$) \fontsize{6pt}{12}\selectfont & *confidence intervals* \fontsize{5pt}{12}\selectfont ($Est\pm1.96SE$) \fontsize{6pt}{12}\selectfont \newline - \color{blue}
+`r fontawesome::fa(name = "microscope",fill="blue", height = "0.8em")` In LM, under the assumption of normally distributed residuals, OLS = MLE
+
+## What are residuals?
 
 \begincols
   \begincol{.40\textwidth}
 
-\fontsize{7pt}{12}\selectfont
+\fontsize{8pt}{12}\selectfont
 Linear model: \newline
 $y_i = \beta_0 + \beta_1 x_i + \epsilon_i$ \newline
 
-Predicted values: \newline
+predicted values: \newline
 $\hat{y}_i = \beta_0 + \beta_1 x_i$ \newline 
 
 Observed values: \newline
 $y_i = \hat{y}_i + \epsilon_i$ \newline
 
-Residuals = observed - predicted \newline $\epsilon_i = y_i - \hat{y}_i$
+\color{violet} Residuals = observed - predicted \newline $\epsilon_i = y_i - \hat{y}_i$
 
   \endcol
-\begincol{.5\textwidth}
+\begincol{.6\textwidth}
 
-\fontsize{7pt}{12}\selectfont But what are **residuals**? \fontsize{6pt}{12}\selectfont 
-```{r fig.width=8,fig.height=3}
+\fontsize{6.5pt}{12}\selectfont
+```{r fig.width=8,fig.height=3, eval=FALSE}
 head(data.frame(observed = children$height,
                 predicted = fitted(m3),
-                residuals = residuals(m3) ))
+                residuals = residuals(m3) 
+                squared = residuals(m3)^2 ))
+```
+```{r fig.width=8,fig.height=3, echo=FALSE, comment=NA}
+head(data.frame(observed = round(children$height,2),
+                predicted = round(fitted(m3),2),
+                residuals = round(residuals(m3),2),
+                squared = round(residuals(m3)^2,2)
+                ))
+```
+```{r fig.width=8,fig.height=3}
+sum(residuals(m3)^2) # sum of squared residuals
 ```
 
   \endcol
 \endcols
 
+\fontsize{6pt}{12}\selectfont __*Notes*__: \newline 
+Model parameters include (1) the intercept, (2) the slope(s), and (3) the **residual variance** $\sigma^2$ \newline &rightarrow; How many parameters in the previous models? (= No. predictors + 2)
+
 ## Statistical inference on regression coefficients
 
 \fontsize{6.5pt}{12}\selectfont
-Based on NHST, it is possible to test the **statistical significance** of each regression coefficient (*two-tail t-test*), which is automatically done by R in the summary of the model.
+In NHST, we can **test the statistical significance** of regression coefficients (*two-tail t-test*).
+
+\begincols
+\begincol{.6\textwidth}
+
+\fontsize{6.5pt}{12}\selectfont
 ```{r eval=FALSE}
 summary(m3) # model results
 ```
-```{r echo=FALSE}
-summary(m3)$coefficients
+```{r echo=FALSE,comment=NA}
+p <- summary(m3)$coefficients
+p[,1:3] <- round(p[,1:3],2)
+p
 ```
+
+  \endcol
+\begincol{.45\textwidth}
+
+\fontsize{6pt}{12}\selectfont \color{white}space\color{black}\newline
+- __`Estimate`__ = estimated coefficient \newline - __`Std. Error`__ = coefficient standard error \newline - __`t value`__ = test statistic computed as \color{white} spa \color{blue} $t = Estimate / Std.Error$ \color{black} \newline - __`p-value`__ = *p* corresponding to the *t*-value \color{white}spa \color{black} with \color{blue} *No. Obs. $-$ No. Coeff. $-$ 1* \newline \color{white}  \color{white}space \color{black} degrees of freedom
+
+  \endcol
+  \endcols
 
 \begincols
   \begincol{.37\textwidth}
@@ -238,7 +282,7 @@ summary(m3)$coefficients
 ```{r eval=FALSE}
 summary(m3)$r.squared 
 ```
-```{r echo=FALSE}
+```{r echo=FALSE,comment=NA}
 round(summary(m3)$r.squared,2)
 ```
 
@@ -303,20 +347,20 @@ colnames(preg)[c(2,5,12,14)] <- c("age","depr","NICU","threat") # shortening var
   \endcol
 \endcols
 
-## One step back: LM assumptions
+## One step back: Linear model assumptions
 
 \fontsize{7.5pt}{12}\selectfont
 Core assumptions: \newline
 \fontsize{6.5pt}{12}\selectfont
 **1. Linearity**: $x_i$ and $y_i$ are linearly associated &rightarrow; the expected (mean) value of $\epsilon_i$ is zero
 
-**2. Normality**: $\epsilon_i$ are normally distributed &rightarrow; $\epsilon_i \sim \mathcal{N}(0,\,\sigma^{2})$
+**2. Normality**: residuals $\epsilon_i$ are normally distributed with $\epsilon_i \sim \mathcal{N}(0,\,\sigma^{2})$
 
 **3. Homoscedasticity**: $\epsilon_i$ variance is constant over the levels of $x_i$ (homogeneity of variance)
 
-**4. Independence of predictors & errors**: $x_i$ is unrelated to $\epsilon_i$
+**4. Independence of predictors & errors**: predictors $x_i$ are unrelated to residuals $\epsilon_i$
 
-**5. Independence of observations**: for any two observations $i$ and $j$ with $i \neq j$, \newline the residual terms $\epsilon_i$ and $\epsilon_j$ are independent \newline
+**5. Independence of observations**: for any two observations $i$ and $j$ with $i \neq j$, \newline the residual terms $\epsilon_i$ and $\epsilon_j$ are independent (no common disturbance factors) \newline
 
 \fontsize{7.5pt}{12}\selectfont
 Additional assumptions: \newline
@@ -325,7 +369,7 @@ Additional assumptions: \newline
 
 **7. Absence of collinearity (for multiple regression)**: \newline lack of linear relationship between $x_1$ and $x_2$
 
-## LM diagnostics: Assessing LM assumptions
+## Model diagnostics: Assessing LM assumptions
 
 \begincols
   \begincol{.5\textwidth}
@@ -339,7 +383,7 @@ qqnorm(residuals(m3)); qqline(residuals(m3))
 par(mfrow=c(1,2))
 hist(residuals(m3),main="Histogram of res.")
 qqnorm(residuals(m3),cex=0.5,pch=20)
-qqline(residuals(m3),col="red")
+qqline(residuals(m3),col="violet")
 ```
 
 Homoscedasticity & independence $x,\epsilon$ `r fontawesome::fa(name = "face-smile",fill="green", height = "0.8em")`
@@ -352,7 +396,7 @@ par(mfrow=c(1,2))
 plot(residuals(m3) ~ children$sex,xlab="",main="Residuals by sex")
 plot(residuals(m3) ~ children$age,pch=20,col="gray",main="Residuals by age")
 abline(lm(residuals(m3) ~ children$age),
-       col="red")
+       col="violet")
 ```
 
   \endcol
@@ -372,7 +416,20 @@ sjPlot::plot_model(m3,"diag")[[1]]
 \endcols
 
 \fontsize{6.5pt}{12}\selectfont
-\color{red} **Independence of observations** `r fontawesome::fa(name = "circle-question",fill="red", height = "0.8em")` \newline _Are the unmeasured factors influencing `y` unrelated from one individual to another?_
+\color{violet} **Independence of observations** `r fontawesome::fa(name = "circle-question",fill="violet", height = "0.8em")` \newline _Are the unmeasured factors influencing `y` unrelated from one individual to another?_
+
+## That's all for now
+
+\fontsize{8pt}{12}\selectfont __Assignments__ (optional):
+
+- read the slides presented today and write in the Moodle forum if you have any doubts!
+
+- refresh your familiarity with `r fontawesome::fa(name = "r-project", height = "1em")`: `R-intro.pdf`
+
+- **exe`r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`cises 1-5** from `exeRcises.pdf` \newline \newline
+
+\fontsize{6pt}{12}\selectfont __*Note*__: \newline 
+For each exercise, the solution (or one of the possible solutions) can be found in dedicated chunk of commented code within the `exeRcises.Rmd` file
 
 # lmer()
 
@@ -387,14 +444,14 @@ In many cases, the *sampling method* creates **clusters** of *individual observa
 - children &rightarrow; families &rightarrow; neighborhoods &rightarrow; cities &rightarrow; regions &rightarrow; states &rightarrow; planets `r fontawesome::fa(name = "rocket", height = "0.8em")` 
 
 \fontsize{8pt}{12}\selectfont
-**Nested data structure** (~ *multilevel* or *hierarchical* data structure)\newline = when data points at the **individual level** appear *in only one group* \newline of the **cluster level** variable 
+**Nested data structure** (= *multilevel* or *hierarchical* data structure)\newline = when data points at the **individual level** appear *in only one group* \newline of the **cluster level** variable
 
-&rightarrow; individual observations are ***nested*** within clusters 
+&rightarrow; \color{violet} individual observations are ***nested*** within clusters \color{blue}
 
 \fontsize{7pt}{12}\selectfont
-`r fontawesome::fa(name = "microscope",fill="blue", height = "0.8em")` \color{blue} vs. 'crossed data structure' = individuals can appear in multiple clusters \fontsize{6.5pt}{12}\selectfont \newline e.g., after-school activities: a student can be enrolled in multiple activities \color{black}
+`r fontawesome::fa(name = "microscope",fill="blue", height = "0.8em")` vs. 'crossed data structure' = individuals can appear in multiple clusters \fontsize{6.5pt}{12}\selectfont \newline e.g., after-school activities: a student can be enrolled in multiple activities \newline \color{black}
 
-\fontsize{6pt}{12}\selectfont _Notes_: ______ \newline 
+\fontsize{6pt}{12}\selectfont __*Notes*__: \newline 
 **Individual observation = statistical unit** = individual entity within a sample or population that is the subject of data collection & analysis (not necessarily a person)
 
 ## Case study: Innovative math teaching program 
@@ -430,7 +487,7 @@ The teaching program `tp` was delivered over the first semester to 2 out of 4 `c
 \fontsize{6.5pt}{12}\selectfont 
 **Nested data structure**: students are *nested* within classes, with each student only belonging to one class. \newline
 
-Note: The **cluster variable** is related to both \color{red}*x* \color{black} (program delivered at the class level) and \color{red}*y* \color{black} (grades will be more similar between students belonging to the same class).
+Note: In this case, the **cluster variable** is related to both \color{violet}*x* \color{black} (program delivered at the class level) and \color{violet}*y* \color{black} (grades will be more similar between students belonging to the same class).
 
   \endcol
 \endcols
@@ -446,6 +503,7 @@ Let's try with a **linear regression model**:
 m <- lm(math_grade ~ tp, data=itp)
 summary(m)$coefficients[,1:3]
 ```
+\fontsize{6.5pt}{12}\selectfont 
 ```{r out.width="150px",fig.width=5,fig.height=3,warning=FALSE,message=FALSE,echo=FALSE}
 m <- lm(math_grade ~ tp, data = itp)
 round(summary(m)$coefficients[,1:3],2)
@@ -467,56 +525,645 @@ plot(m,which=5)
 \fontsize{7pt}{12}\selectfont
 - Coefficient meaning? \newline
 
-- Linear model assumptions? \newline \color{red}
+- Linear model assumptions? \newline \color{violet}
 
 - **Independent observations**? 
 
- \color{red} _Are_ $\epsilon_i$ _and_ $\epsilon_j$ _independent for any_ $i \neq j$? \newline _Are the unmeasured factors influencing `y` unrelated from one individual to another?_ \newline \color{black}
+ \color{violet} _Are_ $\epsilon_i$ _and_ $\epsilon_j$ _independent for any_ $i \neq j$? \newline _Are the unmeasured factors influencing `y` unrelated from one individual to another?_ \newline \color{black}
 
-__NO__: students are nested within classes and such cluster variable is likely to explain differences in the \color{red}*y* \color{black}variable as well as in the relationship between \color{red}*x* \color{black} and \color{red}*y* \color{black}\newline
+__NO__: students are nested within classes and such cluster variable is likely to explain differences in the \color{violet}*y* \color{black}variable as well as in the relationship between \color{violet}*x* \color{black} and \color{violet}*y* \color{black}\newline
 
-Thus, we cannot rely on linear models to analyze these data.
+Thus, **we cannot rely on linear models** to analyze these data.
 
   \endcol
 \endcols
 
 ## Local dependencies
 
+\fontsize{8pt}{12}\selectfont \color{violet} __Local dependencies__ = correlations that exist among observations within a specific cluster \color{black} (but the software doesn't know that!) \newline \fontsize{6pt}{12}\selectfont e.g., grades from the same class will be more correlated than they are between different classes
+
+\fontsize{8pt}{12}\selectfont __*Why* is this a problem?__
+\newline \fontsize{7pt}{12}\selectfont 1) Local dependencies can result in **biased estimates of the standard errors** for the model parameters &rightarrow; underestimated *p*-values (+false positive) \newline 2) Potentially important **variables at the cluster level** are neglected \newline \fontsize{6pt}{12}\selectfont e.g., teachers' characteristics, teaching CV, class social climate
+
+\fontsize{8pt}{12}\selectfont __*When* is this a problem?__
+\newline \fontsize{7pt}{12}\selectfont Virtually, any time that a cluster variable is potentially related to \color{violet}*y*\color{black} \newline Pragmatically, we cannot account for all potential clusters \newline \fontsize{6pt}{12}\selectfont e.g., children &rightarrow; families &rightarrow; neighborhoods &rightarrow; cities &rightarrow; regions &rightarrow; states &rightarrow; planets `r fontawesome::fa(name = "rocket", height = "0.8em")` 
+
+\fontsize{7pt}{12}\selectfont Based on theory & logic, we should focus on what we consider the most influential grouping factors for both  \color{violet}*y* \color{black} and \color{violet}*x*\color{black}
+
 ## Mixed-effects models
 
-Multilevel models are part of the largest mixed-effects family
+\fontsize{7.5pt}{12}\selectfont
+Multilevel models are part of the largest **linear mixed-effects regression (LMER)** family that include **additional variance terms** for handling non-independence (local dependencies) due to nested data structures.
 
-E.g., when a subject changes group over time, it is still a mixed-effects model but not a multilevel model
+Why 'mixed-effects'? \newline \fontsize{7pt}{12}\selectfont Because such additional terms come from the distinction between:
+
+- __Fixed effects__: effects that remains ***constant across clusters***, whose levels are *exhaustively considered* (e.g., gender, levels of a Likert scale) and generally controlled by the researcher (e.g., experimental conditions)
+
+- __Random effects__: effects that ***vary from cluster to cluster***, whose levels are *randomly sampled* from a population (e.g., schools)
+
+\fontsize{6pt}{12}\selectfont __*Note*__: \newline \color{blue}
+`r fontawesome::fa(name = "microscope",fill="blue", height = "0.8em")` When individual observations can change cluster over time, it is still a mixed-effects model but not a multilevel model.
+
+## From linear models to linear mixed-effects models
+
+```{r echo=FALSE,fig.width=4.5,fig.height=2.5,out.width="200px"}
+rm(list=ls())
+itp <- read.csv("data/studentData.csv")
+```
+
+\begincols
+  \begincol{.5\textwidth}
+
+\fontsize{7pt}{12}\selectfont 
+LM formula: $y_i = \beta_0 + \beta_1 x_i + \epsilon_i$ \color{black} \newline Intercept and slope are **constant across all individual observations** $i$ within the population; $x$, $y$, and the error term $\epsilon$ only variate across individual observations $i$ \newline
+
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{7pt}{12}\selectfont 
+LMER formula: $y_{i\color{red}j} = \beta_{0\color{red}j} + \beta_{1\color{red}j} x_{(i)\color{red}j} + \epsilon_{i\color{red}j}$ \color{black} \newline Intercept and slope have both a **fixed** ($0,1$) and a **random** component ($j$); $y$ and $\epsilon$ variate across **individual observations $i$** as well as across \color{red}**clusters $j$** \newline
+
+  \endcol
+\endcols
+
+```{=tex}
+\begin{center} 
+```
+
+\fontsize{10pt}{12}\selectfont
+$y_{ij} =$ \color{teal} $\beta_{0j}$ \color{black} + \color{violet} $\beta_{1j}$\color{black}$x + \epsilon_{ij}$ = \color{teal} $(\beta_{00} + \lambda_{0j})$ \color{black} + \color{violet} $(\beta_{10} + \lambda_{1j})$\color{black}$x + \epsilon_{ij}$ \newline
+
+```{=tex}
+\end{center}
+```
+
+\fontsize{8pt}{12}\selectfont
+LMER are an extension of LM where the \color{teal}intercept \color{black} and the \color{violet} slope \color{black} are decomposed into the **fixed components** \color{teal} $\beta_{00}$ \color{black} and \color{violet} $\beta_{10}$ \color{black} referred to the whole sample, and the **random components** \color{teal} $\lambda_{0j}$ \color{black} and  \color{violet}$\lambda_{1j}$ \color{black} randomly varying across clusters. \newline
+
+\fontsize{6pt}{12}\selectfont __*Note*__: \newline 
+In LMER, $x$ variables (predictors) always variate across clusters $j$, but **not necessarily across individual observations** $i$ (e.g., school principals' age only variate across schools, whereas students' age variate across students within schools)
+
+## Random intercept
+
+\fontsize{7.5pt}{12}\selectfont 
+Let's start with an **intercept-only model** (***unconditional*** or ***null model***), where math grades ($y_{ij}$) are only predicted by the model intercept $\beta_0$ and the residual term $\epsilon_{ij}$.
+
+*Linear model*: $y_{i} = \beta_0 + \epsilon_i$ \newline The intercept value $\beta_0$ is common to all individuals within the population.
+
+*Linear mixed-effects model*: $y_{ij} =$ \color{teal} $\beta_{0j}$ \color{black} $+$ $\epsilon_{ij} =$ (\color{violet} $\beta_{00}$ \color{black} $+$ \color{teal} $\lambda_{0j}$\color{black}) $+$ $\epsilon_{ij}$ \newline \color{violet}$\beta_{00}$ is the **fixed intercept** \color{black} (also called 'average' or 'general intercept') applying to the whole population; \color{teal} $\lambda_{0j}$ is the **random intercept**\color{black}, that is the *cluster-specific deviation from the fixed intercept* (i.e., mean class grade - intercept).
+
+```{r out.width="300px",fig.width=8,fig.height=3,warning=FALSE,message=FALSE,echo=FALSE}
+# setting graphical parameters from the null model
+library(lme4); library(ggplot2)
+m0 <- lmer(math_grade ~ (1|classID), data = itp) # null lmer model
+fixInt <- fixef(m0) # fixed intercept
+randInt <- ranef(m0)[[1]] # class-specific deviations from the intercept
+randInt$class <- rownames(randInt) # class ID
+randInt$classGrade <- fixInt + randInt$`(Intercept)` # class-specific mean grade
+randInt$y <- c(8.75,7.5,6.25,5) # this is just to set the Y coordinates in the plot
+randInt$xlabel <- c(rep(fixInt,2),randInt$classGrade[3:4]) # labels' X coordinates in the plot
+randInt$label <- paste("class",c("A","B","C","D"),"- expression(beta)") # labels
+
+# plotting
+ggplot(itp,aes(math_grade)) + geom_histogram(position="identity",alpha=0.6) + ylab("Frequency") +
+  geom_vline(aes(xintercept=fixInt),color="#800084",lwd=1.5) +
+  geom_vline(data=randInt,aes(xintercept=classGrade,lty=class)) +
+  geom_label(aes(x=fixInt+0.31,y=10.5),label="Fixed~intercept~beta[0][0]",
+             alpha=0.7,color="#800084",parse=TRUE)+
+  geom_segment(data=randInt,aes(x=classGrade,xend=fixInt,y=y,yend=y),
+               arrow=arrow(ends="both",length=unit(0.2,"cm")),color="#008080") +
+  geom_label(data=randInt,aes(x=xlabel+0.28,y=y,
+                              label=paste("lambda[0][",1:4,"]==class~",class,"~-~beta[0][0]")),
+             parse=TRUE,size=3.5,color="#008080",alpha=0.7) + 
+  ylim(0,11) + labs(lty="Mean\ngrade\nin class:")
+```
+
+## Random slope
+
+\fontsize{7pt}{12}\selectfont 
+Let's now add a predictor: **students' anxiety levels** $x_{ij}$.
+
+\begincols
+  \begincol{.45\textwidth}
+  
+\fontsize{7pt}{12}\selectfont 
+\color{teal} **Random intercept \color{black} model:** \color{black} \newline 
+$y_{ij} =$ \color{teal} $\beta_{0j}$ \color{black} $+$ $\beta_1x_{ij} + \epsilon_{ij}$ \newline $=(\beta_{00} +$ \color{teal} $\lambda_{0j}$\color{black}) $+$ $\beta_1x_{ij} + \epsilon_{ij}$ \newline
+
+Math grades $y_{ij}$ are predicted by the overall mean grade $\beta_{00}$, their ***average relationship*** with anxiety $\beta_{10}$, the \color{teal} random variations among clusters $\lambda_{0j}$ (*random intercept*)\color{black}, and the random variations among individuals within clusters $\epsilon_{ij}$ (*residuals*).
+
+```{r out.width="150px",fig.width=4,fig.height=2,warning=FALSE,message=FALSE,echo=FALSE}
+# setting graphical parameters from the null model
+itp$class <- itp$classID
+m1 <- lmer(math_grade ~ anxiety + (1|class), data = itp) # fixed slope
+
+# plotting
+library(sjPlot)
+plot_model(m1,type="pred",terms=c("anxiety","class"),ci.lvl=NA,
+           pred.type = "re",title ="") +
+  geom_point(data=cbind(itp,group_col=itp$class),aes(anxiety,math_grade))
+```
+
+  \endcol
+\begincol{.55\textwidth}
+
+\fontsize{7pt}{12}\selectfont 
+\color{teal} **Random intercept** \color{black} & \color{violet} **random slope** \color{black} **model**: \newline
+$y_{ij} =$ \color{teal} $\beta_{0j}$ \color{black} $+$ \color{violet} $\beta_{1j}$\color{black}$x_{ij} + \epsilon_{ij}$ \newline 
+$= (\beta_{00} +$ \color{teal} $\lambda_{0j}$\color{black}$)$ $+$ $(\beta_{10} +$ \color{violet} $\lambda_{1j}$\color{black}$)$ \color{black} $x_{ij} + \epsilon_{ij}$ \newline
+
+Since the effect of anxiety might not be the same across all classes, we partition $\beta_{1}$ into the overall ***average relationship*** between anxiety and grades $\beta_{10}$ (*fixed slope*) and the \color{violet} cluster-specific variation in the relationship $\lambda_{1j}$ (***random slope***) \color{black} - basically, an interaction between anxiety and class
+
+```{r out.width="150px",fig.width=4,fig.height=2,warning=FALSE,message=FALSE,echo=FALSE}
+# setting graphical parameters from the null model
+itp$class <- itp$classID
+m2 <- lmer(math_grade ~ anxiety + (anxiety|class), data = itp) # random slope
+
+# plotting
+library(sjPlot)
+plot_model(m2,type="pred",terms=c("anxiety","class"),ci.lvl=NA,
+           pred.type = "re",title ="") +
+  geom_point(data=cbind(itp,group_col=itp$class),aes(anxiety,math_grade))
+```
+
+  \endcol
+\endcols
+
+## Multilevel modeling
+
+\fontsize{9pt}{12}\selectfont 
+LMER is often called ***'multilevel modeling'*** due to the underlying \newline __variance decomposition__ of the $y_{ij}$ variable into the *within-cluster* \newline and the *between-cluster* levels. 
+
+\fontsize{7pt}{12}\selectfont 
+That is, the LMER formula $y_{ij} = (\beta_{00} + \lambda_{0j}) + (\beta_{10} + \lambda_{1j}) + \epsilon_{ij}$ \newline can be expressed in two separate levels:
+
+\fontsize{8.5pt}{12}\selectfont 
+$$
+\begin{aligned}
+Level~1~(within): y_{ij} &= \beta_{0j} + \beta_{1j}x_{ij} + \epsilon_{ij} \\ 
+Level~2~(between): \beta_{0j} &= \beta_{00} + \lambda_{0j} \\ 
+ \beta_{1j} &= \beta_{10} + \lambda_{1j} 
+ \end{aligned}
+$$ 
+
+\fontsize{6pt}{12}\selectfont __*Note*__: \newline \color{blue} `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` At level 2, the coefficients $\beta_{00}$ and $\beta_{01}$ are sometimes indicated with $\gamma_{00}$ and $\gamma_{01}$, \newline while $\lambda_{0j}$ and $\lambda_{1j}$ are sometimes indicated with $U_{0j}$ and $U_{1j}$, respectively
+
+## That's all for now
+
+\fontsize{8pt}{12}\selectfont __Assignments__ (optional):
+
+- read the slides presented today and write in the Moodle forum if you have any doubts!
+
+- **exe`r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`cises 6-10** from `exeRcises.pdf` \newline \newline
+
+\fontsize{6pt}{12}\selectfont __*Note*__: \newline 
+For each exercise, the solution (or one of the possible solutions) can be found in dedicated chunk of commented code within the `exeRcises.Rmd` file
 
 # Data structure
 
-## Nested data & Multilevel data structure
+## Recap: Nested data structure & Multilevel modeling
+
+\begincols
+  \begincol{.45\textwidth}
+  
+\fontsize{8.5pt}{12}\selectfont 
+__The problem__ \fontsize{7pt}{12}\selectfont  \newline
+Sometimes the sampling method creates *clusters* of individual observations: **Nested data structure** where individuals observations are *nested within* clusters \newline
+
+&rightarrow; **Local dependencies** \newline = correlations among observations within a specific cluster, violating the LM assumption of independence between $\epsilon_i$ and $\epsilon_j$ for any $i \neq j$ \newline 
+
+&rightarrow; We cannot use ordinary LM
+
+  \endcol
+\begincol{.55\textwidth}
+
+\fontsize{8.5pt}{12}\selectfont 
+__The solution__ \fontsize{7pt}{12}\selectfont \newline
+**Linear mixed-effects regression** (LMER) includes **additional variance terms*** to handle local dependencies. \newline
+
+$y_{ij} =$ \color{teal} $\beta_{0j}$ \color{black} $+$ \color{violet} $\beta_{1j}$\color{black}$x_{ij} + \epsilon_{ij}$ \newline 
+$= (\beta_{00} +$ \color{teal} $\lambda_{0j}$\color{black}$)$ $+$ $(\beta_{10} +$ \color{violet} $\lambda_{1j}$\color{black}$)$ \color{black} $x_{ij} + \epsilon_{ij}$ \newline
+
+These can be expressed in two separate levels (*multi-level*):
+$$
+\begin{aligned}
+Level~1~(within): y_{ij} &= \beta_{0j} + \beta_{1j}x_{ij} + \epsilon_{ij} \\ 
+Level~2~(between): \beta_{0j} &= \beta_{00} + \lambda_{0j} \\ 
+ \beta_{1j} &= \beta_{10} + \lambda_{1j} 
+ \end{aligned}
+$$ 
+
+  \endcol
+\endcols
+
+\fontsize{6pt}{12}\selectfont __*Note*__: \newline 
+*The **additional variance terms** are the variance $\tau^2_0$ of the random intercept $\lambda_{0j}$ and the variance $\tau^2_1$ of the random slope $\lambda_{1j}$. We will see this later...
+
+## Multilevel modeling in longitudinal designs
+
+\fontsize{7pt}{12}\selectfont
+Longitudinal assessments (or repeated measure designs) involve the collection of **multiple data from the same subjects at multiple time points** \newline &rightarrow; observations from the same subject are not independent (*local dependencies*):
+
+- individual observations = time points (*level 1*: ***within-subject***)
+
+- clusters = subjects (*level 2*: ***between-subjects***)
+```{r , echo = FALSE, warning=FALSE,message=FALSE,fig.width=9,fig.height=2.6,fig.align='center'}
+df <- data.frame(Student = as.factor(c(rep("S01",6),rep("S02",6))),
+                 time = rep(1:6,2),
+                 Work.Stress = c(2,1,3,4,3,2,   6,6,3,7,6,6))
+library(ggplot2)
+ggplot(df,aes(x=time,y=Work.Stress,color=Student)) + geom_smooth(lwd=1.2,se=FALSE) + geom_point(cex=3) + ylim(0,8) +
+  geom_line(aes(y=mean(df[df$Student=="S01","Work.Stress"])),color="salmon",lty=2,lwd=0.9) + 
+  geom_line(aes(y=mean(df[df$Student=="S02","Work.Stress"])),lty=2,lwd=0.9) + labs(x="Time",y="Math grades")
+```
+\fontsize{6pt}{12}\selectfont __*Note*__: \newline
+If individuals are further nested within clusters, we can specify a *3-level model* \newline (e.g., time points &rightarrow; students &rightarrow; classes)
 
 ## Case study: Adolescent insomnia
+
+```{r , echo = FALSE, out.width = "300px",fig.align='center'}
+knitr::include_graphics("img/adolescentInsomnia.png")
+```
+
+\fontsize{7pt}{12}\selectfont 
+`r fontawesome::fa(name = "bed",fill="blue", height = "0.8em")`
+\color{blue}A sample of 93 adolescents from the San Francisco Bay Area undertook a semi-structured clinical interview for DSM-5 insomnia symptomatology \newline (*insomnia* vs. *healthy sleepers*).
+
+Then, they were provided with a Fitbit Charge 3 wristband to passively monitor their **sleep & heart rate data over 2 months**. Over the same period, they responded short questionnaires on their **mood, stress, and worry levels every day** at bed time.
+
+We want to understand (HP1) whether **daily stress predicts lower total sleep time** and (HP2) whether the impact of stress on total sleep time is **moderated by  insomnia symptomatology**.
+
+## Hands on `r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`
+
+\fontsize{6.5pt}{12}\selectfont
+\color{blue}1.  \color{black}Download & read the datasets from Github: \fontsize{5.5pt}{12}\selectfont \color{blue} https://github.com/SRI-human-sleep/INSA-home \newline \fontsize{6pt}{12}\selectfont \color{black}
+`ID` = subject ID, `dayNr` = day, `stress` = daily stress rating (1-5), `TST` = total sleep time (min), `insomnia` = subject's group (insomnia vs. healthy)
+```{r out.width="150px",fig.width=4,fig.height=2,results=FALSE,message=FALSE,warning=FALSE}
+repo <- "https://github.com/SRI-human-sleep/INSA-home" # loading datasets from GitHub
+load(url(paste0(repo,"/raw/main/Appendix%20D%20-%20Data/emaFINAL.RData")))
+load(url(paste0(repo,"/raw/main/Appendix%20D%20-%20Data/demosFINAL.RData")))
+# selecting columns
+ema <- ema[,c("ID","dayNr","stress","TST")] # time-varying variables
+demos <- demos[,c("ID","insomnia")] # time-invariant variables
+```
+
+\begincols
+  \begincol{.5\textwidth}
+
+\fontsize{6pt}{12}\selectfont
+
+2. Print the first rows of the datasets: \newline How many rows per subject?
+
+3. Identify which variable represents individual observations, which is the cluster variable, which is the predictor.
+
+4. Identify the variable(s) at the *within-cluster* level (Level 1) and at the *between-cluster* level (Level 2)
+
+  \endcol
+\begincol{.55\textwidth}
+
+\fontsize{6.5pt}{12}\selectfont
+
+5. Explore (descript., correlations, plots)
+
+6. Compute the ***cluster mean*** for all level-1 variables using \color{blue} `aggregate()` \color{black}
+
+7. Join the cluster means to the `demos` dataset using \color{blue} `cbind()` \color{black}
+
+8. Join the all level-2 variables to the `ema` dataset using \color{blue} `plyr::join()` \color{black}
+
+9. Subtract level-1 values from cluster means
+
+  \endcol
+\endcols
+
+## Wide & Long data structure
+
+\begincols
+  \begincol{.5\textwidth}
+
+\fontsize{7.5pt}{12}\selectfont
+__Wide-form dataset__ \newline \fontsize{6.5pt}{12}\selectfont one row per cluster
+```{r out.width="150px",fig.width=4,fig.height=2,message=FALSE,warning=FALSE,comment=NA}
+clustMeans <- # computing cluster means
+  aggregate(x = ema[,c("TST","stress")],
+   by = list(ema$ID), FUN = mean, na.rm = T)
+# join cluster means to the wide-form dataset
+demos <- cbind(demos, clustMeans[,2:3])
+colnames(demos)[3:4] <- c("TST.m","stress.m")
+head(demos)
+```
+
+\color{violet} Level-2 (*between*) variables\color{black}: \newline `ID`, `insomnia`, `TST.m`, `stress.m`
+
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{7.5pt}{12}\selectfont
+__Long-form dataset__ \fontsize{6.5pt}{12}\selectfont \newline one row per individual observation
+
+\fontsize{6.5pt}{12}\selectfont
+```{r out.width="150px",fig.width=4,fig.height=2,message=FALSE,warning=FALSE,comment=NA,eval=FALSE}
+library(plyr)
+ema <- # join lv-2 variables to long-form
+  join(x = ema, # long-form dataset
+       y = demos, # wide-form dataset
+       by = "ID", # joining variable
+       type = "left") # keep all x rows
+head(ema)
+```
+```{r out.width="150px",fig.width=4,fig.height=2,message=FALSE,warning=FALSE,comment=NA,echo=FALSE}
+library(plyr)
+ema <- # join lv-2 variables to long-form
+  join(x = ema, y = demos, by = "ID", type = "left")
+ema[,6:7] <- round(ema[,6:7],1)
+head(ema)
+```
+
+\color{violet} Level-1 (*within*) variables\color{black}: \newline `dayNr`, `stress`, `TST`
+
+  \endcol
+\endcols
+
+## Between- & within-cluster
+
+\begincols
+  \begincol{.6\textwidth}
+
+\fontsize{7.5pt}{12}\selectfont
+__Long-form dataset__ \fontsize{6.5pt}{12}\selectfont \newline one row per individual observation
+
+\fontsize{6.5pt}{12}\selectfont
+```{r out.width="150px",fig.width=4,fig.height=2,message=FALSE,warning=FALSE,comment=NA}
+head(ema)
+```
+
+  \endcol
+\begincol{.4\textwidth}
+
+\fontsize{7.5pt}{12}\selectfont
+Long-form data structures are needed to fit multilevel models. \newline
+
+In these data structures, **level-1 variables** \color{violet} $x_{ij}$ \color{black} and $y_{ij}$ \color{black} change both within and between clusters. \newline
+
+In contrast, **level-2 variables** \color{violet} $x_j$ \color{black} only change between clusters, whereas they keep identical values across all the rows associated with the same cluster.
+
+  \endcol
+\endcols
+
+\fontsize{6pt}{12}\selectfont __*Note*__: \newline `NA` values indicate **missing data**: time points where the `stress` and/or the `TST` variables were missing
+
+## Data centering
+
+\fontsize{7.5pt}{12}\selectfont \color{violet}
+__Data centering__  \color{black} = subtracting the mean of a variable from each variable value \newline &rightarrow; The ***mean*** of the centered variables is 0 \newline &rightarrow; ***Individual centered scores*** represent *deviations from the mean* 
+
+\fontsize{7pt}{12}\selectfont
+In both LM and LMER, \color{violet} **centering the predictors** \color{black} is useful to *reduce collinearity* (linear relationship between predictors) and for *better interpreting a model intercept*.
+
+\begincols
+  \begincol{.5\textwidth}
+
+\fontsize{6pt}{12}\selectfont
+```{r out.width="150px",fig.width=4,fig.height=2,message=FALSE,warning=FALSE,comment=NA}
+demos <- na.omit(demos)
+demos$stress.gmc <- # grand-mean centering
+  demos$stress.m - mean(demos$stress.m)
+```
+```{r out.width="150px",fig.width=6,fig.height=3,message=FALSE,warning=FALSE,comment=NA,echo=FALSE}
+par(mfrow=c(1,2)) # 2 plots in 1 panel
+hist(demos$stress.m,main="Non-centered") # non-centered
+abline(v=mean(demos$stress.m),col="red",lwd=3,lty=2)
+text(x=mean(demos$stress.m)+1.2,y=25,
+     labels=paste("mean =",round(mean(demos$stress.m),2)),col="red")
+hist(demos$stress.gmc,main="Centered") # centered
+abline(v=mean(demos$stress.gmc),col="red",lwd=3,lty=2)
+text(x=mean(demos$stress.gmc)+0.9,y=22,
+     labels=paste("mean =",round(mean(demos$stress.gmc),2)),col="red")
+```
+
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{6pt}{12}\selectfont
+```{r comment=NA}
+# non-centered x: b0 = predicted y when x = 0
+coefficients(lm(TST.m ~ stress.m,data=demos))
+# centered x: b0 = predicted y when x = mean
+coefficients(lm(TST.m ~ stress.gmc,data=demos))
+```
+
+\color{white} space
+
+  \endcol
+\endcols
+
+\fontsize{6.5pt}{12}\selectfont
+With centered predictors, the **intercept** becomes the value of the \color{violet} $y$ \color{black} variable *when the \color{violet} $x$ \color{black} is at its mean*, whereas it *does not change the slopes* or their interpretation (at least in LM).
+
+## Grand mean vs. Cluster mean centering
+
+\fontsize{7.5pt}{12}\selectfont
+With LMER, there are two ways to center the data:
+
+__Grand mean centering__ = subtracting the mean of the whole sample (*grand-mean* or *grand-average*) from each cluster's mean (i.e., the same used with LM).
+```{r out.width="150px",fig.width=4,fig.height=2,results=FALSE,message=FALSE,warning=FALSE}
+# gmc stress = mean cluster's stress - grand mean
+ema$stress.gmc <- ema$stress.m  -  mean(demos$stress.m)
+```
+
+__Cluster mean centering__ (or '*group mean centering*') = subtracting the mean of the cluster (*group mean*) from each individual observation nested within that cluster
+```{r out.width="150px",fig.width=4,fig.height=2,results=FALSE,message=FALSE,warning=FALSE}
+# cmc stress = individual obs. - mean of the corresponding cluster
+ema$stress.cmc <- ema$stress  -   ema$stress.m
+```
+```{r out.width="250px",fig.width=7.5,fig.height=1.5,results=FALSE,message=FALSE,warning=FALSE,echo=FALSE}
+par(mfrow=c(1,3))
+hist(ema$stress,main="Raw stress scores")
+hist(demos$stress.gmc,main="Grand-mean-centered scores")
+hist(ema$stress.cmc,main="Cluster-mean-centered scores")
+```
+
+\color{blue}
+Hands on `r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`: Compute the grand-mean-centered & the cluster-mean-centered values of `stress` and `TST`. Then, compute their Pearson's correlation with the `cor()` function
+
+## Level-specific correlations
+
+<div align="center">
+
+\fontsize{6pt}{12}\selectfont
+```{r echo=FALSE,message=FALSE,warning=FALSE,comment=NA}
+demos$TST.gmc <- demos$TST.m - mean(demos$TST.m)
+ema <- plyr::join(ema,demos[,c("ID","TST.gmc")],by="ID")
+ema$TST.cmc <- ema$TST - ema$TST.m
+head(ema[,c("ID","stress","stress.gmc","stress.cmc","TST","TST.gmc","TST.cmc")],5)
+```
+
+\begincols
+  \begincol{.5\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+__Between-cluster level__: \newline cluster *deviations* from the sample, \newline 
+proportional to the \color{violet} __random intercept__ $\lambda_{0j}$ \color{black}
+
+__Level-2__: correlations **across clusters** \newline \color{blue} _**Stressed subjects** sleep worse_ \color{black}
+```{r message=FALSE,warning=FALSE,comment=NA}
+cor(demos[,c("stress.gmc","TST.gmc")],
+    use="complete.obs")
+```
+
+  \endcol
+\begincol{.55\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+__Within-cluster level__: \newline individual *deviations* from cluster mean \newline \color{white} space \color{black} 
+
+__Level-1__: correlations **within cluster** \newline \color{blue} _Subjects sleep **worse than usual** in those days where they are **more stressed than usual**_ \color{black}
+```{r message=FALSE,warning=FALSE,comment=NA}
+cor(ema[,c("stress.cmc","TST.cmc")],
+    use="complete.obs")
+```
+
+  \endcol
+\endcols
+
+## Intraclass correlation coefficient
+
+TO DO
+
+## Additional variance (& covariance) terms in LMER
+
+\fontsize{7pt}{12}\selectfont \color{violet}
+**Linear mixed-effects regression** (LMER) includes **additional variance \newline (and covariance) terms** to handle local dependencies. \color{black} \newline _"Variance (and covariance)" what?!_ 
+
+We can see that the **random intercept of a null LMER model** is proportional to the grand-mean-centered cluster means of \color{violet} $y$ \color{black} 
+
+\begincols
+  \begincol{.4\textwidth}
+
+\fontsize{6pt}{12}\selectfont
+```{r message=FALSE,warning=FALSE,comment=NA,echo=FALSE}
+m0 <- lme4::lmer(TST ~ (1|ID), data=ema) # null LMER model
+p <- cbind(TST.gmc = demos$TST.gmc, randIntercept = lme4::ranef(m0)$ID)
+colnames(p) <- c("TST.gmc","random.intercept")
+head(p,5)
+```
+
+  \endcol
+\begincol{.6\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+The **variance \color{violet} $\tau^2_0$ \color{black} of the random intercept** quantifies the _level-2 residual variance of $y$_ (vs. level-1 residual variance $\sigma^2$). \fontsize{3pt}{12}\selectfont \newline
+
+\fontsize{7pt}{12}\selectfont Similarly, the **variance \color{violet} $\tau^2_1$ \color{black} of the random slope** quantifies the  _level-2 residual variance of the slope_.
+
+  \endcol
+\endcols
+
+\fontsize{7pt}{12}\selectfont \color{violet} $\tau^2_0$, $\tau^2_1$, and the covariance $\tau_{01}$ \color{black} between random intercept and random slope are the additional terms included by LMER to handle local dependencies.
+
+## That's all for now
+
+\fontsize{8pt}{12}\selectfont __Assignments__ (optional):
+
+- read the slides presented today and write in the Moodle forum if you have any doubts!
+
+- **exe`r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`cises 11-15** from `exeRcises.pdf` \newline \newline
+
+\fontsize{6pt}{12}\selectfont __*Note*__: \newline 
+For each exercise, the solution (or one of the possible solutions) can be found in dedicated chunk of commented code within the `exeRcises.Rmd` file
 
 # Model fit
 
-## Fitting a multilevel model (in R)
+## Recap: 
+
+## Fitting a multilevel model in R
 
 ## Case study: Adolescent insomnia
 
-## LMER assumptions
+```{r , echo = FALSE, out.width = "300px",fig.align='center'}
+knitr::include_graphics("img/adolescentInsomnia.png")
+```
+
+\fontsize{7pt}{12}\selectfont 
+`r fontawesome::fa(name = "bed",fill="blue", height = "0.8em")`
+\color{blue}A sample of 93 adolescents from the San Francisco Bay Area undertook a semi-structured clinical interview for DSM-5 insomnia symptomatology \newline (*insomnia* vs. *healthy sleepers*).
+
+Then, they were provided with a Fitbit Charge 3 wristband to passively monitor their **sleep & heart rate data over 2 months**. Over the same period, they responded short questionnaires on their **mood, stress, and worry levels every day** at bed time.
+
+We want to understand (HP1) whether **daily stress predicts lower total sleep time** and (HP2) whether the impact of stress on total sleep time is **moderated by  insomnia symptomatology**.
+
+## Hands on `r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`
+
+## Parameter estimation in multilevel models
+
+## Coefficient interpretation
+
+## Cross-level interactions
+
+## Hands on `r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`
+
+## That's all for now
+
+\fontsize{8pt}{12}\selectfont __Assignments__ (optional):
+
+- read the slides presented today and write in the Moodle forum if you have any doubts!
+
+- **exe`r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`cises 16-20** from `exeRcises.pdf` \newline \newline
+
+\fontsize{6pt}{12}\selectfont __*Note*__: \newline 
+For each exercise, the solution (or one of the possible solutions) can be found in dedicated chunk of commented code within the `exeRcises.Rmd` file
 
 # Model evaluation
 
-## Diagnostics
+## Recap: 
+
+## Reading the Results section of a paper
+
+## LMER assumptions
+
+## LMER diagnostics
 
 pacchetti performance e sjPlot
 
-## Model comparison
+## Multilevel model comparison
 
 AIC e BIC, weights
 
 likelihood ratio test
 
+## Multilevel modeling in experimental research
+
+**Multilevel models in experimental laboratory desings**
+Experimental laboratory designs usually involves the administration of a set of tasks, each including **multiple trials** (statistical unit) grouped into multiple **conditions** \newline ~ intensive longitudinal design
+
+While experimental conditions are the **fixed effects** manipulated by researchers, most psychological tasks include a set of **stimuli** (e.g., geometrical shapes, colors, sentences, human faces) that are sampled from a population of stimuli.
+
+Thus, it is possible to consider the **random effects** due to the stimuli, considering them as a cluster variable that includes multiple trials.
+
+## Case study: Infants' pupil dilation
+
+https://osf.io/p8nfh/
+
+\fontsize{7pt}{12}\selectfont 
+`r fontawesome::fa(name = "eye",fill="blue", height = "0.8em")`
+\color{blue}A sample of XX X-month-old infants ...
+
+## Hands on `r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`
+
+## That's all for now
+
+\fontsize{8pt}{12}\selectfont __Assignments__ (optional):
+
+- read the slides presented today and write in the Moodle forum if you have any doubts!
+
+- **exe`r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`cises 16-20** from `exeRcises.pdf` \newline \newline
+
+\fontsize{6pt}{12}\selectfont __*Note*__: \newline 
+For each exercise, the solution (or one of the possible solutions) can be found in dedicated chunk of commented code within the `exeRcises.Rmd` file
+
 # Related topics
 
-## Some topics related to multilevel modeling
+## Some in-depth topics related to multilevel modeling
 
 \fontsize{8pt}{12}\selectfont
 - *Power analysis* of multilevel models
