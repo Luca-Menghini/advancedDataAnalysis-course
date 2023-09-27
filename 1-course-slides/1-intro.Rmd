@@ -25,34 +25,34 @@ output:
       in_header: mystyle.tex
 ---
 
-# The pRofessor
+# The prof
 
-## The professor
+## My career path
 
 \begincols
-  \begincol{.3\textwidth}
+  \begincol{.35\textwidth}
   
 ```{r , echo = FALSE, out.width = "70px",fig.align="center"}
 knitr::include_graphics("img/me.PNG")
 ```
+
+```{=tex}
+\begin{center} 
+```
+
+\fontsize{7pt}{12}\selectfont
+__Luca Menghini Ph.D.__ \fontsize{6.5pt}{12}\selectfont
+
+Work & Org. Psychologist
+
+Postdoc in Applied psychology & \newline Quantitative research methods @uniTN
   
-  \endcol
-\begincol{.7\textwidth}
-
-  \fontsize{10pt}{12}\selectfont
-  
-Luca Menghini Ph.D. \fontsize{7.5pt}{12}\selectfont
-
-Work & organizational psychologist
-
-Postdoctoral research fellow in Applied psychology \newline & Quantitative research methods @uniTN
-
-Professor on contract @uniPD
+```{=tex}
+\end{center} 
+```  
 
   \endcol
-\endcols
-
-## My path
+\begincol{.8\textwidth}
 
 \fontsize{6.5pt}{12}\selectfont
 
@@ -68,24 +68,36 @@ Professor on contract @uniPD
 
 -   2021: Postdoc @uniBO \newline \fontsize{5.5pt}{12}\selectfont _*Workaholism and daily fluctuations in blood pressure, emotional exhaustion, and sleep quality*_ \fontsize{6.5pt}{12}\selectfont
 
--   2022: Postdoc @uniTN \fontsize{5.5pt}{12}\selectfont _*Youth between transitions, challenges, and opportunities*_
+>-   2022: Postdoc @uniTN \fontsize{5.5pt}{12}\selectfont _*Youth, transitions, challenges, & opportunities*_
+
+  \endcol
+\endcols
 
 ## Some of my studies related to the course content
 
-\fontsize{6pt}{12}\selectfont
-- **Multilevel**: Menghini, L., Yüksel D., Baker, F. C., King, C., de Zambotti, M. (2023). Wearable and mobile technology to characterize daily patterns of sleep, stress, pre-sleep worry, and mood in adolescent insomnia. *Sleep Health 9*(1), 108-116. https://doi.org/10.1016/j.sleh.2022.11.006 [\color{blue}[FULL-TEXT](https://www.sciencedirect.com/science/article/pii/S2352721822002285)\color{black}] [\color{blue}[R CODE](https://github.com/SRI-human-sleep/INSA-home)\color{black}]
+\begincols
+  \begincol{.4\textwidth}
 
-- **Multivariate**: Menghini, L., Balducci, C., & Toderi, S. (2022). Italian adaptation of the Warr's Job-related Affective Wellbeing Scale: Factorial structure and relationships with the HSE Management Standards Indicator Tool. *TPM – Testing, Psychometrics, Methodology in Applied Psychology, 29*(3), 309-325. https://doi.org/10.4473/TPM29.3.3 [\color{blue}[FULL-TEXT](https://www.researchgate.net/profile/Luca-Menghini/publication/364132541_Italian_adaptation_of_Warr's_Job-related_Affective_Well-being_Scale_Factorial_structure_and_relationships_with_the_HSE_Management_Standards_Indicator_Tool/links/633c22f9769781354ebc4439/Italian-adaptation-of-Warrs-Job-related-Affective-Well-being-Scale-Factorial-structure-and-relationships-with-the-HSE-Management-Standards-Indicator-Tool.pdf?_sg%5B0%5D=started_experiment_milestone&origin=journalDetail&_rtd=e30%3D)\color{black}] [\color{blue}[R CODE](https://osf.io/jyzgf/)\color{black}]
-
-- **Multilevel & Multivariate**: Menghini, L., Pastore, M., Balducci C. (2022). Workplace Stress in Real Time: Three Parsimonious Scales for the Experience Sampling Measurement of Stressors and Strain at Work. *European Journal of Psychological Assessment*. https://doi.org/10.1027/1015-5759/a000725 [[\color{blue}FULL-TEXT](https://www.researchgate.net/publication/362475778_Workplace_Stress_in_Real_Time_Three_Parsimonious_Scales_for_the_Experience_Sampling_Measurement_of_Stressors_and_Strain_at_Work)\color{black}] [[\color{blue}R CODE](https://osf.io/87a9p/)\color{black}]
-
-## Intensive longitudinal designs
-
-```{r , echo = FALSE, out.width = "150px",fig.align="center"}
+\fontsize{7pt}{12}\selectfont
+__Intensive longitudinal designs__
+```{r , echo = FALSE, out.width = "130px"}
 knitr::include_graphics("img/ild.PNG")
 ```
 
-## Warnings :)
+  \endcol
+\begincol{.7\textwidth}
+
+\fontsize{6pt}{12}\selectfont
+- **Multilevel**: Menghini et al. (2023). Wearable and mobile technology to characterize daily patterns of sleep, stress, pre-sleep worry, and mood in adolescent insomnia. *Sleep Health 9*(1), 108-116. [\color{blue}[FULL-TEXT](https://www.sciencedirect.com/science/article/pii/S2352721822002285)\color{black}] [\color{blue}[R CODE](https://github.com/SRI-human-sleep/INSA-home)\color{black}]
+
+- **Multivariate**: Menghini et al. (2022). Italian adaptation of the Warr's Job-related Affective Wellbeing Scale: Factorial structure and relationships with the HSE Management Standards Indicator Tool. *TPM, 29*(3), 309-325. [\color{blue}[FULL-TEXT](https://www.tpmap.org/wp-content/uploads/2022/09/29.3.3.pdf)\color{black}] [\color{blue}[R CODE](https://osf.io/jyzgf/)\color{black}]
+
+>- **Multilevel & Multivariate**: Menghini et al. (2022). Workplace Stress in Real Time: Three Parsimonious Scales for the Experience Sampling Measurement of Stressors and Strain at Work. *European Journal of Psych Assessment*. [[\color{blue}FULL-TEXT](https://www.researchgate.net/publication/362475778_Workplace_Stress_in_Real_Time_Three_Parsimonious_Scales_for_the_Experience_Sampling_Measurement_of_Stressors_and_Strain_at_Work)\color{black}] [[\color{blue}R CODE](https://osf.io/87a9p/)\color{black}]
+
+  \endcol
+\endcols
+
+## Warnings
 
 \fontsize{7.5pt}{12}\selectfont
 
@@ -103,22 +115,22 @@ Plus, this is my first time with this course: \color{red} suggestions and critiq
 ___ \newline
 Ethical code for psychology research: Explicit aknowledgement of limitations
 
-## Contact & office hours
+## Contact, office hours, & master theses
 
 \fontsize{8pt}{12}\selectfont
-**Contact**: Moodle or mail to: \color{blue} luca.menghini@unipd.it \color{black}
-
-**Office hours**: \color{red} TO DO \color{black} \newline __Where__: Psico 1 pink building, ground floor, between the computer rooms \newline We can also schedule Zoom meetings \newline
+**Contact**: Moodle or mail to: \color{blue} luca.menghini@unipd.it \color{black} \newline __Office hours__: \color{red} TO DO \color{black} \newline __Where__: Psico 1 pink building, ground floor, between the computer rooms \newline We can also schedule Zoom meetings
 
 ```{r , echo = FALSE, out.width = "120px",fig.align="center"}
 knitr::include_graphics("img/office.PNG")
 ```
 
-# The couRse
+**Theses**: As a contracted professor, I can only accept up to two master students \newline __Ongoing projects__: Ambulatory: Workaholism daily diary; \newline In-lab: ECG smart t-shirt, rumination & response inhibition
 
-## Advanced data analysis for psychological science: \newline Course overview
+# The course
 
-\fontsize{7pt}{12}\selectfont
+## Advanced data analysis for psychological science
+
+\fontsize{7.5pt}{12}\selectfont
 This course aims at providing basic notions of **multi-level & multi-variate** linear regression modeling, focusing on applications in developmental, educational, and applied psychology. 
 
 The course aims at transmitting **basic knowledge** on *linear mixed-effects regression* (LMER) and two common examples of multivariate techniques within the structural equation modeling (SEM) framework, namely *path analysis* & *confirmatory factor analysis* (CFA).
@@ -153,7 +165,7 @@ Students should have good knowledge about basic concepts linked to probability t
 
 6. Coefficient interpretation `r fontawesome::fa(name = "r-project", height = "1em")`
 
-7. \color{blue} Generalized models `glmer()`, Bayesian LMER, & power analysis `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` \newline \newline
+7. \color{blue} Generalized models `glmer()`, Bayesian LMER, power analysis `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` \newline \newline
   
   \endcol
 \begincol{.5\textwidth}
@@ -175,13 +187,13 @@ Students should have good knowledge about basic concepts linked to probability t
 
 14. Full SEM pipeline `r fontawesome::fa(name = "r-project", height = "1em")`
 
-15. \color{blue} Multilevel SEM, Mediation, \newline Bayesian SEM, power analysis `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` \newline \newline
+15. \color{blue} Multilevel SEM, Bayesian SEM, power analysis `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` \newline \newline
 
   \endcol
 \endcols
 
 ___ \newline \fontsize{6pt}{12}\selectfont
-`r fontawesome::fa(name = "r-project", height = "1em")` = Practical exercise sessions with R (bring your PC!) \newline `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` \color{blue} = In-depth topics (not for the exam!)  &leftarrow; slides with blue boxes and the microscope icon
+`r fontawesome::fa(name = "r-project", height = "1em")` = Practical exercise sessions with R (bring your PC!) \newline `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` \color{blue} = In-depth topics (not for the exam!)
 
 ## When & where
 
@@ -191,18 +203,15 @@ All lectures will be delivered in the Psico 2 gray building, room 3F - via Venez
 
 \begincols
   \begincol{.5\textwidth}
-
-```{r , echo = FALSE, out.width = "0.1px",fig.align="center"}
-knitr::include_graphics("img/white.PNG")
-```
   
 \fontsize{6pt}{12}\selectfont
 ```{r , echo = FALSE}
-knitr::kable(data.frame(Day=1:11,
+knitr::kable(data.frame(Day=1:10,
                         Date=paste0(c(paste0("10-",c(4,5,11,12,18,19,25,26)),
-                                      paste0("11-",c(1,2,8))),c(rep(c(" (wed)"," (thu)"),5)," (wed)")),
-                        Time=c(rep(c("12:30-14:30","08:30-10:30"),5),"12:30-14:30"),
-                        Room=rep("3F",11)))
+                                      paste0("11-",c(2,8))),c(rep(c(" (wed)"," (thu)"),4),
+                                                              " (thu)"," (wed)")),
+                        Time=c(rep(c("12:30-14:30","08:30-10:30"),4),"08:30-10:30","12:30-14:30"),
+                        Room=rep("3F",10)))
 ```
   
   \endcol
@@ -210,11 +219,12 @@ knitr::kable(data.frame(Day=1:11,
 
 \fontsize{6pt}{12}\selectfont
 ```{r , echo = FALSE}
-knitr::kable(data.frame(Day=12:21,
+knitr::kable(data.frame(Day=11:21,
                         Date=paste0(c(paste0("11-",c(9,15,16,22,23,29,30)),
-                                      paste0("12-",c(6,7,13))),c(rep(c(" (thu)"," (wed)"),5))),
-                        Time=c(rep(c("08:30-10:30","12:30-14:30"),5)),
-                        Room=rep("3F",10)))
+                                      paste0("12-",c(6,7,13,14))),c(rep(c(" (thu)"," (wed)"),5),
+                                                                    " (thu)")),
+                        Time=c(rep(c("08:30-10:30","12:30-14:30"),5),"08:30-10:30"),
+                        Room=rep("3F",11)))
 ```
 
   \endcol
@@ -256,9 +266,9 @@ The course slides are structured by intermixing theory, R code, plots, examples,
 
 The R code used in any exercise/example is also provided.
 
-Slides with \color{blue}blue boxes \color{black}and the \color{blue}microscope `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` \color{black}icon cover in-depth but still useful topics that will be possibly presented but are not part of the core course topics and related exam!
+Slides and sentences with the \color{blue}microscope `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` \color{black}icon cover in-depth but still useful topics that will be possibly presented but are not part of the core course topics and related exam!
 
-All course materials can be accessed from Moodle \newline __*and*__ from \color{blue} https://github.com/Luca-Menghini/advancedDataAnalysis-course \color{black}
+All course materials can be accessed from Moodle __*and*__ from \color{blue} https://github.com/Luca-Menghini/advancedDataAnalysis-course \color{black}
 
 ## Additional resources
 
@@ -416,15 +426,13 @@ knitr::include_graphics("img/chatGPT.PNG")
 ## Key `r fontawesome::fa(name = "r-project",fill="#3333B2", height = "1em")` packages used in the course
 
 \fontsize{8pt}{12}\selectfont
-The course uses several packages with customized and optimized functions. Here are the main packages used in the course (and the code to install all of them):\newline
+The course uses several packages with customized and optimized functions. Here are the main packages used in the course (and the code to install all of them):
 ```{r , eval=FALSE}
-pckg <- c("lme4","lavaan",
-          "plyr","reshape2","sjPlot")
+pckg <- c("lme4","lavaan", # model fit
+          "MuMIn","sjPlot", # model outputs
+          "plyr") # data preparation
 install.packages(pckg)
 ```
-
-\fontsize{5pt}{12}\selectfont
-___ \newline Note: This course does not use `tidyverse` packages and syntax (see \color{blue} https://www.tidyverse.org/ \color{black} ), \newline but relies on R Base. 
 
 
 ## Some key `r fontawesome::fa(name = "r-project",fill="#3333B2", height = "1em")` functions used in the course
@@ -433,23 +441,22 @@ ___ \newline Note: This course does not use `tidyverse` packages and syntax (see
   \begincol{.5\textwidth}
   
   \fontsize{6pt}{12}\selectfont
-  
-Aggregating scores by group
-```{r, }
+```{r message=FALSE,warning=FALSE,comment=NA}
+# Aggregating scores by group
 aggregate(x = sleep$extra, 
           by = list(sleep$group), FUN = mean)
 ```
 
-Merging wide- and long-form datasets
 ```{r eval=FALSE}
-new <- join(long, wide, by = "ID", type = "left")
+# Merging wide- and long-form datasets
+plyr::join(long, wide, by = "ID", type = "left")
 ```
 
-Fitting LMER models and printing fixed effects
-```{r echo=FALSE,message=FALSE,warning=FALSE}
+```{r echo=FALSE,message=FALSE,warning=FALSE,comment=NA}
 library(lme4)
 ```
-```{r }
+```{r message=FALSE,warning=FALSE,comment=NA}
+# Fitting LMER models and printing fixed effects
 fit <- lmer(extra ~ group + (1|ID), data = sleep)
 fixef(fit)
 ```
@@ -458,21 +465,21 @@ fixef(fit)
 \begincol{.5\textwidth}
 
   \fontsize{6pt}{12}\selectfont
-
-Fitting SEM and printing coefficients
-```{r echo=FALSE,message=FALSE,warning=FALSE}
-library(lavaan)
-```
-```{r }
+```{r eval=FALSE}
+# Fitting SEM and printing coefficients
 fit <- sem("visual =~ x1 + x2 + x3
             textual =~ x4 + x5 + x6
             visual ~ textual",
             data=HolzingerSwineford1939)
-```
-```{r eval=FALSE}
 standardizedsolution(fit)[1:7,1:4]
 ```
-```{r echo=FALSE}
+```{r echo=FALSE,message=FALSE,warning=FALSE,comment=NA}
+library(lavaan)
+# Fitting SEM and printing coefficients
+fit <- sem("visual =~ x1 + x2 + x3
+            textual =~ x4 + x5 + x6
+            visual ~ textual",
+            data=HolzingerSwineford1939)
 knitr::kable(standardizedsolution(fit)[1:7,1:4],digits=2)
 ```
 
@@ -490,8 +497,8 @@ All exam sessions will take place in the Psico 2 gray building, room 3L \newline
 knitr::include_graphics("img/white.PNG")
 ```
 ```{r , echo = FALSE}
-knitr::kable(data.frame(Session=paste(1:5,c("Jan","Feb","Jun","Jul","Aug"),sep=". "),
-                        Date=c("2024-01-17","2024-02-14","2024-06-10","2024-07-10","2024-08-10"),
+knitr::kable(data.frame(Session=paste(1:5,c("Jan","Feb","Jun","Jul","Sept"),sep=". "),
+                        Date=c("2024-01-17","2024-02-14","2024-06-10","2024-07-10","2024-09-10"),
                         Time=rep("14:30",5),
                         Room=rep("3L",5)))
 ```
@@ -503,58 +510,83 @@ The final exam will be **written** and will last **40 minutes**. \newline The ex
 
 - theoretical topics covered by the course 
 
-- data analysis exercises using R (analysis of case studies) based on the procedures learned during the course. \newline
+- interpretation of data analysis outputs
 
-The contents required by the exam are exhaustively covered in \color{red}the [main course slides](#slides)\color{black}.
-The exam score will be computed as the sum of the scores obtained to the 31 questions.
+- interpretation of paper results \newline
 
+__Exam contents__: The contents required by the exam are exhaustively \newline covered in \color{red}the [main course slides](#slides)\color{black}.
+
+__Exam scores__: The exam score will be computed as the sum of the scores obtained to the 31 questions (right answer = 1; wrong/missing answer = 0; \newline 18+ right answers = exam passed; 31 right answers = 30 cum laude). \newline
+
+___ \newline \fontsize{5pt}{12}\selectfont
 More information about the final exam will be provided later, along with an exam simulation.
 
 ## Example questions
 
 \fontsize{8pt}{12}\selectfont
-- theoretical topics: \color{red}to do
+- **Theoretical topics**: \newline \fontsize{7pt}{12}\selectfont \color{blue} _What does "ME" mean in the "LMER" achronym?_ \color{black} \newline Mean Effect | Mixed Effects | Multilevel Effects | Multivariate Errors \newline \color{blue} _Which of the following is a fixed effect?_ \color{black} \newline Intercept | Residual variance | Cluster variance | None
 
-- data analysis exercise: \color{red}to do
+\fontsize{8pt}{12}\selectfont
+- **Output interpretation**: \newline \fontsize{7pt}{12}\selectfont \color{blue} _Which is the variance of the random slope?_ \newline \color{black} 0.75 | 0.76 | 2.85 | Not shown \newline \color{blue} _Which of the following random effects are shown in the table?_ \newline \color{black} Random slope | R. Intercept & residuals | Residuals & R. slope | None
+```{r , echo = FALSE, warning=FALSE, message=FALSE, comment=NA, results=FALSE}
+library(lme4); library(sjPlot); library(html2latex)
+fit <- lmer(extra ~ group + (1|ID),data=sleep)
+  sjPlot::tab_model(
+    fit,
+    show.r2 = FALSE,
+    show.icc = FALSE,
+    show.ngroups = FALSE,
+    show.obs = FALSE,
+    file = "temp.html")
+html2pdf(filename = "temp.html", 
+  table_width = 13, 
+   silent = TRUE, 
+   style = TRUE, 
+   build_pdf = TRUE, 
+   clean = TRUE,
+   name_table = "table1")
+tex2Rmd("temp.tex")
+```
+
+\fontsize{6pt}{12}\selectfont
+`r readr::read_file("table.txt")`
 
 # IntRoduction
 
-## Multi - LEVEL & Multi - VARIATE
+## Multi-LEVEL & Multi-VARIATE
 
 \fontsize{7.5pt}{12}\selectfont
-Advanced statistical techniques to deal with **large and complex data structures**
+Advanced statistical techniques to deal with **large & complex data structures**: \newline
 
 \begincols
   \begincol{.5\textwidth}
 
-\fontsize{7pt}{12}\selectfont \color{red}
+\fontsize{7pt}{12}\selectfont \color{violet}
 **Multilevel regression model** \fontsize{6.5pt}{12}\selectfont \color{black}
 
-To be used with **hierarchical data structures** where lower-level observations (statistical units) are ***nested*** within higher-level variables (clusters).  \newline
-
-_*Linear mixed-effects regression*_ (LMER) \newline allows to estimate **fixed effects** that are constant across all clusters + **random effects** varying from cluster to cluster.  \newline
-
-LMER is widely applied in developmental and educational psychology:
+To be used with **hierarchical data** where statistical units are ***nested within*** higher-level variables (clusters):
 
 - students &rightarrow; classes &rightarrow; schools
 
 - experiences &rightarrow; days &rightarrow; individuals
 
->- trials &rightarrow; items & individuals
+>- trials &rightarrow; items & individuals \newline
+
+_**Linear mixed-effects regression**_ (LMER) \newline allows to estimate *fixed effects* that are constant across all clusters + *random effects* varying from cluster to cluster.  \newline
 
   \endcol
 \begincol{.5\textwidth}
 
-\fontsize{7pt}{12}\selectfont \color{red}
+\fontsize{7pt}{12}\selectfont \color{violet}
 **Multivariate regression model** \fontsize{6.5pt}{12}\selectfont \color{black}
 
-To be used to account for the multivariate reality of psychosocial phenomena, where **multiple variables interact** at the same time (e.g., multiple outcomes, mediation). \newline
+To be used to account for modeling **mutliple variables interacting at the same time** (e.g., multiple outcomes, mediation). \newline
 
-_*Path model*_ = Pictorial representation (diagram) of a theory of variable relationships (*structural model*) \newline
+_**Path model**_ = Pictorial representation of a theory of variable relationships \newline
 
-_*Latent variable model*_ = representation of the relationships that form the ***latent variables*** used in a structural model \newline
+_**Measurement model**_ = relationships that form a *latent variable* from multiple *observed variables* \newline
 
-_*Structural equation model*_ (SEM) = full model composed by the latent and structural part
+_**Structural equation model (SEM)**_ \newline = measurement + structural model
 
   \endcol
 \endcols
@@ -562,12 +594,12 @@ _*Structural equation model*_ (SEM) = full model composed by the latent and stru
 ## Linear models as the common root
 
 \fontsize{7pt}{12}\selectfont 
-**Regression models** aim to establish whether two variables are in a asymmetric functional relationship, and particularly to quantify the extent to which one `X` variable (*independent* or *predictor*) influences the `Y` variable (*dependent* or *response*)
+**Linear regression models** allow to determinate the link between two variables \newline as expressed by a linear function: \fontsize{10pt}{12}\selectfont \color{violet} $y_i = \beta_0 + \beta_1 x_i + \epsilon_i$ \fontsize{7pt}{12}\selectfont \color{black} 
 
-**Linear regression** allows to determinate the link between two variables as expressed by a linear function: \fontsize{10pt}{12}\selectfont \color{red} $Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$ \fontsize{7pt}{12}\selectfont \color{black} \newline Such a function can be graphically represented as a **straight line** where \newline \color{red} $\beta_0$ \color{black} is the **intercept** (value assumed by `Y` when `X` = 0) \newline \color{red} $\beta_1$ \color{black} is the  **slope coefficient** (predicted change in `Y` when `X` increases by 1 unit) \newline \color{red} $\epsilon$ \color{black} is the **residual variance** (distance from the regression line)
+Such a function can be graphically represented as a **straight line** where \newline \color{violet} $\beta_0$ \color{black} is the **intercept** (value assumed by `y` when `x` = 0) \newline \color{violet} $\beta_1$ \color{black} is the  **slope** (predicted change in `y` when `x` increases by 1 unit) \newline \color{violet} $\epsilon_i$ \color{black} is the **residual variance** (distance between the observation $i$ and the regression line)
 
-```{r echo=FALSE,fig.width=4.5,fig.height=2.5,out.width="200px"}
-par(mar=c(5, 4, 0, 2) + 0.1)
+```{r echo=FALSE,fig.width=4,fig.height=1.8,out.width="200px",fig.align='center'}
+par(mar=c(0, 4, 0, 2) + 0.1,mai = c(0.8, 0.7, 0, 0.7))
 x <- rnorm(n = 100)
 y <- x + rnorm(n = 100)
 plot(y~x,pch=19,col="gray",cex=0.8)
@@ -583,53 +615,54 @@ text(x=min(x)+0.5,y=min(y)+0.5,labels=paste("B1 =",round(summary(lm(y~x))$coeffi
 \begincols
   \begincol{.5\textwidth}
 
-\fontsize{10pt}{12}\selectfont Linear model: \newline \newline \color{red} $Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$ \fontsize{7pt}{12}\selectfont \color{black} \newline \newline
+\fontsize{10pt}{12}\selectfont Linear model: \newline \newline \color{violet} $y_i = \beta_0 + \beta_1 x_i + \epsilon_i$ \fontsize{7pt}{12}\selectfont \color{black} \newline \newline
 
-\fontsize{10pt}{12}\selectfont Mixed-effects model: \newline \newline  \color{red} $Y_{ij} = (\beta_0 + \lambda_{0j}) + (\beta_1 + \lambda_{1j})X_{ij} + \epsilon_{ij}$ \fontsize{7pt}{12}\selectfont \color{black}
+\fontsize{10pt}{12}\selectfont Mixed-effects model: \newline \newline  \color{violet} $y_{ij} = (\beta_{00} + \lambda_{0j}) + (\beta_{10} + \lambda_{1j})x + \epsilon_{ij}$ \fontsize{7pt}{12}\selectfont \color{black}
 
-For each observation $i$ and each cluster $j$, the intercept and the slope are decomposed into the **fixed** components \color{red} $\beta_0$ \color{black} and \color{red} $\beta_1$ \color{black} referred to the whole sample, and the **random** components \color{red} $\lambda_{0j}$ \color{black} and  \color{red}$\lambda_{1j}$ \color{black} randomly varying between clusters \color{black}
+For each observation $i$ and each cluster $j$, the intercept and the slope are decomposed into the **fixed** components \color{violet} $\beta_0$ \color{black} and \color{violet} $\beta_1$ \color{black} referred to the whole sample, and the **random** components \color{violet} $\lambda_{0j}$ \color{black} and  \color{violet}$\lambda_{1j}$ \color{black} randomly varying between clusters \color{black}
 
   \endcol
 \begincol{.5\textwidth}
 
-\fontsize{10pt}{12}\selectfont Structural equation model:\fontsize{9pt}{12}\selectfont \color{red} $$ \begin{cases} x_i = \Lambda_x\xi_i + \delta_{i} \ \color{black} (meas. \ x) \\\\ y_{i} = \Lambda_y\eta_i + \epsilon_i \ \color{black}  (meas. \ y) \\\\ \eta_{i} = \Gamma \xi_{i} + \zeta_i \ \color{black}  (struct.) \end{cases} $$ \fontsize{7pt}{12}\selectfont \color{black}
+\fontsize{10pt}{12}\selectfont Structural equation model:\fontsize{9pt}{12}\selectfont \color{violet} $$ \begin{cases} y = \Lambda\eta + \epsilon \ \color{black}  (measurement) \\\\ \eta = B\eta^* + \zeta \ \color{black}  (structural) \end{cases} $$ \fontsize{7pt}{12}\selectfont \color{black}
 
-For each observation $i$, \newline the **measurement model** (first two lines) clarifies the relationships \color{red} $\Lambda$ \color{black} between \newline the *observed variables* \color{red} $x$ \color{black} and \color{red} $y$ \color{black} and the corresponding *latent variables* \color{red} $\xi$ \color{black} and \color{red} $\eta$\color{black}, \newline whereas the **structural model** (third line) clarifies the relationship \color{red} $\Gamma$ \color{black} between the two latent variables.
+The **measurement model** clarifies the relationships \color{violet} $\Lambda$ \color{black} between \newline the *observed variables* \color{violet} $y$ \color{black} and the corresponding *latent variables* \color{violet} $\eta$\color{black}, \newline whereas the **structural model** clarifies the relationship \color{violet} $B$ \color{black} between two or more latent variables \color{violet} $\eta^*$.
 
   \endcol
 \endcols
 
-## Multilevel models: Let's make the visuals talk
+## Multilevel models: Let the visuals talk
 
 \fontsize{8pt}{12}\selectfont
-**Visual introduction to multilevel modeling**: \color{blue} \fontsize{7pt}{12}\selectfont
-http://mfviz.com/hierarchical-models \fontsize{8pt}{12}\selectfont \color{black} 
+**Visual introduction to multilevel modeling**: \color{blue} \fontsize{5.5pt}{12}\selectfont http://mfviz.com/hierarchical-models \fontsize{8pt}{12}\selectfont \color{black} 
 
-**Multilevel modeling in repeated measures & longitudinal designs** \newline \fontsize{7pt}{12}\selectfont
-When a random variable is measured repeatedly over time from different individuals, observations are *nested* within individuals and multilevel modeling can be used to **partition the variance** into the ***within-subject*** (level 1) and ***between-subjects*** (level 2) components.
+**Between & Within** \newline \fontsize{7pt}{12}\selectfont
+When a random variable $y$ is measured from multiple data points per subject (or group), multilevel modeling **partition the $y$ variance** into the *within-subject* (level 1) & *between-subject* (level 2) components. \newline The same applyes when multiple individuals (e.g., students) are nested within a number of groups (e.g., schools) &rightarrow; *within-group* vs. *between-group*
 ```{r , echo = FALSE, warning=FALSE,message=FALSE,fig.width=9,fig.height=2.6,fig.align='center'}
 df <- data.frame(Subject = as.factor(c(rep("S01",6),rep("S02",6))),
                  time = rep(1:6,2),
                  Work.Stress = c(2,1,3,4,3,2,   6,6,3,7,6,6))
 library(ggplot2)
-ggplot(df,aes(x=time,y=Work.Stress,color=Subject)) + geom_smooth(lwd=1.2) + geom_point(cex=3) + ylim(0,8) +
+ggplot(df,aes(x=time,y=Work.Stress,color=Subject)) + 
+  geom_smooth(lwd=1.2,se=FALSE) + geom_point(cex=3) + ylim(0,8) +
   geom_line(aes(y=mean(df[df$Subject=="S01","Work.Stress"])),color="salmon",lty=2,lwd=0.9) + 
-  geom_line(aes(y=mean(df[df$Subject=="S02","Work.Stress"])),lty=2,lwd=0.9) + labs(x="Time",y="Work stress level")
+  geom_line(aes(y=mean(df[df$Subject=="S02","Work.Stress"])),lty=2,lwd=0.9) + 
+  labs(x="Time",y="Anxiety")
 ```
 
 ## Multilevel models: Fixed vs. Random effects
 
-\fontsize{7pt}{12}\selectfont
+\fontsize{8pt}{12}\selectfont
 In the literature, multilevel modeling is sometimes called with different terms, \newline \fontsize{6pt}{12}\selectfont e.g., *hierarchical linear modeling*, *random slope models*, *variance component models*, ...
 
-\fontsize{7pt}{12}\selectfont
-All these models are part of the broader \color{red} \fontsize{8pt}{12}\selectfont __*mixed-effects models*__ \color{black} \fontsize{7pt}{12}\selectfont family, \newline identifying models with both fixed and random effects:
+\fontsize{8pt}{12}\selectfont
+All these models are part of the broader \color{violet} \fontsize{9pt}{12}\selectfont __*mixed-effects models*__ \color{black} \fontsize{8pt}{12}\selectfont family, \newline identifying models with both fixed and random effects:
 
 - **Fixed effects**: effects that remains constant across all clusters, whose *levels* are exhaustively considered (e.g., gender, levels of a Likert scale) and generally controlled by the researcher (e.g., experimental conditions)
 
 - **Random effects**: effects that vary from cluster to cluster, whose *levels* are randomly sampled from a population (e.g., schools, participants, days, experimental stimuli)
 
-## Multivariate models: Let's make the visuals talk
+## Multivariate models: Let the visuals talk
 
 \begincols
   \begincol{.5\textwidth}
@@ -695,40 +728,15 @@ tmp = export_svg(tmp)
 tmp = charToRaw(tmp) # flatten
 rsvg_png(tmp, "img/sem.png") # saved graph as png in current working directory
 ```
+
 ```{r , echo = FALSE, out.width = "130px",fig.align="center"}
 knitr::include_graphics("img/sem.png")
 ```
-
-  \endcol
-\endcols
-
-## Multivariate models: exogenous vs. endogenous
-
-\begincols
-  \begincol{.4\textwidth}
-
-\fontsize{7pt}{12}\selectfont
-$$ \begin{cases} y_2 = \beta_{21}x_1 + \epsilon_2 \\\\ y_3 = \beta_{31}x_{1} + \beta_{32}y_2 + \epsilon_3 \end{cases} $$ \newline
-```{r , echo = FALSE, out.width = "130px",fig.align="center"}
-knitr::include_graphics("img/sem.png")
-```
-  \endcol
-\begincol{.7\textwidth}
-
-\fontsize{6.5pt}{12}\selectfont
-In SEM, the classic independent vs. dependent classification is replaced with a more meaningful one: \fontsize{7pt}{12}\selectfont \newline
-
-- **Exogenous variables** (\color{red}$X_1$\color{black}): without a direct 'cause' from inside the model (*predictors*), \newline without error estimate \newline 
-
->- **Endogenous variables** (\color{red}$Y_2$, $Y_3$\color{black}): directly 'caused' from inside the model (*predictors* & *outcomes*), \newline with error estimate \color{red}$\epsilon$
 
   \endcol
 \endcols
 
 ## Multivariate models: observed vs. latent
-
-\fontsize{7pt}{12}\selectfont
-A further advantage of SEM is to distinguish between observed vs. latent variables
 
 \begincols
   \begincol{.5\textwidth}
@@ -738,27 +746,27 @@ knitr::include_graphics("img/latobs.PNG")
 ```
 
 \fontsize{6.5pt}{12}\selectfont
-**Observed variables**: directly observable and measurable (e.g., heart rate), represented by *squares* and the *lowercase letters* \color{red}$x$ \color{black}(exogenous) and \color{red}$y$ \color{black}(endogenous) \newline
+**Observed variables**: directly observable and measurable (e.g., heart rate), represented by *squares* and the *lowercase letters* \color{violet}$x$ \color{black}(exogenous) and \color{violet}$y$ \color{black}(endogenous) \newline
 
-**Latent variables**: hypothetical and not directly measurable but **indexed** by one or multiple observed variables (e.g., happiness), represented by *circles* and the *greek letters* \color{red}$\xi$ \color{black}(exogenous) and \color{red}$\eta$ \color{black}(endogenous)
+**Latent variables**: hypothetical and not directly measurable but **indexed** by one or multiple observed variables (e.g., happiness), represented by *circles* and the *greek letter* \color{violet}$\eta$ \color{black}
 
   \endcol
 \begincol{.5\textwidth}
 
 \fontsize{6.5pt}{12}\selectfont
-When including **observed variables only**, SEM are called \color{red}**path analysis**\color{black}, which is widely used to model complex multivariate relationships (e.g., *mediation models*):
+When including **observed variables only**, SEM are called \color{violet}**path analysis**\color{black}
 ```{r , echo = FALSE, out.width = "130px",fig.align="center"}
 knitr::include_graphics("img/sem.png")
 ```
 
-When **both observed and latent** variables are included, we can talk of 'full SEM':
+When **both observed and latent** variables are included, we can talk of \color{violet}**'full SEM'**
 ```{r echo=FALSE}
 tmp <- grViz(
 'digraph boxes_and_circles {
   graph [layout = neato]
   node [shape = oval]
-  E1 [label = <&xi;> pos="-0.5,0!"]
-  E2 [label = <&eta;> pos="0.5,0!"]
+  E1 [label = <&eta;<SUB>1</SUB>> pos="-0.5,0!"]
+  E2 [label = <&eta;<SUB>2</SUB>> pos="0.5,0!"]
   node [shape = box]
   x1 [label = <x<SUB>1</SUB>> pos="-2,1!"]
   x2 [label = <x<SUB>2</SUB>> pos="-2,0!"]
@@ -801,14 +809,14 @@ knitr::include_graphics("img/seml.png")
 
 ## Multilevel & multivariate models: \newline It's a matter of theory!
 
-\fontsize{7pt}{12}\selectfont
-While *any model is a formal representation of a theory* (Bollen, 1989), the formulation of a multilevel and/or multivariate model is particularly dependent \newline on the underlying theoretical model.
+\fontsize{9pt}{12}\selectfont
+While *any model is a formal representation of a theory* (Bollen, 1989), multilevel and multivariate models are particularly directly linked to the underlying theoretical model.
 
 \begincols
-  \begincol{.5\textwidth}
+  \begincol{.55\textwidth}
 
-\fontsize{7pt}{12}\selectfont
-**Multilevel modeling**: \newline \fontsize{6.5pt}{12}\selectfont Theories determinate whether a clustering variable is meaningful or not, the number of levels (e.g., individuals, days, weeks, schools) to be considered, and whether a given construct can be meaningfully attributed to a given level (e.g., happy people, happy days, happy weeks, happy schools).
+\fontsize{8pt}{12}\selectfont
+**Multilevel modeling**: \newline \fontsize{7.5pt}{12}\selectfont Theories determinate whether a clustering variable is meaningful or not, the number of levels to be considered (e.g., individuals, days, weeks, schools), and whether a given construct can be meaningfully attributed to a given level (e.g., happy people, happy days, happy schools).
 
   \endcol
 \begincol{.5\textwidth}
@@ -817,11 +825,8 @@ While *any model is a formal representation of a theory* (Bollen, 1989), the for
 knitr::include_graphics("img/white.png")
 ```
 
-\fontsize{7pt}{12}\selectfont
-**SEM**: \newline \fontsize{6.5pt}{12}\selectfont Theories determinate both how a latent variable is reflected by a set of observed variables (**measurement model**) and what are the regression-like relationships among the variables (**structural model** ~ *path analysis*).
-
-___ \newline \fontsize{5pt}{12}\selectfont
-Note: when a SEM is analyzed without a structural model, it is usually called \newline __confirmatory factor analysis__ (CFA).
+\fontsize{8pt}{12}\selectfont
+**SEM**: \newline \fontsize{7.5pt}{12}\selectfont Theory determines how a latent variable is reflected by a set of observed variables (*measurement model*) and what are the regression-like relationships among the variables (*structural model*). \newline \color{white} space \newline
 
   \endcol
 \endcols
@@ -830,16 +835,9 @@ Note: when a SEM is analyzed without a structural model, it is usually called \n
 
 - Any question?
 
-- Next lecture: LM recap or LMER?
+- Next lecture: LM recap
 
-- Recap on how to use R?
-
-```{r , echo = FALSE, out.width = "270px",fig.align='right'}
-knitr::include_graphics("img/white.PNG")
-```
-```{r , echo = FALSE, out.width = "270px",fig.align='right'}
-knitr::include_graphics("img/hands.PNG")
-```
+- Needed recap on how to use R?
 
 # Resources
 
@@ -854,7 +852,7 @@ The present slides are partially based on: \fontsize{6pt}{12}\selectfont
 
 - Finch, W. H., Bolin, J. E., Kelley, K. (2014). Multilevel Modeling Using R (2nd edition). Boca Raton: CRC Press
 
-- Pastore, M. (2015). Analisi dei dati in psicologie (e applicazioni in R). Il Mulino.
+- Pastore, M. (2015). Analisi dei dati in psicologia (e applicazioni in R). Il Mulino.
 
 ## Useful resources: Multilevel
 
