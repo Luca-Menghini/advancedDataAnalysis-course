@@ -2144,25 +2144,167 @@ With 'model evaluation' we refer to two main procedures:
 ## LMER assumptions
 
 \fontsize{7.5pt}{12}\selectfont 
-Similar to LM, LMER models require that some **assumptions about the data** hold true. Otherwise, we cannot trust the estimated parameters or any other result.
+Similar to LM, LMER models require that some **assumptions about the data** \newline hold true. Otherwise, we cannot trust the estimated parameters or any other result. \newline
+
+\fontsize{7.5pt}{12}\selectfont
+Assumptions common to LM \newline
+\fontsize{6.5pt}{12}\selectfont
+**1. Linearity**: $x_i$ and $y_i$ are *linearly* associated &rightarrow; expected (mean) value of $\epsilon_{ij}$ is zero
+
+**2. Normality**: residuals $\epsilon_{ij}$ are normally distributed &rightarrow; $\epsilon_{ij} \sim \mathcal{N}(0,\,\sigma^{2})$
+
+**3. Homoscedasticity**: $\epsilon_{ij}$ variance is constant over the levels of $x_i$ (homogeneity of variance)
+
+**4. Independence**: predictors $x_{ij}$ and $x_j$ are unrelated to residuals $\epsilon_{ij}$
+
+**5. Absence of influential observations** (multivariate outliers)
+
+**6. Absence of collinearity**: no linear relationship between different predictors \newline
+
+\fontsize{7.5pt}{12}\selectfont
+Additional LMER assumptions \newline
+In LMER, **assumptions 1-4** also apply to 'cluster-level residuals' (i.e., random effects).
+
+\fontsize{6.5pt}{12}\selectfont \color{violet}
+**7. Linearity, Normality, Homoscedasticity, & Independence of random effects**: \color{black} Random intercept $\lambda_{0j}$ and random slope $\lambda_{1j}$ should be normally distributed with $\lambda_{0j} \sim \mathcal{N}(0,\,\tau_{00}^{2})$ and $\lambda_{1j} \sim \mathcal{N}(0,\,\tau_{11}^{2})$, their variance should be homogeneous across the levels of $x$ variables, and they should be independent from predictors
+
+## LMER diagnostics: Residuals (lv1)
+
+\fontsize{6.5pt}{12}\selectfont \color{blue}
+Let's evaluate whether model `m4` (adolescent insomnia) meets LMER assumptions. \color{black}
+
+\begincols
+  \begincol{.5\textwidth}
+  
+\fontsize{6.5pt}{12}\selectfont 
+__Normality & linearity__: symmetric histogram centered on 0, straight normal QQ plot `r fontawesome::fa(name = "face-smile",fill="green", height = "0.8em")`
+```{r out.width="150px",fig.width=4,fig.height=2,eval=FALSE}
+hist(residuals(m4))
+qqnorm(residuals(m4)); qqline(residuals(m4))
+```
+```{r out.width="150px",fig.width=8,fig.height=3,echo=FALSE}
+par(mfrow=c(1,2))
+hist(residuals(m4),main="Histogram of res.")
+qqnorm(residuals(m4),pch=20,col="gray")
+qqline(residuals(m4),col="red",lwd=2,lty=2)
+```
+
+__Homoscedasticity & independence__: *no* trends in residuals or their variance over $x$ `r fontawesome::fa(name = "face-smile",fill="green", height = "0.8em")`
+```{r out.width="150px",fig.width=4,fig.height=2,eval=FALSE}
+plot(residuals(m4) ~ insa$stress.cmc)
+plot(residuals(m4) ~ insa$insomnia)
+```
+```{r out.width="150px",fig.width=8,fig.height=3,echo=FALSE}
+par(mfrow=c(1,2))
+insa <- insa[!is.na(insa$TST) & !is.na(insa$stress.cmc),]
+plot(residuals(m4) ~ insa$stress.cmc,pch=20,col="gray",main="Residuals by stress.cmc")
+abline(lm(residuals(m4) ~ insa$stress.cmc),col="red",lty=2,lwd=2)
+plot(residuals(m4) ~ insa$insomnia,xlab="",main="Residuals by sex")
+```
+
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{6.5pt}{12}\selectfont 
+A faster way to evaluate assumptions 1-4 is \newline to plot **residuals vs. predicted values** ('summary' of predictor information): the points (residuals) should be evenly divided above & below (***normality***) their mean value of zero (***linearity***), with no strong trends (***independence*** & ***homoscedasticity***) `r fontawesome::fa(name = "face-smile",fill="green", height = "0.8em")`
+```{r out.width="150px",fig.width=6,fig.height=3.2}
+plot(m4)
+```
+
+
+  \endcol
+\endcols
+
+## LMER diagnostics: Random effects (lv2)
+
+
+\fontsize{6.5pt}{12}\selectfont
+Random effects can be extracted using the function \color{blue} `ranef(model_name)`\color{black}, which returns a dataset with 2 columns (RI & RS) and a *number of rows = number of clusters* (lv2).
+
+\begincols
+  \begincol{.5\textwidth}
+  
+\fontsize{6.5pt}{12}\selectfont 
+```{r }
+# from long to wide: 1 row per subject
+wide <- insa[!duplicated(insa$ID),]
+# extract random effects
+RI <- ranef(m4)[[1]][,1] # r. intercept
+RS <- ranef(m4)[[1]][,2] # r. slope
+```
+
+\color{white} _ \color{black} \newline
+__Normality & linearity__: Straight QQ `r fontawesome::fa(name = "face-smile",fill="green", height = "0.8em")`
+```{r out.width="150px",fig.width=4,fig.height=2,eval=FALSE}
+qqnorm(RI); qqline(RI)
+qqnorm(RS); qqline(RS)
+```
+```{r out.width="150px",fig.width=7,fig.height=3.3,echo=FALSE}
+par(mfrow=c(1,2))
+qqnorm(RI,pch=20, main="Random intercept")
+qqline(RI,col="red",lwd=2,lty=3)
+qqnorm(RS,pch=20, main="Random slope")
+qqline(RS,col="red",lwd=2,lty=3)
+```
+
+
+  \endcol
+\begincol{.5\textwidth}
+
+__Homoscedasticity & independence__: No marked trends in random effects or their variance `r fontawesome::fa(name = "face-smile",fill="green", height = "0.8em")`, but slightly higher RI in \newline insomnia than in controls  `r fontawesome::fa(name = "face-frown",fill="orange", height = "0.8em")`
+```{r out.width="150px",fig.width=4,fig.height=2,eval=FALSE}
+plot(RI ~ wide$stress.m) # RI
+plot(RI ~ wide$insomnia)
+plot(RS ~ wide$stress.m) # RS
+plot(RS ~ wide$insomnia)
+```
+```{r out.width="150px",fig.width=6,fig.height=3,echo=FALSE}
+par(mfrow=c(2,2),mar=c(0, 4, 4, 2))
+plot(RI ~ wide$stress.m,ylab="Random intercept",main="Mean stress")
+abline(lm(RI ~ wide$stress.m),col="red",lty=2,lwd=2)
+plot(RI ~ wide$insomnia,ylab="Random intercept",main="insomnia")
+
+# random slope
+plot(RS ~ wide$stress.m,ylab="Random slope")
+abline(lm(RS ~ wide$stress.m),col="red",lty=2,lwd=2)
+plot(RS ~ wide$insomnia,ylab="Random slope")
+```
 
 
 
-## LMER diagnostics
 
-pacchetti performance e sjPlot
+  \endcol
+\endcols
 
-## Case study
+## LMER diagnostics: Multicollinearity & influential cases
+
+\fontsize{7pt}{12}\selectfont 
+Whether using LM or LMER, we need to \color{violet} *avoid using too correlated predictors* (**multicollinearity**)\color{black}, otherwise they 'steal' explained variance to each other.
+
+The **variance inflation factors** (VIF) tell us ...
+```{r out.width="150px",fig.width=6,fig.height=3,echo=FALSE}
+car::vif(m4)
+barplot(car::vif(m4),ylim=c(0,10),main="VIF")
+abline(h = 5, col="red")
+```
+
+**Influential cases** are data points that substantially change (*influence*) one or more parameter estimates (*multivariate outliers*).
+
+```{r out.width="150px",fig.width=6,fig.height=3,echo=FALSE}
+car::vif(m4)
+barplot(vif(m4),ylim=c(0,10),main="VIF")
+abline(h = 5, col="red")
+```
+
+## Case study: Infants' pupil dilation
+
+https://osf.io/p8nfh/
+
+\fontsize{7pt}{12}\selectfont 
+`r fontawesome::fa(name = "eye",fill="blue", height = "0.8em")`
+\color{blue}A sample of XX X-month-old infants ...
 
 ## Hands on:
-
-## Statistical inference on LMER coefficients
-
-## Multilevel model comparison
-
-AIC e BIC, weights
-
-likelihood ratio test
 
 ## Multilevel modeling in experimental research
 
@@ -2173,17 +2315,27 @@ While experimental conditions are the **fixed effects** manipulated by researche
 
 Thus, it is possible to consider the **random effects** due to the stimuli, considering them as a cluster variable that includes multiple trials.
 
-## Case study: Infants' pupil dilation
+## Statistical inference on LMER coefficients
 
-https://osf.io/p8nfh/
+Fixed effects coefficient interpretation: we saw that the coefficient estimate and its standard error (SE) are used to compute *t*-values and 95% confidence intervals (CI) (see slide #X). 
 
-\fontsize{7pt}{12}\selectfont 
-`r fontawesome::fa(name = "eye",fill="blue", height = "0.8em")`
-\color{blue}A sample of XX X-month-old infants ...
+p values, corretions
+
+microscope: undetermined degrees of freedom
+
+## Multilevel model comparison
+
+Another way to quantify the importance of a predictor is by considering ...
+
+AIC e BIC, weights
+
+likelihood ratio test
+
+## Effect size
 
 ## Hands on `r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`
 
-## That's all for now!
+## End of Part 1
 
 \fontsize{8pt}{12}\selectfont 
 __Questions?__ \newline
