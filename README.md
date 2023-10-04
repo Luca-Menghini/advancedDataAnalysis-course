@@ -14,3 +14,6 @@ Slides and materials of the course [Advanced Data Analysis for Psychological Sci
 ## Exercises
 1. Part 1: Multilevel modeling: Not yet there! 🤷
 2. Part 2: Multivariate modeling: Not yet there! 🤷
+
+## Data
+Datasets used in the course and/or for the exercises
