@@ -1,0 +1,459 @@
+County	Districtg	School	type	composite score	students
+Waukesha	Kettle Moraine	Kettle Moraine Global School for Global Leadership and Innovation	Public school	27.09	11
+Ozaukee	Mequon-Thiensville	Homestead High	Public school	25.91	303
+Waukesha	Waukesha	Waukesha Academy of Health Professions	Public school	25.83	6
+Milwaukee	Whitefish Bay	Whitefish Bay High	Public school	25.75	248
+Waukesha	Elmbrook	East High	Public school	25.68	286
+Ozaukee	Cedarburg	Cedarburg High	Public school	25.51	259
+Ozaukee	Northern Ozaukee	Wisconsin Virtual Learning	Public school	25.33	15
+Dane	Middleton-Cross Plains Area	Middleton High	Public school	25.31	409
+Waukesha	Elmbrook	Central High	Public school	25.27	277
+Waukesha	Arrowhead UHS	Arrowhead High	Public school	25.1	479
+Dane	Waunakee Community	Waunakee High	Public school	25.08	198
+Milwaukee	Shorewood	Shorewood High	Public school	24.91	137
+Dane	McFarland	McFarland High	Public school	24.91	147
+Marathon	Wausau	Wausau Engineering and Global Leadership Academy	Public school	24.86	7
+Brown	De Pere	De Pere High	Public school	24.82	242
+Wood	Marshfield Unified	Marshfield High	Public school	24.8	188
+Waukesha	New Berlin	Eisenhower Middle/High	Public school	24.69	192
+Dane	Madison Metropolitan	West High	Public school	24.68	422
+Waukesha	Hamilton	Hamilton High	Public school	24.47	267
+Waukesha	Pewaukee	Pewaukee High	Public school	24.46	152
+Milwaukee	Greendale	Greendale High	Public school	24.45	194
+Buffalo	Mondovi	Mondovi High	Public school	24.41	39
+Saint Croix	Hudson	Hudson High	Public school	24.37	304
+Dane	Mount Horeb Area	Mount Horeb High	Public school	24.35	152
+Dane	Cambridge	Cambridge High	Public school	24.33	46
+Marathon	Marathon City	Marathon High	Public school	24.3	40
+Waukesha	Waukesha	Waukesha Engineering Preparatory Academy	Public school	24.22	9
+Winnebago	Neenah Joint	Neenah High	Public school	24.21	312
+Chippewa	Cadott Community	Cadott High	Public school	24.21	19
+Kenosha	Kenosha	Lakeview Technology Academy	Public school	24.2	75
+Ozaukee	Grafton	Grafton High	Public school	24.2	128
+Pierce	Spring Valley	Spring Valley High	Public school	24.19	31
+Brown	West De Pere	West De Pere High	Public school	24.19	133
+Sheboygan	Kohler	Kohler High	Public school	24.15	40
+Milwaukee	Wauwatosa	East High	Public school	24.14	200
+Walworth	Williams Bay	Williams Bay High	Public school	24.13	31
+Brown	Pulaski Community	Pulaski High	Public school	24.11	186
+Outagamie	Appleton Area	North High	Public school	24.06	264
+Milwaukee	Nicolet UHS	Nicolet High	Public school	24.05	237
+Brown	Ashwaubenon	Ashwaubenon High	Public school	24.04	163
+Buffalo	Cochrane-Fountain City	Cochrane-Fountain City High	Public school	24	33
+Door	Sturgeon Bay	Sturgeon Bay High	Public school	23.98	55
+Winnebago	Winneconne Community	Winneconne High	Public school	23.97	70
+Waukesha	Kettle Moraine	School for Arts and Performance	Public school	23.95	19
+Brown	Howard-Suamico	Bay Port High	Public school	23.91	303
+Washington	Slinger	Slinger High	Public school	23.9	176
+Eau Claire	Altoona	Altoona High	Public school	23.89	64
+Dane	Belleville	Belleville High	Public school	23.86	37
+Iowa	Dodgeville	Dodgeville High	Public school	23.84	57
+Dane	Verona Area	Verona Area High	Public school	23.82	294
+Sheboygan	Plymouth Joint	Plymouth High	Public school	23.8	127
+Dane	Oregon	Oregon High	Public school	23.78	165
+Waukesha	Kettle Moraine	Kettle Moraine High	Public school	23.78	265
+Dane	Madison Metropolitan	Memorial High	Public school	23.76	393
+Sauk	Sauk Prairie	Sauk Prairie High	Public school	23.73	126
+Washington	Germantown	Germantown High	Public school	23.72	267
+Marinette	Peshtigo	Peshtigo High	Public school	23.71	58
+Ozaukee	Port Washington-Saukville	Port Washington High	Public school	23.68	143
+Dunn	Elk Mound Area	Elk Mound High	Public school	23.67	51
+Oconto	Oconto Falls Public	Oconto Falls High	Public school	23.65	68
+Dane	Stoughton Area	Stoughton High	Public school	23.63	184
+Milwaukee	Franklin Public	Franklin High	Public school	23.61	302
+Marinette	Crivitz	Crivitz High	Public school	23.59	22
+Fond du Lac	Ripon Area	Ripon High	Public school	23.57	86
+Calumet	Brillion	Brillion High	Public school	23.56	41
+Burnett	Grantsburg	Grantsburg High	Public school	23.53	36
+Clark	Greenwood	Greenwood High	Public school	23.52	21
+Grant	Platteville	Platteville High	Public school	23.51	79
+Iowa	Highland	Highland Community High	Public school	23.5	8
+Lafayette	Darlington Community	Darlington High	Public school	23.5	38
+Marathon	Stratford	Stratford High	Public school	23.47	36
+Racine	Waterford UHS	Waterford High	Public school	23.46	170
+Walworth	Whitewater Unified	Whitewater High	Public school	23.46	72
+Waukesha	Menomonee Falls	Menomonee Falls High	Public school	23.46	316
+Waukesha	Mukwonago	Mukwonago High	Public school	23.44	297
+Saint Croix	Glenwood City	Glenwood City High	Public school	23.43	23
+Winnebago	Oshkosh Area	West High	Public school	23.42	272
+Vilas	Northland Pines	Northland Pines High	Public school	23.42	59
+Dodge	Beaver Dam Unified	Beaver Dam High	Public school	23.41	140
+Manitowoc	Reedsville	Reedsville High	Public school	23.41	27
+Eau Claire	Fall Creek	Fall Creek High	Public school	23.4	35
+Washington	Hartford UHS	Hartford High	Public school	23.39	250
+Kewaunee	Algoma	Algoma High	Public school	23.37	30
+Clark	Thorp	Thorp High	Public school	23.35	26
+Door	Sevastopol	Sevastopol High	Public school	23.33	18
+Ashland	Mellen	Mellen Public School	Public school	23.33	6
+Waukesha	New Berlin	New Berlin Middle/High	Public school	23.32	161
+Saint Croix	New Richmond	New Richmond High	Public school	23.3	125
+Barron	Rice Lake Area	Rice Lake High	Public school	23.3	110
+Trempealeau	Eleva-Strum	Eleva-Strum High	Public school	23.29	24
+Milwaukee	Wauwatosa	West High	Public school	23.29	211
+Saint Croix	Saint Croix Central	Saint Croix Central High	Public school	23.28	60
+Chippewa	Cornell	Cornell High	Public school	23.26	19
+Waukesha	Muskego-Norway	Muskego High	Public school	23.25	312
+Pierce	River Falls	River Falls High	Public school	23.25	182
+Waukesha	Waukesha	West High	Public school	23.23	230
+Sheboygan	Sheboygan Falls	Sheboygan Falls High	Public school	23.22	77
+Walworth	East Troy Community	East Troy High	Public school	23.21	97
+Sauk	Baraboo	Baraboo High	Public school	23.2	137
+Kenosha	Central/Westosha UHS	Central High	Public school	23.19	181
+Douglas	Maple	Northwestern High	Public school	23.19	52
+Sheboygan	Cedar Grove-Belgium Area	Cedar Grove-Belgium High	Public school	23.18	49
+Jefferson	Lake Mills Area	Lake Mills High	Public school	23.18	65
+Fond du Lac	Rosendale-Brandon	Laconia High	Public school	23.18	56
+Sauk	River Valley	River Valley High	Public school	23.16	69
+La Crosse	Onalaska	Onalaska High	Public school	23.15	143
+Oneida	Lakeland UHS	Lakeland High	Public school	23.13	104
+Eau Claire	Augusta	Augusta High	Public school	23.12	26
+Grant	Southwestern Wisconsin	Southwestern Wisconsin High	Public school	23.11	19
+Dane	Sun Prairie Area	Sun Prairie High	Public school	23.1	335
+Taylor	Medford Area Public	Medford High	Public school	23.09	86
+Trempealeau	Blair-Taylor	Blair-Taylor Middle/High	Public school	23.08	26
+Taylor	Gilman	Gilman High	Public school	23.07	15
+Waukesha	Oconomowoc Area	Oconomowoc High	Public school	23.04	282
+Brown	Denmark	Denmark High	Public school	23.01	89
+Outagamie	Appleton Area	Valley New School	Public school	23	8
+Brown	Wrightstown Community	Wrightstown High	Public school	22.99	69
+Outagamie	Appleton Area	West High	Public school	22.99	160
+Chippewa	Chippewa Falls Area Unified	Chippewa Falls High	Public school	22.96	176
+Dane	De Forest Area	De Forest High	Public school	22.95	168
+Outagamie	Hortonville Area	Hortonville High	Public school	22.95	197
+Lafayette	Argyle	Argyle High	Public school	22.94	16
+Columbia	Lodi	Lodi High	Public school	22.94	79
+Grant	Fennimore Community	Fennimore High	Public school	22.92	24
+Shawano	Bonduel	Bonduel High	Public school	22.92	49
+Pepin	Durand	Durand Middle/High	Public school	22.92	36
+Waupaca	Weyauwega-Fremont	Weyauwega High	Public school	22.91	35
+Waukesha	Waukesha	eAchieve Academy - Wisconsin	Public school	22.91	47
+Sheboygan	Howards Grove	Howards Grove High	Public school	22.91	43
+Columbia	Columbus	Columbus High	Public school	22.91	54
+Bayfield	Drummond Area	Drummond High	Public school	22.89	19
+Jefferson	Fort Atkinson	Fort Atkinson High	Public school	22.89	123
+Chippewa	Bloomer	Bloomer High	Public school	22.88	43
+Portage	Stevens Point Area Public	Stevens Point Area Senior High	Public school	22.87	332
+Waupaca	Waupaca	Waupaca High	Public school	22.87	109
+Grant	Boscobel Area	Boscobel High	Public school	22.87	31
+Door	Gibraltar Area	Gibraltar High	Public school	22.86	51
+Waupaca	Marion	Marion High	Public school	22.86	7
+Marathon	D C Everest Area	D C Everest High	Public school	22.85	310
+Vernon	Viroqua Area	Viroqua High	Public school	22.84	49
+Monroe	Sparta Area	Sparta High	Public school	22.82	84
+Polk	Saint Croix Falls	Saint Croix Falls High	Public school	22.8	59
+Kewaunee	Luxemburg-Casco	Luxemburg-Casco High	Public school	22.79	84
+Manitowoc	Mishicot	Mishicot High	Public school	22.79	42
+Dane	Monona Grove	Monona Grove High	Public school	22.79	208
+Juneau	Mauston	Mauston High	Public school	22.78	50
+Marathon	Spencer	Spencer Junior High/High	Public school	22.76	38
+Outagamie	Kimberly Area	Kimberly High	Public school	22.76	283
+Outagamie	Appleton Area	East High	Public school	22.75	227
+Saint Croix	Baldwin-Woodville Area	Baldwin-Woodville High	Public school	22.74	80
+Douglas	Superior	Superior High	Public school	22.74	156
+Sheboygan	Sheboygan Area	North High	Public school	22.74	223
+Marathon	Athens	Athens High	Public school	22.74	38
+Marathon	Mosinee	Mosinee High	Public school	22.72	69
+La Crosse	Holmen	Holmen High	Public school	22.72	168
+Trempealeau	Whitehall	Whitehall Memorial Junior/Senior High	Public school	22.71	17
+Green	Monroe	Monroe High	Public school	22.71	116
+Portage	Tomorrow River	Amherst High	Public school	22.7	47
+Jefferson	Waterloo	Waterloo High	Public school	22.7	46
+Grant	Lancaster Community	Lancaster High	Public school	22.69	45
+Jefferson	Palmyra-Eagle Area	Palmyra-Eagle High	Public school	22.68	38
+Lincoln	Tomahawk	Tomahawk High	Public school	22.68	68
+Green Lake	Berlin Area	Berlin High	Public school	22.65	71
+Dunn	Boyceville Community	Boyceville High	Public school	22.65	20
+Fond du Lac	Campbellsport	Campbellsport High	Public school	22.63	75
+Kenosha	Kenosha	Tremper High	Public school	22.63	241
+Walworth	Lake Geneva-Genoa City UHS	Badger High	Public school	22.62	229
+Dane	Deerfield Community	Deerfield High	Public school	22.61	33
+Columbia	Portage Community	Portage High	Public school	22.61	96
+Door	Southern Door County	Southern Door High	Public school	22.56	57
+Calumet	New Holstein	New Holstein High	Public school	22.55	42
+Rusk	Ladysmith	Ladysmith High	Public school	22.54	37
+Outagamie	Freedom Area	Freedom High	Public school	22.51	101
+Eau Claire	Eau Claire Area	Memorial High	Public school	22.51	382
+Sheboygan	Oostburg	Oostburg High	Public school	22.49	51
+Fond du Lac	Fond du Lac	Fond du Lac High School	Public school	22.48	277
+La Crosse	La Crosse	Logan High	Public school	22.47	143
+Dunn	Menomonie Area	Menomonie High	Public school	22.47	163
+Waupaca	Iola-Scandinavia	Iola-Scandinavia High	Public school	22.46	41
+Rock	Evansville Community	Evansville High	Public school	22.45	95
+Waukesha	Waukesha	North High	Public school	22.45	195
+Sawyer	Hayward Community	Hayward High	Public school	22.44	61
+Clark	Owen-Withee	Owen-Withee High	Public school	22.43	23
+Kenosha	Wilmot UHS	Wilmot High	Public school	22.43	150
+Grant	Cuba City	Cuba City High	Public school	22.42	53
+Brown	Green Bay Area Public	Southwest High	Public school	22.42	156
+Oneida	Three Lakes	Three Lakes High	Public school	22.41	27
+Price	Phillips	Phillips High	Public school	22.4	45
+Pierce	Plum City	Plum City High	Public school	22.4	20
+Sheboygan	Random Lake	Random Lake High	Public school	22.39	33
+Green	Juda	Juda High	Public school	22.38	13
+Trempealeau	Galesville-Ettrick-Trempealeau	Galesville-Ettrick-Trempealeau High	Public school	22.38	65
+Marathon	Wausau	East High	Public school	22.38	181
+Polk	Clayton	Clayton High	Public school	22.38	8
+La Crosse	La Crosse	Central High	Public school	22.36	153
+La Crosse	West Salem	West Salem High	Public school	22.34	88
+Barron	Cameron	Cameron High	Public school	22.33	40
+Bayfield	Washburn	Washburn High	Public school	22.33	27
+Lincoln	Merrill Area	Merrill High	Public school	22.31	114
+Oneida	Rhinelander	Rhinelander High	Public school	22.28	94
+Waukesha	Waukesha	South High	Public school	22.27	222
+Washburn	Shell Lake	Shell Lake Jr/Sr High	Public school	22.26	23
+Rock	Clinton Community	Clinton High	Public school	22.25	51
+Green Lake	Green Lake	Green Lake High	Public school	22.25	12
+Pierce	Prescott	Prescott High	Public school	22.24	54
+Jefferson	Watertown Unified	Watertown High	Public school	22.23	164
+Racine	Burlington Area	Burlington High	Public school	22.22	189
+Chippewa	Stanley-Boyd Area	Stanley-Boyd High	Public school	22.22	36
+Clark	Granton Area	Granton High	Public school	22.22	9
+Rock	Edgerton	Edgerton High	Public school	22.21	86
+Milwaukee	Whitnall	Whitnall High	Public school	22.21	146
+Rock	Janesville	Craig High	Public school	22.21	270
+Outagamie	Little Chute Area	Little Chute High	Public school	22.2	71
+Wood	Wisconsin Rapids	Lincoln High	Public school	22.19	211
+Dane	Wisconsin Heights	Wisconsin Heights High	Public school	22.18	28
+Winnebago	Omro	Omro High	Public school	22.15	48
+Dodge	Lomira	Lomira High	Public school	22.14	43
+Rock	Parkview	Parkview High	Public school	22.13	48
+Walworth	Elkhorn Area	Elkhorn Area High	Public school	22.13	144
+Rock	Milton	Milton High	Public school	22.12	163
+Jefferson	Jefferson	Jefferson High	Public school	22.12	68
+Manitowoc	Kiel Area	Kiel High	Public school	22.11	83
+Kewaunee	Kewaunee	Kewaunee High	Public school	22.11	35
+Trempealeau	Arcadia	Arcadia High	Public school	22.11	47
+Barron	Chetek-Weyerhaeuser Area	Chetek-Weyerhaeuser High	Public school	22.08	40
+Outagamie	Seymour Community	Seymour High	Public school	22.08	98
+Waushara	Wild Rose	Wild Rose High	Public school	22.08	26
+Washburn	Spooner Area	Spooner High	Public school	22.07	56
+Polk	Luck	Luck High	Public school	22.05	21
+Dane	Marshall	Marshall High	Public school	22.02	53
+Oconto	Oconto Unified	Oconto High	Public school	22	37
+Richland	Richland	Richland Center High	Public school	21.98	43
+Waupaca	Clintonville	Clintonville High	Public school	21.98	48
+Green	Monticello	Monticello High	Public school	21.96	26
+Vernon	Kickapoo Area	Kickapoo High	Public school	21.95	21
+Dodge	Hustisford	Hustisford High	Public school	21.94	18
+Milwaukee	Greenfield	Greenfield High	Public school	21.94	192
+Green	Albany	Albany High	Public school	21.94	18
+Outagamie	Shiocton	Shiocton High	Public school	21.93	43
+Racine	Union Grove UHS	Union Grove High	Public school	21.91	187
+Columbia	Poynette	Poynette High	Public school	21.91	58
+Milwaukee	South Milwaukee	South Milwaukee High	Public school	21.91	151
+Marathon	Wausau	West High	Public school	21.9	220
+Clark	Colby	Colby High	Public school	21.89	44
+Grant	Cassville	Cassville High	Public school	21.88	8
+Wood	Port Edwards	John Edwards High	Public school	21.88	24
+Washington	Kewaskum	Kewaskum High	Public school	21.88	95
+Green Lake	Markesan	Markesan High	Public school	21.88	34
+Sauk	Wisconsin Dells	Wisconsin Dells High	Public school	21.88	74
+Racine	Racine Unified	Walden III High	Public school	21.87	52
+Price	Chequamegon	Chequamegon High	Public school	21.87	54
+Manitowoc	Valders Area	Valders High	Public school	21.85	54
+Langlade	Antigo Unified	Antigo High	Public school	21.84	90
+Green Lake	Princeton	Princeton School	Public school	21.83	12
+Marinette	Marinette	Marinette High	Public school	21.82	82
+Saint Croix	Somerset	Somerset High	Public school	21.82	79
+Polk	Osceola	Osceola High	Public school	21.82	114
+Columbia	Randolph	Randolph High	Public school	21.81	27
+Pierce	Ellsworth Community	Ellsworth High	Public school	21.78	68
+Marathon	Edgar	Edgar High	Public school	21.77	44
+Manitowoc	Two Rivers Public	Two Rivers High	Public school	21.77	65
+La Crosse	Bangor	Bangor Middle/High	Public school	21.77	26
+Outagamie	Kaukauna Area	Kaukauna High	Public school	21.76	175
+Grant	River Ridge	River Ridge Middle/High	Public school	21.76	25
+Rusk	Flambeau	Flambeau High	Public school	21.75	20
+Lafayette	Benton	Benton High	Public school	21.75	16
+Ashland	Ashland	Ashland High	Public school	21.75	88
+Trempealeau	Independence	Independence High	Public school	21.73	15
+Jefferson	Johnson Creek	Johnson Creek Middle and High	Public school	21.73	15
+Washington	West Bend	East High	Public school	21.73	246
+Columbia	Pardeeville Area	Pardeeville High	Public school	21.72	47
+Lafayette	Black Hawk	Black Hawk High	Public school	21.71	14
+Vernon	Hillsboro	Hillsboro High	Public school	21.7	20
+Polk	Amery	Amery High	Public school	21.7	69
+Sheboygan	Elkhart Lake-Glenbeulah	Elkhart Lake High	Public school	21.7	27
+Milwaukee	Oak Creek-Franklin Joint	Oak Creek High	Public school	21.7	365
+Brown	Green Bay Area Public	Preble High	Public school	21.7	293
+Green	New Glarus	New Glarus High	Public school	21.69	39
+Juneau	Wonewoc-Union Center	Wonewoc-Center High	Public school	21.69	16
+Taylor	Rib Lake	Rib Lake High	Public school	21.65	20
+Trempealeau	Osseo-Fairchild	Osseo-Fairchild High	Public school	21.65	34
+Columbia	Fall River	Fall River High	Public school	21.64	25
+Outagamie	Little Chute Area	Little Chute Career Pathways Academy	Public school	21.63	16
+Monroe	Tomah Area	Tomah High	Public school	21.63	98
+Washington	West Bend	West High	Public school	21.63	250
+Lafayette	Belmont Community	Belmont High	Public school	21.6	10
+Waupaca	New London	New London High	Public school	21.6	115
+Dane	McFarland	Wisconsin Virtual Academy High (WIVA)	Public school	21.59	41
+Ozaukee	Northern Ozaukee	Ozaukee High	Public school	21.59	59
+Iowa	Mineral Point Unified	Mineral Point High	Public school	21.58	40
+Sauk	Reedsburg	Reedsburg Area High	Public school	21.56	129
+Shawano	Shawano	Shawano High	Public school	21.56	93
+Dunn	Colfax	Colfax High	Public school	21.53	36
+Winnebago	Oshkosh Area	North High	Public school	21.53	154
+Iron	Hurley	Hurley High	Public school	21.52	27
+Walworth	Big Foot UHS	Big Foot High	Public school	21.51	78
+Chippewa	New Auburn	New Auburn Jr-Sr High	Public school	21.5	6
+Lafayette	Pecatonica Area	Pecatonica High	Public school	21.5	16
+Pepin	Pepin Area	Pepin High	Public school	21.5	10
+Jackson	Melrose-Mindoro	Melrose-Mindoro High	Public school	21.49	37
+Wood	Auburndale	Auburndale High	Public school	21.49	43
+Manitowoc	Manitowoc	Lincoln High	Public school	21.48	216
+Burnett	Webster	Webster High	Public school	21.47	43
+Dodge	Horicon	Horicon High	Public school	21.41	41
+Milwaukee	West Allis-West Milwaukee	Nathan Hale High	Public school	21.4	250
+Burnett	Siren	Siren High	Public school	21.4	15
+Clark	Neillsville	Neillsville Middle/High	Public school	21.4	53
+Wood	Nekoosa	Nekoosa High	Public school	21.4	47
+Oconto	Suring Public	Suring High	Public school	21.4	15
+Crawford	North Crawford	North Crawford High	Public school	21.38	16
+Barron	Prairie Farm Public	Prairie Farm High	Public school	21.36	14
+Crawford	Seneca	Seneca High	Public school	21.36	14
+Lafayette	Shullsburg	Shullsburg High	Public school	21.35	17
+Iowa	Iowa-Grant	Iowa-Grant High	Public school	21.35	40
+Green	Brodhead	Brodhead High	Public school	21.34	47
+Dodge	Dodgeland	Dodgeland High	Public school	21.32	37
+Rock	Janesville	Parker High	Public school	21.32	213
+Grant	Potosi	Potosi High	Public school	21.29	17
+Crawford	Prairie du Chien Area	Prairie du Chien High	Public school	21.27	83
+Dodge	Mayville	Mayville High	Public school	21.25	71
+Bayfield	South Shore	South Shore Jr/Sr High	Public school	21.18	11
+Iowa	Barneveld	Barneveld High	Public school	21.15	20
+Vernon	De Soto Area	De Soto High	Public school	21.1	21
+Barron	Cumberland	Cumberland High	Public school	21.1	41
+Portage	Rosholt	Rosholt High	Public school	21.1	39
+Price	Prentice	Prentice High	Public school	21.07	14
+Portage	Almond-Bancroft	Almond High	Public school	21.06	17
+Marinette	Beecher-Dunbar-Pembine	Pembine High	Public school	21.06	17
+Pierce	Elmwood	Elmwood High	Public school	21.05	19
+Adams	Adams-Friendship Area	Adams-Friendship High	Public school	21.04	54
+Marquette	Montello	Montello Junior/Senior High	Public school	21.03	30
+Rusk	Bruce	Bruce High	Public school	21	23
+Marquette	Montello	High Marq Environmental Charter School	Public school	21	6
+Marinette	Coleman	Coleman High	Public school	21	24
+Vernon	Westby Area	Westby High	Public school	20.96	51
+Calumet	Chilton	Chilton High	Public school	20.96	83
+Winnebago	Menasha Joint	Menasha High	Public school	20.96	135
+Waushara	Wautoma Area	Wautoma High	Public school	20.93	43
+Florence	Florence County	Florence High	Public school	20.92	25
+Waupaca	Manawa	Little Wolf Junior/Senior High	Public school	20.92	24
+Brown	Green Bay Area Public	West High	Public school	20.9	98
+Polk	Unity	Unity High	Public school	20.9	30
+Outagamie	Appleton Area	Wisconsin Connections Academy	Public school	20.89	9
+Clark	Loyal	Loyal High	Public school	20.86	22
+Fond du Lac	Oakfield	Oakfield High	Public school	20.86	29
+Shawano	Wittenberg-Birnamwood	Wittenberg-Birnamwood High	Public school	20.85	59
+Jackson	Alma Center	Lincoln High	Public school	20.83	23
+Brown	Green Bay Area Public	East High	Public school	20.81	129
+Juneau	New Lisbon	New Lisbon Junior High/High School	Public school	20.79	19
+Monroe	Cashton	Cashton High	Public school	20.78	18
+Vernon	La Farge	La Farge High	Public school	20.75	8
+Jackson	Black River Falls	Black River Falls High	Public school	20.75	67
+Fond du Lac	Waupun	Waupun Area Senior High	Public school	20.71	87
+Walworth	Delavan-Darien	Delavan-Darien High	Public school	20.7	101
+Langlade	Elcho	Elcho High	Public school	20.69	13
+Dane	Madison Metropolitan	East High	Public school	20.67	314
+Shawano	Bowler	Bowler High	Public school	20.67	12
+Calumet	Hilbert	Hilbert High	Public school	20.67	21
+Racine	Racine Unified	Case High	Public school	20.65	222
+Bayfield	Bayfield	Bayfield High	Public school	20.64	11
+Polk	Clear Lake	Clear Lake High	Public school	20.63	19
+Burnett	Grantsburg	iForward	Public school	20.61	28
+Rock	Beloit Turner	Turner High	Public school	20.61	67
+Washburn	Northwood	Northwood High/Middle	Public school	20.6	25
+Milwaukee	Cudahy	Cudahy High	Public school	20.59	80
+Marquette	Westfield	Westfield Area High	Public school	20.58	40
+Iron	Mercer	Mercer School	Public school	20.57	7
+Kenosha	Kenosha	Bradford High	Public school	20.53	186
+Polk	Frederic	Frederic 6-12 School	Public school	20.5	28
+Calumet	Stockbridge	Stockbridge High	Public school	20.5	10
+Barron	Turtle Lake	Turtle Lake High	Public school	20.47	19
+Grant	Riverdale	Riverdale High	Public school	20.47	36
+Kenosha	Kenosha	Indian Trail High School and Academy	Public school	20.45	296
+Eau Claire	Eau Claire Area	North High	Public school	20.41	278
+Shawano	Tigerton	Tigerton High	Public school	20.38	8
+Rock	Beloit	Roy Chapman Andrews Academy	Public school	20.29	7
+Clark	Abbotsford	Abbotsford Middle/Senior High	Public school	20.28	32
+Langlade	White Lake	White Lake High	Public school	20.25	8
+Douglas	Solon Springs	Solon Springs School	Public school	20.2	10
+Wood	Pittsville	Pittsville High	Public school	20.19	32
+Milwaukee	Brown Deer	Brown Deer Middle/High	Public school	20.13	106
+Sauk	Weston	Weston High	Public school	20.09	11
+Sawyer	Winter	Winter High	Public school	20.09	11
+Crawford	Wauzeka-Steuben	Wauzeka High	Public school	20.08	13
+Marinette	Niagara	Niagara High	Public school	20.08	13
+Richland	Ithaca	Ithaca High	Public school	20.07	15
+Forest	Laona	Laona High	Public school	20	6
+Milwaukee	Saint Francis	Saint Francis High	Public school	19.98	81
+Juneau	Royall	Royall High	Public school	19.96	23
+Buffalo	Alma	Alma High	Public school	19.92	13
+Shawano	Gresham	Gresham High	Public school	19.9	10
+Dane	Madison Metropolitan	LaFollette High	Public school	19.88	306
+Chippewa	Lake Holcombe	Holcombe High	Public school	19.88	8
+Milwaukee	Milwaukee	King International	Public school	19.84	340
+Dane	Madison Metropolitan	Shabazz-City High	Public school	19.84	31
+Fond du Lac	North Fond du Lac	Horace Mann High	Public school	19.81	48
+Racine	Racine Unified	Park High	Public school	19.78	144
+Oconto	Lena	Lena High	Public school	19.75	8
+Forest	Crandon	Crandon High	Public school	19.74	23
+Kenosha	Kenosha	Harborside Academy	Public school	19.68	80
+Milwaukee	Milwaukee	Reagan College Preparatory High	Public school	19.64	280
+Waushara	Tri-County Area	Tri-County High	Public school	19.62	29
+Juneau	Necedah Area	Necedah Middle/High	Public school	19.4	30
+Oconto	Gillett	Gillett High	Public school	19.39	18
+Rock	Beloit	Memorial High	Public school	19.34	213
+Columbia	Rio Community	Rio Middle/High School	Public school	19.3	20
+Barron	Barron Area	Barron High	Public school	19.22	49
+Milwaukee	Milwaukee	Carmen High School of Science and Technology South Campus	Public school	19.18	67
+Columbia	Cambria-Friesland	Cambria Friesland Middle/High	Public school	19.18	11
+Milwaukee	Milwaukee	HAPA-Hmong Amer Peace Academy K3-12	Public school	19.14	59
+Marinette	Wausaukee	Wausaukee High	Public school	19.13	16
+Monroe	Norwalk-Ontario-Wilton	Brookwood High	Public school	19	21
+Racine	Racine Unified	Horlick High	Public school	18.97	289
+Sheboygan	Sheboygan Area	South High	Public school	18.92	237
+Forest	Wabeno Area	Wabeno High	Public school	18.82	17
+Milwaukee	Milwaukee	Milwaukee School of Languages	Public school	18.73	105
+Dane	Middleton-Cross Plains Area	Clark Street Community School	Public school	18.5	6
+Sheboygan	Sheboygan Area	IDEAS Academy	Public school	18.44	25
+Washburn	Birchwood	Birchwood High	Public school	18.27	11
+Milwaukee	West Allis-West Milwaukee	Central High	Public school	18.23	168
+Racine	Racine Unified	The REAL School	Public school	18.13	8
+Milwaukee	Veritas High	Veritas High	Non District Charter Schools	18.11	45
+Milwaukee	Tenor High School	Tenor High School	Non District Charter Schools	18.06	36
+Sheboygan	Sheboygan Area	George D Warriner High School for Personalized Learning	Public school	18.02	45
+Menominee	Menominee Indian	Menominee Indian High	Public school	18	18
+Milwaukee	Milwaukee	Milwaukee High School of the Arts	Public school	17.19	201
+Milwaukee	Milwaukee	Audubon Technology and Communication High School	Public school	16.86	69
+Milwaukee	Milwaukee Collegiate Academy	Milwaukee Collegiate Academy	Non District Charter Schools	16.8	40
+Milwaukee	Milwaukee	Alliance School of Milwaukee	Public school	16.62	29
+Milwaukee	Milwaukee Academy of Science	Milwaukee Academy of Science	Non District Charter Schools	16.53	40
+Milwaukee	Milwaukee	Riverside High	Public school	16.5	329
+Milwaukee	Milwaukee	MacDowell Montessori School K3-12	Public school	16.28	25
+Milwaukee	Milwaukee	Milwaukee Community Cyber High	Public school	16.28	43
+Kenosha	Kenosha	Reuther Central High	Public school	15.73	15
+Milwaukee	Milwaukee	Hamilton High	Public school	15.65	275
+Milwaukee	Milwaukee	Morse Marshall	Public school	15.48	117
+Milwaukee	Milwaukee	WI Conservatory of Lifelong Learning	Public school	15.46	41
+Milwaukee	Milwaukee	Bay View High	Public school	15.4	100
+Milwaukee	Milwaukee	Grandview High	Public school	14.93	54
+Milwaukee	Milwaukee	Vincent High	Public school	14.74	183
+Milwaukee	Escuela Verde	Escuela Verde	Non District Charter Schools	14.69	13
+Milwaukee	Milwaukee	Bradley Technology High	Public school	14.57	134
+Sheboygan	Sheboygan Area	Central High	Public school	14.53	53
+Milwaukee	Milwaukee	ASSATA	Public school	14.41	34
+Milwaukee	Milwaukee	South Division High	Public school	14.37	175
+Milwaukee	Milwaukee	James Madison Academic Campus	Public school	14.35	139
+Milwaukee	Milwaukee	Pulaski High	Public school	14.14	175
+Milwaukee	Milwaukee	WHS Information Technology	Public school	14.11	84
+Milwaukee	Milwaukee	North Division High 0419	Public school	13.98	53
+Milwaukee	Milwaukee	Project STAY	Public school	13.81	26
+Milwaukee	Milwaukee	Transition High	Public school	13.74	23
+Milwaukee	Milwaukee	Groppi High	Public school	13.31	36
+Milwaukee	Milwaukee	New School for Community Service	Public school	13.22	36
+Milwaukee	Milwaukee	Banner Preparatory School of Milwaukee	Public school	13.2	10
+Milwaukee	Milwaukee	Obama School of Career and Technical Education	Public school	13.17	75
+Milwaukee	Milwaukee	NOVA	Public school	13.06	17
+Milwaukee	Milwaukee	Community High School	Public school	12.77	43
+Milwaukee	Milwaukee	Shalom High	Public school	12.57	14
