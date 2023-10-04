@@ -523,7 +523,7 @@ The final exam will be **written**, computerized (on Moodle), and will last **40
 
 - interpretation of paper results \newline
 
-__Exam contents__: The contents required by the exam are exhaustively \newline covered in \color{red}the [main course slides](#slides)\color{black}. Note that the required contents will \color{red} depend on where we arrive \color{black at the end of the course \newline \color{black}
+__Exam contents__: The contents required by the exam are \color{red} exhaustively covered in the [main course slides](#slides)\color{black}. Note that the required contents \color{red} will depend on where we arrive \color{black} at the end of the course \newline \color{black}
 
 __Exam scores__: The exam score will be computed as the sum of the scores obtained to the 31 questions (right answer = 1; wrong/missing answer = 0; \newline 18+ right answers = exam passed; 31 right answers = 30 cum laude). \newline
 
