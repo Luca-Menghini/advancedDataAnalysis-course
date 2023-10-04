@@ -4,14 +4,13 @@ Slides and materials of the course [Advanced Data Analysis for Psychological Sci
 *Note*: Slides, additional materials, and exercises will be progressively updated as the course progresses.
 
 ## Course slides
-1. Course info & introduction: [slides](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/1-intro.pdf), [code](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/1-intro.Rmd)
-2. Part 1: Multilevel modeling: [slides](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/2-multilevel.pdf), [code](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/2-multilevel.Rmd)
-3. Part 2: Multivariate modeling: [slides](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/3-multivariate.pdf), [code](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/3-multivariate.Rmd)
+1. Course info & introduction: [slides](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/R-intro.pdf), [code](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/1-intro.Rmd
+2. Part 1: Multilevel modeling: Not yet there! 🤷
+3. Part 2: Multivariate modeling: Not yet there! 🤷
 
 ## Additional materials
-1. IntRoduction to R: [slides](), [code]()
-2. Introduction to the ggplot2 package: [slides](), [code]()
+1. IntRoduction to R: [slides](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/2-extra-slides/R-intro.pdf), [code](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/2-extra-slides/R-intro.Rmd)
 
 ## Exercises
-1. Part 1: Multilevel modeling: [exercises](), [code (with solutions)]()
-2. Part 2: Multivariate modeling: [exercises](), [code (with solutions)]()
+1. Part 1: Multilevel modeling: [exercises](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/exeRcises.md), [code (with solutions)](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/exeRcises.md)
+2. Part 2: Multivariate modeling: [exercises](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/exeRcises.md), [code (with solutions)](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/exeRcises.md)
