@@ -5,7 +5,7 @@ Slides and materials of the course [Advanced Data Analysis for Psychological Sci
 
 ## 1. Course slides
 1. Course info & introduction: [slides](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/1-intro.pdf), [code](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/1-intro.Rmd)
-4. Part 1: slides[https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/2-multilevel.pdf], [code](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/2-multilevel.Rmd)
+4. Part 1: [slides](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/2-multilevel.pdf), [code](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/1-course-slides/2-multilevel.Rmd)
 5. Part 2: Multivariate modeling: Not yet there! 🤷
 
 ## 2. Additional materials
