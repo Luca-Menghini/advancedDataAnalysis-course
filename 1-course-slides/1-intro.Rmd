@@ -497,19 +497,15 @@ knitr::kable(standardizedsolution(fit)[1:7,1:4],digits=2)
 
 # The exam
 
-## When & where (to be updated!)
+## When & where (updated)
 
-\fontsize{9pt}{12}\selectfont \color{red}
-Note: These are the current dates and places for the exam, but they will probably change as I asked moving to a room with computers (the exam will be done on Moodle) \newline &rightarrow; **Check the \color{blue} [annoucements on Moodle](https://psico.elearning.unipd.it/mod/forum/view.php?id=192277) \color{red} for keeping updated** \color{black}
-
-```{r , echo = FALSE, out.width = "320px"}
-knitr::include_graphics("img/white.PNG")
-```
+\fontsize{9pt}{12}\selectfont 
+Definitive exam coordinates: \newline All exam sessions will be in Room 4M, Psico 2 gray building, via Venezia 12. Room 4M has 30 seats equipped with computers. If more than 30 students register to a session, then we will organize two separate shifts (e.g., 11:30 - 12:10; 12:30 - 13:10).
 ```{r , echo = FALSE}
 knitr::kable(data.frame(Session=paste(1:5,c("Jan","Feb","Jun","Jul","Sept"),sep=". "),
-                        Date=c("2024-01-17","2024-02-14","2024-06-10","2024-07-10","2024-09-10"),
-                        Time=rep("14:30",5),
-                        Room=rep("3L",5)))
+                        Date=c("2024-01-22","2024-02-14","2024-06-17","2024-07-10","2024-09-10"),
+                        Time=c("11:30","14:30","15:30","14:30","15:30"),
+                        Room=rep("4M",5)))
 ```
 
 ## Exam structure & contents
