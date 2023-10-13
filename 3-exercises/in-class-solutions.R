@@ -151,3 +151,80 @@ plot(qs$numVar2 ~ qs$numVar) # alternative
 abline( lm(numVar2 ~ numVar, data=qs) ) # adding regression line (note: abline() adds a line, whereas lm() fits a linear model that provides the intercept "a" and the slope "b" to be used in abline())
 cor(qs$numVar,qs$numVar2) # this returns NA ('not available') because the dataset has a missing value
 cor(qs$numVar,qs$numVar2, use = "complete.obs") # if we set the argument "use" equal to "complete.obs", missing values are ignored
+
+
+# DAY 4 (Linear model recap) 
+#####################################################################################################
+
+# emptying the workspace (always a good choice to start a script with this)
+rm(list=ls())
+
+# 1. loading data
+# install.packages("osfr") # only the first time if not already installed
+library(osfr) # package to interact with the Open Science Framework platform
+proj <- "https://osf.io/ha5dp/" # link to the OSF project
+osf_download(osf_ls_files(osf_retrieve_node(proj))[2, ],conflicts="overwrite") # download
+preg <- na.omit(read.csv("OSFData_Upload_2023_Mar30.csv",stringsAsFactors=TRUE)) # read data
+colnames(preg)[c(2,5,12,14)] <- c("age","depr","NICU","threat") # set variable names
+
+# 2. Explore the variables
+# mean and SD of quantitative variables
+mean(preg$age) 
+sd(preg$age)
+mean(preg$depr) 
+sd(preg$depr)
+mean(preg$threat) 
+sd(preg$threat)
+# frequency for categorical variables
+table(preg$NICU)
+100 * table(preg$NICU)/nrow(preg) # from frequency to percentage
+# correlation between 2 quantitative variables
+cor(x=preg$age, y=preg$depr)
+# correlation matrix among 3+ quantitative variables
+cor(x=preg[,c("age","depr","threat")])
+hist(preg$age) # histograms of quantitative variables
+hist(preg$depr)
+hist(preg$threat)
+plot(preg$NICU) # barplot of categorical variables
+
+# 3. fit a null model m0 predicting depr
+m0 <- lm(formula = depr ~ 1, data = preg)
+
+# 4. Fit a simple regression model m1 with depr being predicted by threat
+m1 <- lm(formula = depr ~ threat, data = preg)
+
+# 5. Fit a multiple regression model m2 also controlling for NICU and age
+m2 <- lm(formula = depr ~ threat + NICU + age, data = preg)
+
+# 6. Fit an interactive model m3 to check whether age moderates the relationship between threat and depr.
+m3 <- lm(formula = depr ~ threat + NICU + age + age:threat, data = preg)
+
+# 7. Compare the models with AIC and likelihood ratio test: which is the best model?
+AIC(m0,m1,m2,m3) # AIC: the lower the better (m2 is the best model)
+lmtest::lrtest(m0,m1,m2,m3) # LRT: m2 is the best model (comparison between m2 and m3 is not significant)
+
+# 8. Print & interpret the coefficients estimated by the selected model
+coefficients(m2)
+# Intercept = 9.73 --> when threat and age = 0 and NICU = No, the expected value of depr is 9.73
+# threat = 0.06 --> when age = 0, within the same NICU category, a 1-unit increase in threat predicts an increase of 0.06 in depr
+# NICUYes = 1.01 --> when threat and age = 0, the expected difference between NICU=Yes and NICU=No is 1.01 (i.e., mothers with NICU=Yes have a mean depr score higher than mothers with NICU=No)
+# age = -0.08 --> when threat = 0, within the same NICU category, a 1-unit increase in age predicts an decrease of 0.08 in depr
+summary(m2)$sigma^2 # residual variance (difficult to interpret without comparing it with alternative models)
+
+# 9. Print & interpret the statistical significance of the estimated coefficients
+summary(m2) # all coefficients are significant!
+# Intercept: depression levels are significantly higher than zero, controlling for threat, NICU, and age
+# threat is positively and significantly related to depr, controlling for NICU and age
+# depr is significantly higher than when NICU = Yes than when NICU = No, controlling for threat and age
+# age is negatively and significantly related to depr, controlling for threat and NICU
+
+# 10. Plot the effects of the selected model
+library(effects) # plotting effects with the effects package
+plot(allEffects(m2))
+library(sjPlot) # plotting effects with the sjPlot package
+plot_model(m2,type="pred",terms=c("threat"))
+plot_model(m2,type="pred",terms=c("age"))
+plot_model(m2,type="pred",terms=c("NICU"))
+
+# 11. Compute the determination coefficient of the selected model
+summary(m2)$r.squared # R2 = 0.10 --> the model explains 10% of the variance in depr (the 90% of depr variance remains unexplained)
