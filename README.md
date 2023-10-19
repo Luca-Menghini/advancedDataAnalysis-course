@@ -13,7 +13,7 @@ Slides and materials of the course [Advanced Data Analysis for Psychological Sci
 
 ## 3. Exercises
 1. Introduction (first steps with R and linear models): [in-class exercise solutions](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/in-class-solutions.R)
-2. Part 1 - Multilevel modeling: Not yet there! 🤷
+2. Part 1 - Multilevel modeling: [homework exercises](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/exeRcises.pdf) [in-class exercise solutions](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/in-class-solutions.R)
 3. Part 2 - Multivariate modeling: Not yet there! 🤷
 
 ## 4. Data
