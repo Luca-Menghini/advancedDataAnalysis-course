@@ -228,3 +228,72 @@ plot_model(m2,type="pred",terms=c("NICU"))
 
 # 11. Compute the determination coefficient of the selected model
 summary(m2)$r.squared # R2 = 0.10 --> the model explains 10% of the variance in depr (the 90% of depr variance remains unexplained)
+
+# DAY 6 (Multilevel data processing) 
+#####################################################################################################
+
+# emptying the work environment
+rm(list=ls())
+
+# 1. loading files from Github
+repo <- "https://github.com/SRI-human-sleep/INSA-home" # loading datasets from GitHub
+load(url(paste0(repo,"/raw/main/Appendix%20D%20-%20Data/emaFINAL.RData")))
+load(url(paste0(repo,"/raw/main/Appendix%20D%20-%20Data/demosFINAL.RData")))
+
+# alternatively, you can download the files (from Github or Moodle), save them in your working directory - getwd() - and runt the followng lines
+load("demosFINAL.RData")
+load("emaFINAL.RData")
+
+# selecting columns
+ema <- ema[,c("ID","dayNr","stress","TST")] # ema = time-varying variables
+demos <- demos[,c("ID","insomnia")] # demos = time-invariant variables
+
+# 2. Print the first rows
+head(ema) # How many rows per subject? many :)
+head(demos) # How many rows per subject? one row per subject
+
+# 3. Which variable includes individual observations? Individual observations are collected each day and indexed by the dayNr davriable
+# which is the cluster variable? The clusters are subjects, indexed by the subject identification code (ID variable)
+# which is the predictor? Based on the previous slide, the predictor is stress
+
+# 4. Which variable(s) at the within-cluster level (Level 1)? stress and TST (and dayNr)
+# Which variable(s) at the between-cluster level (Level 2)? ID and insomnia
+
+# 5. Explore (descript., correlations, plots)
+mean(ema$TST, na.rm=TRUE) # TST
+sd(ema$TST, na.rm=TRUE)
+mean(ema$stress, na.rm=TRUE) # stress
+sd(ema$stress, na.rm=TRUE)
+hist(ema$TST) # plotting
+hist(ema$stress)
+table(demos$insomnia) # frequency table
+plot(demos$insomnia) # barplot
+cor(ema$stress,ema$TST,use="complete.obs") # correlations
+
+# 6. Compute the cluster mean for each level-1 variable using aggregate()
+tst.between <- aggregate(TST ~ ID, data=ema, FUN=mean) # cluster means of TST
+stress.between <- aggregate(stress ~ ID, data=ema, FUN=mean) # cluster means of stress
+
+# 7. Join the cluster means to the demos dataset using cbind()
+demos$ID <- as.factor(as.character(demos$ID)) # re-level the variable
+demos <- cbind(demos,tst.between$TST,stress.between$stress) # joining
+colnames(demos)[3:4] <- c("TST.m","stress.m") # changing column names
+
+# 8. Join the cluster means to the ema dataset using plyr::join()
+# install.packages("plyr") # if not already installed
+library(plyr)
+ema <- join(ema,demos,by="ID") # joining demos to ema
+
+# 9. Subtract individual obs. from cluster means
+ema$TST.cmc <- ema$TST - ema$TST.m
+ema$stress.cmc <- ema$stress - ema$stress.m
+
+# Extra: Compute the grand-mean-centered & the cluster-mean-centered values of stress and TST 
+# Then, compute their Pearson’s correlation with the cor() function
+demos$TST.gmc <- demos$TST.m - mean(demos$TST.m) # grand mean centering
+demos$stress.gmc <- demos$stress.m - mean(demos$stress.m)
+# note: cluster mean centering has been already done at point #9
+cor(ema$TST.cmc,ema$stress.cmc, use="complete.obs") # correlation at the within-cluster level
+cor(demos$TST.gmc,demos$stress.gmc) # correlation at the between-cluster level
+cor(demos$TST.m,demos$stress.m) # note: at the between level, the correlation between gmc values is identical to the correlation between non-centered values
+
