@@ -1,0 +1,107 @@
+---
+title: 'ADVANCED DATA ANALYSIS \newline FOR PSYCHOLOGICAL SCIENCE'
+subtitle: 'Homework exercises'
+author:  |
+ |
+ | **Luca Menghini Ph.D.** \fontsize{9pt}{7.2}\selectfont
+ |
+ | luca.menghini@unipd.it
+ |
+ |
+ | ***
+ | Master degree in Developmental and Educational Psychology 
+ |
+ | University of Padova
+ |
+ | 2023-2024
+ |
+ | ![](img/logo.PNG){width=1.7in}
+output:
+  beamer_presentation:
+    fonttheme: serif
+    theme: Singapore
+    slide_level: 2
+    includes:
+      in_header: mystyle_ex.tex
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE,tidy.opts = list(width.cutoff=80))
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = NA
+)
+library(Cairo)
+
+```
+
+# LM
+
+## Exercise 1: correlation & regression
+
+\fontsize{7.5pt}{12}\selectfont
+
+For each couple of variables ($x,y$) generated as specified below:
+
+a) represent univariate (boxplot) and bivariate distributions (scatter plot)
+
+b) compute their correlation
+
+c) use the `lm()` function to get the slope coefficient $\beta_1$ and determinate whether the relationship significantly differs from zero \newline
+
+1. `y <- rnorm(50)` and `x1 <- y`
+
+2. `x2 <- y + 10`
+
+3. `x3 <- rnorm(50)`
+
+4. `x4 <- x3 + 10`
+
+5. Which conclusions can we draw? Which relationship between correlation and regression coefficient?
+
+\fontsize{5.5pt}{12}\selectfont ____ \newline Source: Pastore, M. (2021). Analisi dei dati in contesti di comunità. Course held at the University of Padova, Academic Year 2021-2022.
+
+## Exercise 2: LM assumptions & diagnostics
+
+\fontsize{7.5pt}{12}\selectfont
+
+Using the “*Pregnancy during pandemics*” data* that we saw in class, graphically evaluate the diagnostics of the selected model `m2`:
+
+1. **Linearity**: are model residuals centered on zero?
+
+2. **Normality**: are model residuals normally distributed?
+
+3. **Homoscedasticity**: is residual variance constant over the levels of any predictor?
+
+4. **Independence error-predictor**: are residuals unrelated to any predictor?
+
+5. **Independence of observations**: based on the considered variables (`depr`, `threat`, `NICU`, and `age`), are individual observations independent?
+
+6. **Absence of influential observations**: is there any observation that strongly influence the estimated coefficients?
+
+7. **Absence of multicollinearity**: are predictors mutually unrelated?
+
+\fontsize{5.5pt}{12}\selectfont ____ \newline *To read the dataset, you can either use the code in `2-multilevel.pdf` slide #10 or download the `pregnancy.RData` file from Moodle/Github ("data" folder) and use the command \color{blue} `load("pregnancy.RData")`
+
+## Exercise 3: Towards multilevel modeling
+
+\fontsize{7.5pt}{12}\selectfont
+
+1. Download and read the “*Adolescent insomnia*” dataset `INSA.RData` (Moodle/Github, "data" folder)
+
+2. Explore the variables `dayNr` (day of assessment), `stress` (bedtime rating of daily stress), `insomnia` (categorical: insomnia vs. controls), and `TST` (total sleep time, in minutes) &rightarrow; mean, SD, frequencies, plots, and correlations
+
+3. Fit a null model `m0` predicting `TST`
+
+4. Fit a simple regression model `m1` predicting `TST` by `stress`
+
+5. Fit a multiple regression model `m3` predicting `TST` by `stress` and `insomnia`
+
+6. Compare the three models with the AIC and the likelihood ratio test
+
+7. Print and interpret the coefficients (and their statistical significance) of the selected model
+
+8. Now create two subsets of the `insa` dataset: `insa1` only including observations from the participant `s001` and `insa2` with observations from participant `s002`: how many rows in each dataset?
+
+9. Repeat points 3-7 by using the two subsets: Are results consistent with what you found in the full sample?
