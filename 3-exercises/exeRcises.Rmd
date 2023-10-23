@@ -36,6 +36,15 @@ library(Cairo)
 
 ```
 
+## Some instructions to solve the exercises
+
+\fontsize{7.5pt}{12}\selectfont
+The present document includes some optional homework exercises on the contents presented during lectures. Similar to the course slides, exercises will be progressively updated as the course progresses.
+
+To check the **exercise solutions**, just look at the `exeRcises.Rmd` file on either Github or Moodle: each exercise text is followed by a chunk of R code showing point-by-point solutions (or some among the many possible solutions).
+
+If you have any doubts on how to solve the exercises, feel free to write me an e-mail or (even better) try writing in the **Moodle forum**, so that all students can see your question and try to reply it. We can also solve some exercise during lectures, but let me know! ;)
+
 # LM
 
 ## Exercise 1: correlation & regression
