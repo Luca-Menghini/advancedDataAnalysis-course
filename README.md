@@ -15,9 +15,9 @@ Additional slides and materials not required for the exam.
 
 ## 3. Exercises
 In-class and homework exercises with solutions.
-1. Introduction (first steps with R and linear models): [in-class exercise solutions](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/in-class-solutions.R)
-2. Part 1 - Multilevel modeling: [homework exercises](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/exeRcises.pdf) [in-class exercise solutions](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/in-class-solutions.R)
-3. Part 2 - Multivariate modeling: Not yet there! 🤷
+1. [In-class exercise solutions](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/in-class-solutions.R)
+2. [Homework exercises](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/exeRcises.pdf)
+3. [Homework exercise solutions](https://github.com/Luca-Menghini/advancedDataAnalysis-course/blob/main/3-exercises/exeRcises.Rmd)
 
 ## 4. Data
 Datasets used in the course and/or for the exercises.
