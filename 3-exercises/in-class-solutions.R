@@ -297,3 +297,43 @@ cor(ema$TST.cmc,ema$stress.cmc, use="complete.obs") # correlation at the within-
 cor(demos$TST.gmc,demos$stress.gmc) # correlation at the between-cluster level
 cor(demos$TST.m,demos$stress.m) # note: at the between level, the correlation between gmc values is identical to the correlation between non-centered values
 
+# DAY 8 (Descriptives) 
+#####################################################################################################
+
+rm(list=ls()) # emptying the working environment
+
+# 1. load data
+getwd() # to check which is your working directory, and paste the studentData.csv file in there
+stud <- read.csv("studentData.csv") # to read the file from your working directory
+# stud <- read.csv(file.choose()) # to open pop-up window and manually search for the file
+
+# 2. mean, SD, frequencies
+mean(stud$anxiety) # mean & SD for anxiety and math_grade
+sd(stud$anxiety)
+mean(stud$math_grade)
+sd(stud$math_grade)
+table(stud$classID) # frequency for classID
+
+# 3. cluster means for anxiety
+wideStud <- aggregate(anxiety ~ classID, data=stud, FUN=mean) # note: I named it 'wideStud'
+
+# 4. join anxiety cluster means to long-form dataset
+stud <- plyr::join(stud,wideStud,by="classID")
+colnames(stud)[6] <- "anxiety.cm" # changing column name to avoid having two 'anxiety' columns
+
+# 5. compute cluster-mean-center anxiety
+stud$anxiety.cmc  <- stud$anxiety - stud$anxiety.cm
+#  anxiety_ij cluster mean centered = anxiety_ij - anxiety cluster means_j
+
+# 6. Repeat points 3-5 for math_grade
+wideStud <- aggregate(math_grade ~ classID, data=stud, FUN=mean) # cluster means
+stud <- plyr::join(stud,wideStud,by="classID") # joining to the long-form dataset
+colnames(stud)[8] <- "math_grade.cm" # renaming column
+stud$math_grade.cmc  <- stud$math_grade - stud$math_grade.cm # cluster mean centering
+
+# 7. level-2 correlation (between-cluster correlation)
+wide <- stud[!duplicated(stud$classID),] # keeping only one row per subject
+cor(wide$math_grade.cm, wide$anxiety.cm) # computing correlation between cluster means
+
+# 8. level-1 correlation (within-cluster correlation)
+cor(stud$anxiety.cmc,stud$math_grade.cmc) # computing correlation between cluster-mean-centered values
