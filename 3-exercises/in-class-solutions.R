@@ -157,51 +157,56 @@ cor(qs$numVar,qs$numVar2, use = "complete.obs") # if we set the argument "use" e
 #####################################################################################################
 
 # emptying the workspace (always a good choice to start a script with this)
-rm(list=ls())
+rm(list=ls()) # remove the list of objects saved in the workspace
 
 # 1. loading data
 # install.packages("osfr") # only the first time if not already installed
 library(osfr) # package to interact with the Open Science Framework platform
 proj <- "https://osf.io/ha5dp/" # link to the OSF project
-osf_download(osf_ls_files(osf_retrieve_node(proj))[2, ],conflicts="overwrite") # download
-preg <- na.omit(read.csv("OSFData_Upload_2023_Mar30.csv",stringsAsFactors=TRUE)) # read data
-colnames(preg)[c(2,5,12,14)] <- c("age","depr","NICU","threat") # set variable names
+osf_download(osf_ls_files(osf_retrieve_node(proj))[2, ],conflicts="overwrite") # download and save in the current working directory
+preg <- na.omit(read.csv("OSFData_Upload_2023_Mar30.csv",stringsAsFactors=TRUE)) # read data and omit NA values (not available = missing data)
+colnames(preg)[c(2,5,12,14)] <- c("age","depr","NICU","threat") # set variable names (i.e., I subset the column names number 2,5,12,14 and make them equal to a new character vector)
 
 # 2. Explore the variables
 # mean and SD of quantitative variables
-mean(preg$age) 
-sd(preg$age)
+mean(preg$age) # mean of age
+sum(preg$age)/nrow(preg) # the mean is the sum of all values divided by the number of values
+sd(preg$age) # mean of SD
+sqrt(var(preg$age)) # the SD is the squared root of the variance
+sqrt(
+  sum((preg$age-mean(preg$age))^2)/nrow(preg) # the variance is the sum of squared deviations from the mean divided by the number of values
+     )
 mean(preg$depr) 
 sd(preg$depr)
 mean(preg$threat) 
 sd(preg$threat)
 # frequency for categorical variables
-table(preg$NICU)
+table(preg$NICU) # table returns the frequency table (i.e., the number of values in each level of a variable)
 100 * table(preg$NICU)/nrow(preg) # from frequency to percentage
 # correlation between 2 quantitative variables
-cor(x=preg$age, y=preg$depr)
+cor(x=preg$age, y=preg$depr) # the function cor returns the Pearson correlation between the x and the y variables
 # correlation matrix among 3+ quantitative variables
-cor(x=preg[,c("age","depr","threat")])
-hist(preg$age) # histograms of quantitative variables
+cor(x=preg[,c("age","depr","threat")]) # here, x is a data.frame that I create by subsetting the three variables from the preg dataset (there is no y)
+hist(preg$age) # histograms of quantitative variables (i.e., the taller the bars the more the cases with that value)
 hist(preg$depr)
 hist(preg$threat)
-plot(preg$NICU) # barplot of categorical variables
+plot(preg$NICU) # barplot of categorical variables (i.e., the taller the bars, the higher the number of cases with that value)
 
 # 3. fit a null model m0 predicting depr
-m0 <- lm(formula = depr ~ 1, data = preg)
+m0 <- lm(formula = depr ~ 1, data = preg) # depr 'tilde' (predicted by/regressed on) 1 (intercept)
 
 # 4. Fit a simple regression model m1 with depr being predicted by threat
-m1 <- lm(formula = depr ~ threat, data = preg)
+m1 <- lm(formula = depr ~ threat, data = preg) # depr predicted by threat (the intercept is still there, even if not specified)
 
 # 5. Fit a multiple regression model m2 also controlling for NICU and age
-m2 <- lm(formula = depr ~ threat + NICU + age, data = preg)
+m2 <- lm(formula = depr ~ threat + NICU + age, data = preg) # depr predicted by the sum of the three variables (plus the intercept)
 
 # 6. Fit an interactive model m3 to check whether age moderates the relationship between threat and depr.
-m3 <- lm(formula = depr ~ threat + NICU + age + age:threat, data = preg)
+m3 <- lm(formula = depr ~ threat + NICU + age + age:threat, data = preg) # the fourth predictor is the product of age and threat, standing for how much age *moderates* the relationship between threat and depr
 
 # 7. Compare the models with AIC and likelihood ratio test: which is the best model?
 AIC(m0,m1,m2,m3) # AIC: the lower the better (m2 is the best model)
-lmtest::lrtest(m0,m1,m2,m3) # LRT: m2 is the best model (comparison between m2 and m3 is not significant)
+lmtest::lrtest(m0,m1,m2,m3) # LRT: m2 is the best model (comparison between m2 and m3 is not significant: p = 0.7185, which is higher than 0.05)
 
 # 8. Print & interpret the coefficients estimated by the selected model
 coefficients(m2)
@@ -256,45 +261,54 @@ head(demos) # How many rows per subject? one row per subject
 # which is the cluster variable? The clusters are subjects, indexed by the subject identification code (ID variable)
 # which is the predictor? Based on the previous slide, the predictor is stress
 
-# 4. Which variable(s) at the within-cluster level (Level 1)? stress and TST (and dayNr)
-# Which variable(s) at the between-cluster level (Level 2)? ID and insomnia
+# 4. Which variable(s) at the within-cluster level (Level 1)? stress and TST (and dayNr) because they variate both between and within cluster
+# Which variable(s) at the between-cluster level (Level 2)? ID and insomnia because they only variate between clusters
 
 # 5. Explore (descript., correlations, plots)
-mean(ema$TST, na.rm=TRUE) # TST
+mean(ema$TST, na.rm=TRUE) # TST (note: I put na.rm=TRUE because the dataset includes several missing data)
 sd(ema$TST, na.rm=TRUE)
 mean(ema$stress, na.rm=TRUE) # stress
 sd(ema$stress, na.rm=TRUE)
-hist(ema$TST) # plotting
+hist(ema$TST) # histogram of TST (the taller the bar the higher the number of cases with that value)
 hist(ema$stress)
-table(demos$insomnia) # frequency table
-plot(demos$insomnia) # barplot
+table(demos$insomnia) # frequency table (i.e., number of cases per level of a categorical variable)
+plot(demos$insomnia) # barplot (the taller the bar the higher the number of cases with that value)
 cor(ema$stress,ema$TST,use="complete.obs") # correlations
 
 # 6. Compute the cluster mean for each level-1 variable using aggregate()
-tst.between <- aggregate(TST ~ ID, data=ema, FUN=mean) # cluster means of TST
+tst.between <- aggregate(TST ~ ID, data=ema, FUN=mean) # cluster means of TST (i.e., computing the mean of TST per each cluster)
 stress.between <- aggregate(stress ~ ID, data=ema, FUN=mean) # cluster means of stress
 
 # 7. Join the cluster means to the demos dataset using cbind()
-demos$ID <- as.factor(as.character(demos$ID)) # re-level the variable
-demos <- cbind(demos,tst.between$TST,stress.between$stress) # joining
-colnames(demos)[3:4] <- c("TST.m","stress.m") # changing column names
+demos$ID == tst.between$ID # check whether the ID variable is identical between the two datasets
+# I got an Error saying "level sets of factors are different"
+# let's see how many levels in each variable
+nlevels(demos$ID) # 107 levels (subjects) in the demos datset
+nlevels(tst.between$ID) # 93 levels (subjects) in the tst.between datset
+# the problem is that we removed subjects with less than 30 complete days but the demos dataset still consider a factor with 107 subjects
+demos$ID <- as.factor(as.character(demos$ID)) # re-level the variable (i.e., avoid considering levels with no cases)
+demos$ID == tst.between$ID # now they all correspond and we can join the three datsets
+demos <- cbind(demos,
+               tst.between$TST,
+               stress.between$stress) # joining
+colnames(demos)[3:4] <- c("TST.m","stress.m") # changing column names (i.e., subsetting the third and fourth column names and making them equal to a new character vector)
 
 # 8. Join the cluster means to the ema dataset using plyr::join()
 # install.packages("plyr") # if not already installed
 library(plyr)
-ema <- join(ema,demos,by="ID") # joining demos to ema
+ema <- join(ema,demos,by="ID") # joining demos to ema by the ID variable (i.e., all rows associated with a given ID value are attached to the rows associated with the same ID value)
 
 # 9. Subtract individual obs. from cluster means
-ema$TST.cmc <- ema$TST - ema$TST.m
+ema$TST.cmc <- ema$TST - ema$TST.m # cluster-mean-centered TST is equal to day-specific TST minus the corresponding cluster mean (i.e., the TST value measured on a specific time point from a specific subject minus the mean TST of that subject across all time points)
 ema$stress.cmc <- ema$stress - ema$stress.m
 
 # Extra: Compute the grand-mean-centered & the cluster-mean-centered values of stress and TST 
 # Then, compute their Pearson’s correlation with the cor() function
-demos$TST.gmc <- demos$TST.m - mean(demos$TST.m) # grand mean centering
+demos$TST.gmc <- demos$TST.m - mean(demos$TST.m) # grand mean centering (i.e., subtracting the grand average from all values). Note: I'm doing it in the wide-form dataset, with one row per cluster
 demos$stress.gmc <- demos$stress.m - mean(demos$stress.m)
 # note: cluster mean centering has been already done at point #9
-cor(ema$TST.cmc,ema$stress.cmc, use="complete.obs") # correlation at the within-cluster level
-cor(demos$TST.gmc,demos$stress.gmc) # correlation at the between-cluster level
+cor(ema$TST.cmc,ema$stress.cmc, use="complete.obs") # correlation at the within-cluster level (i.e., TST is lower than usual in those days when stress is higher than usual compared to days when stress is lower than usual)
+cor(demos$TST.gmc,demos$stress.gmc) # correlation at the between-cluster level (i.e., TST is lower in subjects with higher stress compared to subjects with lower stress)
 cor(demos$TST.m,demos$stress.m) # note: at the between level, the correlation between gmc values is identical to the correlation between non-centered values
 
 # DAY 8 (Descriptives) 
@@ -303,37 +317,67 @@ cor(demos$TST.m,demos$stress.m) # note: at the between level, the correlation be
 rm(list=ls()) # emptying the working environment
 
 # 1. load data
-getwd() # to check which is your working directory, and paste the studentData.csv file in there
-stud <- read.csv("studentData.csv") # to read the file from your working directory
-# stud <- read.csv(file.choose()) # to open pop-up window and manually search for the file
+getwd() # finding where my working directory is and pasting the file in there
+studData <- read.csv("4-data/studentData.csv") # reading the file
+# note: it is a comma separated value (CSV) file
 
 # 2. mean, SD, frequencies
-mean(stud$anxiety) # mean & SD for anxiety and math_grade
-sd(stud$anxiety)
-mean(stud$math_grade)
-sd(stud$math_grade)
-table(stud$classID) # frequency for classID
+mean(studData$math_grade)
+sd(studData$math_grade)
+mean(studData$anxiety)
+sd(studData$anxiety)
+psych::describe(studData[,c("anxiety","math_grade")]) # the describe function from the psych package returns a set of descriptive stats for a given data.frame (here, I only considered the anxiety and math_grade variables)
+table(studData$classID) # frequency table: number of cases per cluster
 
 # 3. cluster means for anxiety
-wideStud <- aggregate(anxiety ~ classID, data=stud, FUN=mean) # note: I named it 'wideStud'
+wide <- aggregate(anxiety ~ classID, data=studData, FUN=mean) # computing the mean anxiety for each classID
 
 # 4. join anxiety cluster means to long-form dataset
-stud <- plyr::join(stud,wideStud,by="classID")
-colnames(stud)[6] <- "anxiety.cm" # changing column name to avoid having two 'anxiety' columns
+studData <- plyr::join(studData,wide,by="classID") # attaching wide-form dataset values to the rows of the long-form dataset with the corresponding classID value
+colnames(studData)[6] <- "anxiety.cm" # changing the name of the sixth variable to avoid having two variables with the same name
 
 # 5. compute cluster-mean-center anxiety
-stud$anxiety.cmc  <- stud$anxiety - stud$anxiety.cm
-#  anxiety_ij cluster mean centered = anxiety_ij - anxiety cluster means_j
+studData$anxiety.cmc <- studData$anxiety - studData$anxiety.cm
+# cluster-mean-centered anxiety is equal to each student's anxiety minus the average anxiety level of that student's class (i.e., cluster mean)
 
 # 6. Repeat points 3-5 for math_grade
-wideStud <- aggregate(math_grade ~ classID, data=stud, FUN=mean) # cluster means
-stud <- plyr::join(stud,wideStud,by="classID") # joining to the long-form dataset
-colnames(stud)[8] <- "math_grade.cm" # renaming column
-stud$math_grade.cmc  <- stud$math_grade - stud$math_grade.cm # cluster mean centering
+wide <- aggregate(math_grade ~ classID, data=studData, FUN=mean)
+studData <- plyr::join(studData,wide,by="classID")
+colnames(studData)[8] <- "math_grade.cm"
+studData$math_grade.cmc <- studData$math_grade - studData$math_grade.cm
 
 # 7. level-2 correlation (between-cluster correlation)
-wide <- stud[!duplicated(stud$classID),] # keeping only one row per subject
-cor(wide$math_grade.cm, wide$anxiety.cm) # computing correlation between cluster means
+wide <- studData[!duplicated(studData$classID),] # moving to wide form (i.e., removing all rows whose classID value has been already taken in previous rows - that is, removing all classID duplicates so that we only have one row per each classID)
+# note: between-cluster correlations are computed from the wide-form dataset to avoid overestimating the sample size (i.e., level-2 variable do not variate within clusters, so we don't wanna count two observations from the same cluster as two different cases)
+cor(wide$anxiety.cm, wide$math_grade.cm)
+# interpretation: classes with higher average anxiety levels show lower average math grades than classes with lower average anxiety levels
 
 # 8. level-1 correlation (within-cluster correlation)
-cor(stud$anxiety.cmc,stud$math_grade.cmc) # computing correlation between cluster-mean-centered values
+cor(studData$anxiety.cmc, studData$math_grade.cmc)
+# interpretation: within a given class, students with higher anxiety than their class' mean anxiety show lower math grade than their class' mean math grade compared to sutdents with lower anxiety than their class' mean anxiety
+
+# 9. fit a null LMER model with the lme4 package and get sigma2 and tau2_00
+library(lme4)
+fit <- lmer(math_grade ~ (1|classID), data = studData) # null LMER model where the synthax "(1|classID)" is used to indicate the random intercept based on the class ID variable
+summary(fit)
+
+# 10. compute and interpret the ICC
+ICC <- 0.1115 / (0.1115 + 0.3278)
+# ICC is equal to the variance of the random intercept divided by the sum between the variance of the random intercept and the residual variance
+# note: the denominator is the model estimate of the total variance
+# so the ICC is equal to the variance of the random intercept (between-cluster) divided by the residual variance
+# so the ICC indexes the proportion of between-cluster variance over the total variance
+ICC
+
+# alternative way to compute the ICC (slightly different result only due to decimal rounding)
+tau2 <- summary(fit)$varcor$classID[[1]] # extracting the variance of the random intercept
+sigma2 <- summary(fit)$sigma^2 # extracting the residual variance
+ICC <- tau2 / (tau2 + sigma2) # computing ICC
+ICC
+
+# interpretation:
+# ICC = 0.25 means that the 25% of the variance in math_grade is between-cluster variance, whereas the remaining 75% is within-cluster variance
+# this means that math_grade varies more between students than between classes
+# possibly suggesting that student characteristics (e.g., student anxiety) are more important predictors of math_grade than class characteristics (e.g., teacher self-efficacy)
+# yet, the 25% of the variance is accounted by local dependencies due to students being nested within classes, so we should use a multilevel approach
+
