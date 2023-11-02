@@ -47,7 +47,7 @@ If you have any doubts on how to solve the exercises, feel free to write me an e
 
 # LM
 
-## Exercise 1: correlation & regression
+## 1. Correlation & regression
 
 \fontsize{7.5pt}{12}\selectfont
 
@@ -140,7 +140,7 @@ coefficients(fit) # I got b0 = -0.56 (when x3 = 0, y = -0.56) and b1 = 0.03 (whe
   # the regression coefficients (slope) is almost identical to the Pearson correlation coefficient
 ```
 
-## Exercise 2: LM assumptions & diagnostics
+## 2. LM assumptions & diagnostics
 
 \fontsize{7.5pt}{12}\selectfont
 
@@ -212,7 +212,7 @@ library(car)
 barplot(vif(m2),ylim=c(0,10)); abline(h=5,lty=2,col="red") # no VIF higher than 5 (ok)
 ```
 
-## Exercise 3: Towards multilevel modeling
+## 3. Towards multilevel modeling
 
 \fontsize{7.5pt}{12}\selectfont
 
@@ -300,9 +300,9 @@ lmtest::lrtest(m0,m1) # m1 is not significantly better than m0
 # conclusion: if we only consider participant s001 or participant s002, the results are different than those obtained from the full sample (i.e., the relationship between stress and TST is no longer significant)
 ```
 
-# LMER data processing
+# LMER
 
-## Exercise 4: Multilevel data structure {#ex4}
+## 4. Multilevel data structure {#ex4}
 
 \fontsize{7.5pt}{12}\selectfont
 
@@ -368,7 +368,7 @@ summary(fit_wide)$coefficients
 # the model fitted on the wide-form dataset (N = 4) shows the highest standard error (i.e., parameters are estimated with a poor precision) because the model uses a lower sample size (N = 4) compared to that used by the other model (N = 90)
 ```
 
-## Exercise 5: Data centering
+## 5. Data centering
 
 \fontsize{7.5pt}{12}\selectfont
 
@@ -387,7 +387,7 @@ Consider the long- and wide-form datasets from \color{blue}[exercise #4](#ex4)\c
 6. Fit a simple linear model predicting student-level `math_grade` by cluster-mean-centered `anxiety` values using the long-form dataset. Inspect and intepret the estimated coefficients, and compare them with those estimated in the previous exercise
 
 ```{r echo=FALSE,eval=FALSE}
-# SOLUTION TO EXERCISE #4
+# SOLUTION TO EXERCISE #5
 
 # 1. grand-mean-centered anxiety from the wide-form dataset (which I called "itp_wide" in exercise #4)
 itp_wide$anxiety.gmc <- itp_wide$anxiety_mean - mean(itp_wide$anxiety_mean)
@@ -424,4 +424,117 @@ summary(fit_long)$coefficients # coefficients from the uncentered model (which I
 summary(fit_long.cmc)$coefficients # coefficients from the centered model
 # intercept changed from 17.75 to 8.05 (now it's on range!), but still significantly higher than zero
 # the slope changed from -3.11 to -2.20, still significantly lower than zero
+```
+
+## 6. Data centering & level-specific correlations {#ex6}
+
+\fontsize{7.5pt}{12}\selectfont
+Do left- and right-side infant pupil sizes correlate more at the within-subject or at the between-subject level?
+
+1. Download and read the "*Infant pupil*" dataset `infantPupil.csv`
+
+2. Subset columns 15, 10, 11, 12, and 13, and rename them as `ID` (subject identification code), `pupil.left` (left-side pupil size in mm), `pupil.left_valid` (validity of left-sized pupil size measurement), `pupil.right` (right-side pupil size in mm), and `pupil.right_valid` (validity of the right-side pupil size measurement)
+
+3. How many valid cases for each eye? (note: 1 = valid, 0 = invalid)
+
+4. Remove all cases with invalid pupil size in either one or the other eye 
+
+5. Compute the cluster means and the cluster-mean-centered values for `pupil.left` and `pupil.right` 
+
+6. Compute the between-subject and the within-subject correlations between the two variables: Do left- and right-side infant pupil sizes correlate more at the within-subject or at the between-subject level?
+
+```{r echo=FALSE,eval=FALSE}
+# SOLUTION TO EXERCISE #6
+
+rm(list=ls()) # emptying work environment
+
+# 1. reading infant pupil dataset (note: I saved the file in the 'data' subfolder in my working dir)
+pupil <- read.csv2("data/infantPupil.csv") # use read.csv2 for columns separated by ";" (csv2) rather than "," (csv)
+
+# 2. subsetting and renaming columns
+pupil <- pupil[,c(15,10:13)]
+colnames(pupil) <- c("ID","pupil.left","pupil.left_valid","pupil.right","pupil.right_valid")
+summary(as.factor(pupil$pupil.left_valid))
+
+# 3. How many valid cases?
+table(pupil$pupil.left_valid) # 16,379 valid left
+100*table(pupil$pupil.left_valid)/nrow(pupil) # percentage (65%)
+table(pupil$pupil.right_valid) # 15,337 valid right
+100*table(pupil$pupil.right_valid)/nrow(pupil) # percentage (60.5%)
+
+# 4. removing invalid cases in either eye
+pupil <- pupil[pupil$pupil.right_valid==1 & pupil$pupil.left_valid==1,]
+
+# 5. cluster means and cluster mean centered
+wide <- aggregate(pupil.left ~ ID, data=pupil, FUN=mean) # cluster mean of pupil.left
+# I got Warning: argument is not numeric or logical (i.e., pupile sizes are considered as characters)
+pupil$pupil.left <- as.numeric(pupil$pupil.left) # converting to numeric
+pupil$pupil.right <- as.numeric(pupil$pupil.right)
+wide <- aggregate(pupil.left ~ ID, data=pupil, FUN=mean) # now it works
+wide # let's take a look
+pupil <- plyr::join(pupil,wide,by="ID") # joining cluster means to long-form dataset
+colnames(pupil)[6] <- "pupil.left.cm" # renaming variable to avoid duplicated column names
+pupil$pupil.left.cmc <- pupil$pupil.left - pupil$pupil.left.cm # cluster mean centering
+
+# same operations for pupil.right
+wide <- aggregate(pupil.right ~ ID, data=pupil, FUN=mean) 
+pupil <- plyr::join(pupil,wide,by="ID")
+colnames(pupil)[8] <- "pupil.right.cm"
+pupil$pupil.right.cmc <- pupil$pupil.right - pupil$pupil.right.cm 
+
+# 6. level-specific correlations
+pupil_wide <- pupil[!duplicated(pupil$ID),] # taking only one row per subject
+# between-subject correlation (between cluster means from the wide-form dataset)
+cor(pupil_wide$pupil.left.cm, # r = 0.987
+    pupil_wide$pupil.right.cm) 
+# within-subject correlation (between cluster-mean-centered values from the long-form dataset)
+cor(pupil$pupil.left.cmc, # r = 0.865
+    pupil$pupil.right.cmc)
+
+# 7. Do left- and right-side infant pupil sizes correlate more at the within-subject or at the between-subject level?
+# they seem to correlate more at the between-subject level!
+```
+
+## 7. Intraclass correlation coefficient
+
+\fontsize{8.5pt}{12}\selectfont
+Using data from \color{blue}[exercise #6](#ex6)\color{black}, compute the intraclass correlation coefficient (ICC) for both pupil size measures.
+
+1. Do they variate more at the within-subject (lv1) or at the between-subject (lv2) level?
+
+2. What is the percentage of within-subject variability over the total variability?
+
+3. Does one eye variate more within-subject than the other?
+
+```{r echo=FALSE,eval=FALSE}
+# SOLUTION TO EXERCISE #7
+
+# first, you can run all the commands used in exercise #6
+
+# computing left-side pupil size ICC from null LMER model
+library(lme4) # package for fitting LMER models
+m0.left <- lmer(pupil.left ~ (1|ID), data=pupil) # null LMER model
+tau2.left <- summary(m0.left)$varcor$ID[[1]] # extracting the random intercept variance tau2
+sigma2.left <- summary(m0.left)$sigma^2 # extracting the residual variance sigma2
+ICC.left <- tau2.left/(tau2.left + sigma2.left) # ICC = var between / total var = tau2 / (tau2 + sigma2)
+ICC.left # 0.60
+
+# computing ICC for right-side pupil size
+m0.right <- lmer(pupil.right ~ (1|ID), data=pupil) # null LMER model
+tau2.right <- summary(m0.right)$varcor$ID[[1]] # tau2
+sigma2.right <- summary(m0.right)$sigma^2 # sigma2
+ICC.right <- tau2.right/(tau2.right + sigma2.right) # ICC
+ICC.right # 0.64
+
+# 1. Do they variate more at the within-subject (lv1) or at the between-subject (lv2) level?
+# ICC range from .60 (i.e., 60% of variance at the between level) to .64 (i.e., 64% of variance at the between level), so they variate more at the between-subject level (lv2) than at the within-subject level (lv1)
+
+# 2. What is the percentage of within-subject variability over the total variability?
+# we simply need to compute 1 - ICC
+1 - ICC.left # left side: 39% of within-subject variability
+1 - ICC.right # right side: 36% of within-subject variability
+
+# 3. Does one eye variate more within-subject than the other?
+# yes, left-side pupil size variates within-subject variability is 3% higher than right-side pupil size
+# however, we don't know whether this difference might be substantial or not
 ```
