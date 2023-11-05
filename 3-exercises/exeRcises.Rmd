@@ -188,10 +188,17 @@ hist(residuals(m2)) # histogram of residuals: residuals seem quite (although not
 hist(residuals(m2)) # histogram of residuals: seem quite (although not perfectly) normally distributed (ok)
 qqnorm(residuals(m2)); qqline(residuals(m2)) # only some deviation from normality in the lower tale of the residual distribution (i.e., positive skewness) (ok, negligible)
 
+# alternative way to assess normality (note: both the performance and the qqplotr package should be installed)
+plot(performance::check_normality(m2)) # the plot is equivalent to the previous one, but this representation seems to magnify the residual deviations from normality. Based on this plot, we might want to use alternative family distributions than the normal, due to the large deviation in the lower tail of the residual distribution
+
 # 3. heteroscedasticity
 plot(residuals(m2)~preg$threat) # residual variance (spreadness of dots) does not seem to change over the values of threat (ok)
 plot(residuals(m2)~preg$age) # residual variance (spreadness of dots) does not seem to change over the values of age (ok)
 plot(residuals(m2)~preg$NICU) # residual variance (size of the boxes) does not seem to change between NICU levels (ok)
+
+# alternative way to assess heteroscedasticity considering all variables: reasiduals vs. fitted values
+plot(m2,which=3) # residual vs. fitted values: if you see no clear trends, then you're ok (as in this case)
+plot(performance::check_heteroscedasticity(m2)) # alternative way to generate the same plot
 
 # 4. independence residuals - predictors
 plot(residuals(m2)~preg$threat) # not a strong relationship between residuals and threat values (ok)
@@ -205,6 +212,12 @@ plot(residuals(m2)~preg$NICU) # no substantial differences in residuals between 
 
 # 6. Absence of influential observations: is there any observation that strongly influence the estimated coefficients?
 plot(m2,which=5) # no data points outside the Cook's distance cut-off region (which is not even included within the plot) (ok)
+
+# alternative ways to evaluate influential cases
+car::leveragePlots(m2) # this shows the leverage (a measure of influence) for each x-y couple
+# participants 185 and 8491 show the most extreme values (although not excessively extreme), and might deserve a deeper inpsection (i.e., what happens if I remove them and re-run the model?)
+car::outlierTest(m2) # testing whether outliers are present in the data (here, p > .05 so we're ok)
+car::influencePlot(m2) # inspecting both Cook's distance and leverages: we see a few cases with high laverage (1196) or high Cook's distance (e.g., 9100), which might deserve a deeper inspection
 
 # 7. Absence of multicollinearity: Are predictors mutually unrelated?
 cor(preg[,c("threat","age")]) # threat and age only correlate at r = 0.02 (low linear correlation)
