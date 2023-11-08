@@ -402,6 +402,12 @@ table(insa[!duplicated(insa$ID),"insomnia"]) # now we have the number of partici
 library(lme4) # open the lme4 package
 m0 <- lmer(TST ~ (1|ID), data = insa)
 
+# let's compute the ICC
+tau2 <- summary(m0)$varcor$ID[[1]] # tau_00 squared = variance of the random intercept
+sigma2 <- summary(m0)$sigma^2 # sigma squared = variance of the residuals
+ICC <- tau2 / (tau2 + sigma2) # ICC = random intercept variance / total variance = random intercept variance / (random interecpt variance + residual variance)
+ICC # ICC = 0.19 --> the 19% of the variance in TST is at the between-cluster level (i.e., TST mainly varies wtihin cluster than between clusters)
+
 # 4. Fit a model `m1` with `TST` being predicted by `stress.cmc`
 m1 <- lmer(TST ~ stress.cmc + (1|ID), data = insa)
 
