@@ -381,3 +381,86 @@ ICC
 # possibly suggesting that student characteristics (e.g., student anxiety) are more important predictors of math_grade than class characteristics (e.g., teacher self-efficacy)
 # yet, the 25% of the variance is accounted by local dependencies due to students being nested within classes, so we should use a multilevel approach
 
+# DAY 9/10 (LMER model fit)
+#####################################################################################################
+
+# 1. Download & read the pre-processed dataset insa.RData (omitting missing data)
+rm(list=ls()) # emptying the work environment
+getwd() # get where your working directory is and save the data file in there
+load("insa.RData") # read data from your working directory
+
+# 2. Mean, SD, correlations & plots
+mean(insa$TST) # mean (note: in the insa dataset there are no missing values, so we can omit "na.rm=TRUE")
+sd(insa$TST)
+mean(insa$stress) # note: although we work on cluster-mean-centered stress (stress.cmc), descriptives are usually computed from the original variable (more interpretable)
+sd(insa$stress)
+table(insa$insomnia) # these are the number of observations from each group, but since insomnia is a level-2 (between-cluster) variable, we should use the wide-form dataset
+table(insa[!duplicated(insa$ID),"insomnia"]) # now we have the number of participants in each group
+100*table(insa[!duplicated(insa$ID),"insomnia"])/nlevels(insa$ID) # extra: this is to compute the percentage of participants in each group
+
+# 3. Fit a null LMER model `m0` of `TST` and compute the ICC
+library(lme4) # open the lme4 package
+m0 <- lmer(TST ~ (1|ID), data = insa)
+
+# 4. Fit a model `m1` with `TST` being predicted by `stress.cmc`
+m1 <- lmer(TST ~ stress.cmc + (1|ID), data = insa)
+
+# 5. Fit a model `m2` with a random slope for `stress.cmc`
+m2 <- lmer(TST ~ stress.cmc + (stress.cmc|ID), data = insa)
+
+# 6. Inspect the `summary()` of each model
+summary(m0) # fixed effects only include the fixed intercept (410.838), while random effects include the random intercept variance (1183) and the residual variance (5158)
+summary(m1) # fixed effects include the fixed intercept (410.849) and the fixed slope (-4.921), while random effects include the random intercept variance (1186) and the residual variance (5138)
+# note that the residual variance has slightly diminished compared to model m0 because we added one predictor, and so we explain some of the unexplained (residual) variance
+summary(m2) # fixed effects include the fixed intercept (410.909) and the fixed slope (-5.868), while random effects include the random intercept variance (1183.71), the random slope variance (87.26), and the residual variance (5071.19)
+# note that the residual variance has further diminished due to the same reason
+
+# Is there a 'substantial' within-individual relationship between TST and stress?
+# yes, from the summary of model m1 we can see that the t-value for stress.cmc (-4.132) is higher than |1.96| (i.e., it is lower than -1.96), so the relationship is negative and 'substantially' lower than zero 
+# even when including the random slope (model m2), the t-value for stress.cmc (-3.562) is 'substantially' lower than -1.96
+# so we can say that there is a 'substantial' negative relationship between stress and TST at the within-cluster level (level 1)
+
+# extra: we can even compute 95% confidence intervals for the stress.cmc slope:
+(fixeffs <- summary(m2)$coefficients) # taking the fixed coefficient table
+(stress_slope <- fixeffs[2,1]) # selecting fixed slope for stress.cmc
+(stress_slope_SE <- fixeffs[2,2]) # selecting fixed slope standard error for stress.cmc
+stress_slope + 1.96*stress_slope_SE # upper CI: estimate + 1.96 X standard error
+stress_slope - 1.96*stress_slope_SE # lower CI: estimate - 1.96 X standard error
+# since zero is not included within the 95% confidence intervals, we might conclude that the estimated coefficient is significantly lower than zero
+
+# 7. Fit a model `m3` that also includes `insomnia` group differences
+m3 <- lmer(TST ~ stress.cmc + insomnia + (stress.cmc|ID), data = insa)
+summary(m3) # fixed effects include the fixed intercept (409.624), the fixed slope for stress.cmc (-5.684), and the fixed slope for insomnia (2.524), while random effects include the random intercept variance (1195.95), the random slope variance (87.22), and the residual variance (5071.23)
+
+# interpretation:
+# - intercept: the predicted ('mean') TST value when stress.cmc = 0 (i.e., average stress level) and insomnia = 0 (i.e., control group) is 409.6 minutes
+# - stress slope: considering both control and insomnia, a 1-unit increase in stress.cmc (i.e., higher stress than usual) predicts a decrease in TST by -5.68 minutes
+# note: we say "considering both controls and insomnia" because the interaction is not yet included - so the model makes a sort of average between the two groups
+# - insomnia slope: when stress.cmc = 0 (i.e., average stress levels), the insomnia group is predicted to show an average TST of 2.52 minutes higher than the average TST in the control group (i.e., 409.6 + 2.52 = 412.12 minutes)
+
+# Any group differences? 
+# no, or well there is a positive difference such that insomnia have a higher average TST than the control group
+# yet, this difference is not 'substantial' since the t-value is lower than 1.96
+
+# Does it change the effect of `stress`?
+# the negative relationship between stress.cmc and TST has increased from -5.686 (model m2) to -5.684 (model m3)
+# so we can say that the inclusion of insomnia did not greatly impact the slope estimated for stress.cmc (i.e., it did not greatly impact the relationship between stress.cmc and TST)
+  
+# 8. Fit a model `m4` that also includes the interaction between `insomnia` and `stress.cmc`
+m4 <- lmer(TST ~ stress.cmc * insomnia + (stress.cmc|ID), data = insa) # to do that, we can just substitute the "+" symbol with the "*" symbol
+m4 <- lmer(TST ~ stress.cmc + insomnia + stress.cmc:insomnia + (stress.cmc|ID), data = insa) # alternative way to write the same model
+
+# 9. Inspect the `summary()` of of model `m4`
+summary(m4) # fixed effects include the fixed intercept (409.505), the fixed slope for stress.cmc (-7.187), the fixed slope for insomnia (2.759), and the interaction between stress.cmc and insomnia (2.923), while random effects include the random intercept variance (1196.32), the random slope variance (86.44), and the residual variance (5071.75)
+
+# interpretation (notice how it changes from the additive model m3 to the interactive model m4):
+# - intercept: the predicted ('mean') TST value when stress.cmc = 0 (i.e., average stress level) and insomnia = 0 (i.e., control group) is 409.505 minutes ---> same intepretation than in the additive model m3
+# - stress slope: in the control group, a 1-unit increase in stress.cmc (i.e., higher stress than usual) predicts a decrease in TST by -7.187 minutes
+# note: we say "in the control group" because the interaction is included in the model - so the model focuses this coefficeint in the control group and quantifies the difference between the two groups in the interactive term below
+# - insomnia slope: when stress.cmc = 0 (i.e., average stress levels), the insomnia group is predicted to show an average TST of 2.76 minutes higher than the average TST in the control group (i.e., 409.505 + 2.759 = 412.264 minutes) ---> same interpretation than in the additive model m3
+# - interaction (first interpretation): the relationship between stress.cmc and TST in the insomnia group is 2.923 minutes-per-stress higher than in the control group (i.e., -7.187 + 2.923 = -4.26); in other words, a 1-unit increase in stress.cmc (higher stress than usual) predicts a TST reduction of -7.187 minutes in the control group and a decrease  4.26 minutes in the insomnia group
+# - interaction (second interpretation): the TST difference between insomnia and controls is 2.923 minutes larger when stress.cmc increases by 1 unit (i.e., higher stress than usual) compared to when stress.cmc = 0 (i.e., average stress level); in other words, stress enlarges the differences beween the two groups, with insomnia sleeping further more hours than controls
+
+# Does `insomnia` moderate the within-individual relationship between `stress` and `TST`?
+# no, or well there is a positive interaction (2.923), such that stress.cmc decreases TST more in the control than in the insomnia group
+# yet, this interaction is not 'substantial' since the t-value is lower than 1.96
