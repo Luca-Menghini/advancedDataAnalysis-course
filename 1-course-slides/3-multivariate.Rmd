@@ -43,32 +43,71 @@ output:
 ___ \newline \fontsize{5pt}{12}\selectfont \color{blue}
 `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` = not for the exam \color{black} \newline `r fontawesome::fa(name = "r-project", height = "1em")` = exercises with R (bring your laptop!)
 
-# sem() intro
+## prova
 
-## Structural equation models: systems of equations
-
-\fontsize{8pt}{12}\selectfont
-Structural equation modeling (SEM) is widely used to analyze data by accounting for the multivariate reality of psychosocial phenomena: multiple variables interacting at the same time (e.g., multiple outcomes, mediations).
-
-\fontsize{7pt}{12}\selectfont
-_Why "structural equations"?_ \newline Because they involve ...
-
-## The SEM family
-
-\fontsize{7pt}{12}\selectfont
-SEM is a broad family of statistical models ...
-
-```{r , echo = FALSE, out.width = "250px",fig.align='center'}
-knitr::include_graphics("img/SEMfamily.PNG")
+```{r }
+p <- 1
 ```
 
-## From linear models to SEM
+# sem() intro
+
+## Multivariate analyses for a multivariate reality
+
+```{r , echo = FALSE, fig.width=12,fig.height=3, warning=FALSE,message=FALSE}
+library(ggplot2);library(gridExtra); library(plotly) # loading packages
+y <- rnorm(n=50) # y = 50 random values from standard normal distribution
+df <- data.frame(y=y, # dataframe to be used in the plot
+                 x=y + rnorm(n=50,sd=0.8),
+                 z=y - rnorm(n=50,sd=1.2)) # x = y + some random value
+grid.arrange(ggplot(df,aes(y)) + geom_histogram() + theme(axis.text=element_blank(),title=element_text(size=18)) +
+               ggtitle("Univariate"),
+             ggplot(df,aes(x,y)) + geom_point() + theme(axis.text=element_blank(),title=element_text(size=18)) +
+               ggtitle("Bivariate"),
+             ggplot(df,aes(z,y)) + geom_point() + theme(axis.text=element_blank(),title=element_text(size=18)) +
+               ggtitle("Still bivariate"),
+             ggplot(df,aes(x,y,color=z)) + geom_point() + 
+               theme(axis.text=element_blank(),legend.text = element_blank(),title=element_text(size=18)) +
+               scale_color_gradient2(low="white",high="purple") +
+               ggtitle("Multivariate"),
+             nrow=1)
+```
+
+\fontsize{7.5pt}{12}\selectfont
+
+- In psychology, we mainly inspect empirical data focusing on **univariate** (*y*) \newline or **bivariate** relationships (either *y* by *x* or *y* by *z*)
+
+- But reality (particularly psychosocial reality) is complex, it is **multivariate**
+
+- It is *reductionist* to separately analyze our variables without considering their overall interactions &rightarrow; **biased effect estimates**
+
+- **Structural equation modeling (SEM)** allow to analyze the relationships of interest by accounting for the multivariate reality of psychosocial phenomena (e.g., *y* by *x* *covarying* with *z*; *x* affects *y* through *z*)
+
+## Observed indicators and latent variables
+
+```{r , echo = FALSE,fig.width=12,fig.height=3,out.width="280px",fig.align='center'}
+knitr::include_graphics("img/latentvars.PNG")
+```
+
+\fontsize{7.5pt}{12}\selectfont
+
+- In psychology, we mainly investigate and assess **latent variables** = phenomena that we cannot directly observe/measure, but we can estimate from one or more **observed indicators** (e.g., 10-item scale measuring anxiety levels)
+
+- Are we allowed to do that? Yes (let's say yes), provided that we trust the **construct validity** of our indicators = their relationship with the latent variable they claim to measure
+
+- But how can we evaluate that? We need to **quantify the latent variables** and then their relationships with observed indicators
+
+- **Structural equation modeling (SEM)** allow to quantify latent variables and to analyze their relationships with observed indicators
+
+## Structural what!?
+
+\fontsize{8.5pt}{12}\selectfont \color{violet}
+Structural equation modeling (SEM) \newline = multivariate *linear* models formalized by **systems of equations** \newline \color{black}
 
 \begincols
   \begincol{.5\textwidth}
 
 \fontsize{7pt}{12}\selectfont
-**Linear regression**: determining the link between a dependent and an independent variables through linear functions like: $y = \beta_1x_{1} + \beta_2X_{2} + \epsilon$ \newline
+**Linear models** (LM): determining the link between a dependent and an independent variables through a **single equation** like: \color{violet} $y = \beta_1x_{1} + \beta_2X_{2} + \epsilon$ \color{black}
 ```{r echo=FALSE,warning=FALSE,message=FALSE}
 library(DiagrammeR); library(DiagrammeRsvg); library(rsvg)
 
@@ -95,13 +134,13 @@ rsvg_png(tmp, "img/lm.png") # saved graph as png in current working directory
 knitr::include_graphics("img/lm.png")
 ```
 
-As a limitation, linear models can only predict **one dependent variable at time** with a single equation. They can be *univariate* (without predictors) or *bivariate* (with predictors).
+LM can only predict **one dependent variable at time**, being either *univariate* (without predictors) or *bivariate* (with predictors).
 
   \endcol
 \begincol{.5\textwidth}
 
 \fontsize{7pt}{12}\selectfont
-**Structural equation models** (SEM) \newline are *multivariate* models that allow simultaneously modeling multiple ~~dependent~~ *endogenous* variables \newline with a **system of equations**:
+**SEM** allow to simultaneously model multiple ~~dependent~~ *endogenous* variables \newline with a **system of equations**: \color{violet}
 
 $$ \begin{cases} y_2 = \beta_{21}x_{1} + \epsilon_2 \\\\ y_3 = \beta_{31}x_{1} + \beta_{32}Y_2 + \epsilon_3 \end{cases} $$ \newline
 
@@ -135,40 +174,170 @@ knitr::include_graphics("img/sem.png")
   \endcol
 \endcols
 
-## Observed vs. latent variables
+## The SEM family
 
-\fontsize{7pt}{12}\selectfont
-A further advantage of SEM is to distinguish between observed vs. latent variables
+\fontsize{8pt}{12}\selectfont
+SEM represents a broad family of statistical models within which multiple regression, ANOVA, and correlation analysis can be included as specific cases.
+
+Within SEM, two main sub-families can be distinguished based on whether **latent variables** are included in the model or not: \fontsize{7pt}{12}\selectfont
+
+- __Path analysis__: multivariate linear models with observed variables only
+
+- __Confirmatory factor analysis (CFA)__: multivariate linear models with both observed and latent variables
+
+```{r , echo = FALSE, out.width = "270px",fig.align='center'}
+knitr::include_graphics("img/SEMfamily.PNG")
+```
+
+\fontsize{5pt}{12}\selectfont Source: Beaujean (2014)
+
+## Path models & path analysis
+
+\fontsize{8pt}{12}\selectfont
+**Path models/diagram** = multivariate models with observed variables only \newline = pictorial representations (*diagrams*) of a theory of variable relationships
 
 \begincols
   \begincol{.5\textwidth}
 
-```{r , echo = FALSE, out.width = "130px"}
-knitr::include_graphics("img/latobs.PNG")
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+library(DiagrammeR); library(DiagrammeRsvg); library(rsvg)
+
+tmp <- grViz(
+'digraph boxes_and_circles {
+  graph [layout = neato]
+  node [shape = box]
+  IQ [label = <IQ> pos="-2,0.5!"]
+  Anxiety [label = <Anx> pos="-2,-0.5!"]
+  Grade [pos="-0.5,0!"]
+  node [shape = plaintext]
+  e [label = <&epsilon;> pos="0.5,0!"]
+  # edges
+  Anxiety->Grade [label = <->]
+  IQ->Grade [label = <+>]
+  e->Grade}')
+
+# Convert to SVG, then save as png
+tmp = export_svg(tmp)
+tmp = charToRaw(tmp) # flatten
+rsvg_png(tmp, "img/lm.png") # saved graph as png in current working directory
 ```
-
-\fontsize{6.5pt}{12}\selectfont
-**Observed variables**: directly observable and measurable (e.g., heart rate), represented by *squares* and the *lowercase letters* \color{red}$x$ \color{black}(exogenous) and \color{red}$y$ \color{black}(endogenous) \newline
-
-**Latent variables**: hypothetical and not directly measurable but **indexed** by one or multiple observed variables (e.g., happiness), represented by *circles* and the *greek letters* \color{red}$\xi$ \color{black}(exogenous) and \color{red}$\eta$ \color{black}(endogenous)
+```{r , echo = FALSE, out.width = "160px",fig.align="center"}
+knitr::include_graphics("img/lm.png")
+```
 
   \endcol
 \begincol{.5\textwidth}
 
-\fontsize{6.5pt}{12}\selectfont
-When including **observed variables only**, SEM are called \color{red}**path analysis**\color{black}, which is widely used to model complex multivariate relationships (e.g., *mediation models*):
-```{r , echo = FALSE, out.width = "130px",fig.align="center"}
-knitr::include_graphics("img/sem.png")
-```
-
-When **both observed and latent** variables are included, we can talk of 'full SEM':
 ```{r echo=FALSE}
 tmp <- grViz(
 'digraph boxes_and_circles {
   graph [layout = neato]
+  node [shape = box]
+  x1 [label = <Self-eff> pos="-2,0!"]
+  y2 [label = <Anx> pos="-0.5,0.5!"]
+  y3 [label = <Grade> pos="-0.5,-0.5!"]
+  node [shape = plaintext]
+  e2 [label = <&epsilon;<SUB>1</SUB>> pos="0.5,0.5!"]
+  e3 [label = <&epsilon;<SUB>2</SUB>>pos="0.5,-0.5!"]
+  # edges
+  x1->y2 [label = <->]
+  x1->y3 [label = <+>]
+  y2->y3 [label = <->]
+  e2->y2
+  e3->y3}')
+
+# Convert to SVG, then save as png
+tmp = export_svg(tmp)
+tmp = charToRaw(tmp) # flatten
+rsvg_png(tmp, "img/sem.png") # saved graph as png in current working directory
+```
+```{r , echo = FALSE, out.width = "160px",fig.align="center"}
+knitr::include_graphics("img/sem.png")
+```
+
+  \endcol
+\endcols
+
+\color{white}_\color{black} \newline \newline
+
+**Paths** = arrows linking the variables in the models
+
+**Path analysis** = analysis of the multivariate relationships between the variables included in the path model
+
+## Latent factors & confirmatory factor analysis
+
+\begincols
+  \begincol{.67\textwidth}
+  
+\fontsize{7pt}{12}\selectfont
+
+- \color{blue} __Observed/Manifest variable (OV)__ \color{black} \newline variable that is directly observable (e.g., height, heart rate, item responses)
+
+- \color{violet} __Latent variable/factor (LV)__ \color{black} \newline variable that is *not* directly observable (e.g., anxiety, intelligence), but can be indexed by \newline one or more observed variables
+
+- In SEM, \color{blue}**OV**s \color{black} are represented by \color{blue}squares/rectangles \color{black} and indexed with \color{blue}lower case letters (e.g., *x*)\color{black}, whereas \color{violet}**LV**s \color{black} are represented by \color{violet}circles/ellipses \color{black} \newline and indexed by the \color{violet}Greek letter $\eta$ \color{black}
+
+```{r , echo = FALSE, out.width = "130px"}
+knitr::include_graphics("img/latobs.PNG")
+```
+  
+  \endcol
+\begincol{.4\textwidth}
+
+Confirmatory factor analysis (CFA)
+
+\fontsize{7pt}{12}\selectfont
+Is the analysis of the relationships (*factor loadings*) between a set of OVs and one or more LVs \newline
+
+CFA uses **latent variable models** to *form* or *quantify* LVs \newline and their relationships with OVs \newline (evaluation of **construct validity**) \newline
+
+```{r echo=FALSE,message=FALSE,warning=FALSE}
+library(DiagrammeR); library(DiagrammeRsvg); library(rsvg)
+tmp <- grViz(
+'digraph boxes_and_circles {
+  graph [layout = neato]
   node [shape = oval]
-  E1 [label = <&xi;> pos="-0.5,0!"]
-  E2 [label = <&eta;> pos="0.5,0!"]
+  E1 [label = <&eta;> pos="0.5,0!"]
+  node [shape = box]
+  x1 [label = <x<SUB>1</SUB>> pos="2,1!"]
+  x2 [label = <x<SUB>2</SUB>> pos="2,0!"]
+  x3 [label = <x<SUB>3</SUB>> pos="2,-1!"]
+  node [shape = plaintext]
+  e1 [label = <&epsilon;<SUB>1</SUB>> pos="3,1!"]
+  e2 [label = <&epsilon;<SUB>2</SUB>>pos="3,0!"]
+  e3 [label = <&epsilon;<SUB>3</SUB>>pos="3,-1!"]
+  # edges
+  E1->x1 
+  E1->x2 
+  E1->x3 
+  e1->x1
+  e2->x2
+  e3->x3}')
+# Convert to SVG, then save as png
+tmp = export_svg(tmp)
+tmp = charToRaw(tmp) # flatten
+rsvg_png(tmp, "img/seml.png") # saved graph as png in current working directory
+```
+```{r , echo = FALSE, out.width = "100px"}
+knitr::include_graphics("img/seml.png")
+```
+
+  \endcol
+\endcols
+
+## SEM: Measurement & Structural model
+
+\fontsize{7pt}{12}\selectfont
+To properly talk about 'full SEM' (or just SEM), we need both OVs and LVs*
+
+```{r echo=FALSE,message=FALSE,warning=FALSE}
+library(DiagrammeR); library(DiagrammeRsvg); library(rsvg)
+tmp <- grViz(
+'digraph boxes_and_circles {
+  graph [layout = neato]
+  node [shape = oval]
+  E1 [label = <&eta;<SUB>1</SUB>> pos="-0.5,0!"]
+  E2 [label = <&eta;<SUB>2</SUB>> pos="0.5,0!"]
   node [shape = box]
   x1 [label = <x<SUB>1</SUB>> pos="-2,1!"]
   x2 [label = <x<SUB>2</SUB>> pos="-2,0!"]
@@ -183,47 +352,145 @@ tmp <- grViz(
   e4 [label = <&epsilon;<SUB>1</SUB>> pos="3,1!"]
   e5 [label = <&epsilon;<SUB>2</SUB>>pos="3,0!"]
   e6 [label = <&epsilon;<SUB>2</SUB>>pos="3,-1!"]
+  z2 [label = <&zeta;<SUB>2</SUB>>pos="0.5,0.8!"]
   # edges
-  E1->x1 
-  E1->x2 
-  E1->x3 
-  E2->x4 
-  E2->x5 
-  E2->x6 
-  E1->E2 
+  E1->x1 [color="violet"]
+  E1->x2 [color="violet"] 
+  E1->x3 [color="violet"]
+  E2->x4 [color="violet"]
+  E2->x5 [color="violet"] 
+  E2->x6 [color="violet"] 
+  E1->E2 [color="blue"] 
+  
   e1->x1
   e2->x2
   e3->x3
   e4->x4
   e5->x5
-  e6->x6}')
+  e6->x6
+  z2->E2}')
 # Convert to SVG, then save as png
 tmp = export_svg(tmp)
 tmp = charToRaw(tmp) # flatten
 rsvg_png(tmp, "img/seml.png") # saved graph as png in current working directory
 ```
-```{r , echo = FALSE, out.width = "150px",fig.align="center"}
+```{r , echo = FALSE, out.width = "180px",fig.align="center"}
 knitr::include_graphics("img/seml.png")
+```
+
+A SEM consists of two parts:
+
+1. \color{blue}**Structural model**\color{black}: Regression-like relationships among the variables, working similar to *path analysis*
+
+2. \color{violet}**Measurement model** (or latent variable model)\color{black}: Relationships between OVs and LVs, working a little differently
+
+\fontsize{5pt}{12}\selectfont
+Notes: \newline
+In this sense, we may say that a CFA model is a 'full SEM' whereas a path model is not \newline
+A CFA is a SEM with just the measurement part (without the structural model)
+
+## A new classification: From in/dependent to exo/endogenous variables
+
+\fontsize{7pt}{12}\selectfont
+In both SEM (e.g., CFA) and path models, the classic independent vs. dependent classification is replaced with a more meaningful one:
+
+```{r echo=FALSE,message=FALSE,warning=FALSE}
+library(DiagrammeR); library(DiagrammeRsvg); library(rsvg)
+tmp <- grViz(
+'digraph boxes_and_circles {
+  graph [layout = neato]
+  node [shape = oval]
+  E1 [label = <&eta;<SUB>1</SUB>> pos="-0.5,0!" color="blue"]
+  E2 [label = <&eta;<SUB>2</SUB>> pos="0.5,0!" color="violet"]
+  node [shape = box]
+  x1 [label = <x<SUB>1</SUB>> pos="-2,1!" color="violet"]
+  x2 [label = <x<SUB>2</SUB>> pos="-2,0!" color="violet"]
+  x3 [label = <x<SUB>3</SUB>> pos="-2,-1!" color="violet"]
+  x4 [label = <x<SUB>4</SUB>> pos="2,1!" color="violet"]
+  x5 [label = <x<SUB>5</SUB>> pos="2,0!" color="violet"]
+  x6 [label = <x<SUB>6</SUB>> pos="2,-1!" color="violet"]
+  node [shape = plaintext]
+  e1 [label = <&epsilon;<SUB>1</SUB>> pos="-3,1!"]
+  e2 [label = <&epsilon;<SUB>2</SUB>>pos="-3,0!"]
+  e3 [label = <&epsilon;<SUB>2</SUB>>pos="-3,-1!"]
+  e4 [label = <&epsilon;<SUB>1</SUB>> pos="3,1!"]
+  e5 [label = <&epsilon;<SUB>2</SUB>>pos="3,0!"]
+  e6 [label = <&epsilon;<SUB>2</SUB>>pos="3,-1!"]
+  z2 [label = <&zeta;<SUB>2</SUB>>pos="0.5,0.8!"]
+  # edges
+  E1->x1 
+  E1->x2 
+  E1->x3
+  E2->x4
+  E2->x5
+  E2->x6
+  E1->E2
+  e1->x1
+  e2->x2
+  e3->x3
+  e4->x4
+  e5->x5
+  e6->x6
+  z2->E2}')
+# Convert to SVG, then save as png
+tmp = export_svg(tmp)
+tmp = charToRaw(tmp) # flatten
+rsvg_png(tmp, "img/seml.png") # saved graph as png in current working directory
+```
+```{r , echo = FALSE, out.width = "180px",fig.align="center"}
+knitr::include_graphics("img/seml.png")
+```
+
+\fontsize{7.5pt}{12}\selectfont
+
+- \color{blue}**Exogenous variables**\color{black}: variables (both OVs and LVs) without a direct 'cause' from inside the model (predictors), without error estimate \newline
+
+- \color{violet}**Endogenous variables**\color{black}: variables (both OVs and LVs) directly 'caused' from inside the model (predictors & outcomes), with error estimate $\epsilon$ (OV) or $\zeta$ (LV)
+
+## A new starting point: From dataset columns to covariance matrices
+
+\begincols
+  \begincol{.5\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+The starting point of LM(ER) is a vector (or a set of vectors) of variable values, usually corresponding to one or more columns from a dataset.
+```{r , echo = FALSE}
+data( earlymath, package = "ADati" )
+rownames(earlymath) <- 1:nrow(earlymath)
+df <- earlymath[,2:5]
+```
+```{r comment=NA}
+head(df,4)
+```
+
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{7pt}{12}\selectfont
+The starting point of SEM and path models is the **covariance matrix of the observed variables**. \newline \color{blue} `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` $cov(x,y) =\sum(x_i - \overline{x})(y_i-\overline{y})/N$ \color{black}
+```{r eval=FALSE}
+cov(df[,c("MAT","QI","WM","STM")])
+```
+```{r echo=FALSE,comment=NA}
+round(cov(df[,c("MAT","QI","WM","STM")]),2)
 ```
 
   \endcol
 \endcols
 
-## Two subtypes of SEM: Path analysis & CFA
+\color{white}_ \newline \color{black}
 
-## From (in)dependent to exo/endogenous variables
+\fontsize{7.5pt}{12}\selectfont
+SEM estimate a number of parameters $\theta$ so that the **implied covariance matrix** $\hat\sum(\theta)$ (i.e., the covariance matrix predicted by the model based on the parameter estimates) is as close as possible to the **sample covariance matrix** $S$ \newline
 
-## From dataset columns to covariance matrices
-
-\fontsize{7pt}{12}\selectfont
-Whereas the starting point of LM(ER) is a vector of variable values (usually, one or more columns from a dataset), SEM starts from the **covariance matrix** of the observed variables.
+Note: even the model parameters are estimated within **matrices of parameters** `r fontawesome::fa(name = "face-flushed", height = "1em")`
 
 # Path analysis
 
 ## Path models: SEM with observed variables
 
 \fontsize{8pt}{12}\selectfont
-A path model is a pictorial representation (i.e., diagram) of a theory of variable relationships.
+A path model is a pictorial representation (diagram) of a theory of variable relationships. , which is widely used to model complex multivariate relationships (e.g., *mediation models*)
 
 ## SEM graphical notation
 
