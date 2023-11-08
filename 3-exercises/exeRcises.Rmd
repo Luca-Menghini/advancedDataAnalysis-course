@@ -334,9 +334,12 @@ lmtest::lrtest(m0,m1) # m1 is not significantly better than m0
 7. Which model has the highest standard errors? Why?
 
 ```{r echo=FALSE,eval=FALSE}
-# SOLUTION TO EXERCISE #3
+# SOLUTION TO EXERCISE #4
 
+# 1. Download and read the studentData.csv dataset
 rm(list=ls()) # emptying the work environment
+getwd() # getting where your working directory is --> copy the file in there
+itp <- read.csv("studentData.csv")
 
 # 2. explore student-level variables: No. of students? 
 table(itp$studID) # number of observations per student (1)
@@ -550,4 +553,169 @@ ICC.right # 0.64
 # 3. Does one eye variate more within-subject than the other?
 # yes, left-side pupil size variates within-subject variability is 3% higher than right-side pupil size
 # however, we don't know whether this difference might be substantial or not
+```
+
+## 8. Model fit and coefficeint interpretation {#ex8}
+
+\fontsize{8.5pt}{12}\selectfont
+
+1. Download and read the “*Innovative teaching program*” dataset `studentData.csv` (Moodle/Github, "data" folder)
+
+2. Cluster mean center the variable `anxiety` so that we can focus the related slope at the within-individual level
+
+3. Fit a null LMER model `m0` predicting `math_grade`
+
+4. Compute and interpret the ICC
+
+5. Fit a model `m1` with `math_grade` being predicted by `anxiety.cmc`
+
+6. Fit a model `m2` including a random slope for `anxiety.cmc`
+
+7. Fit a model `m3` also including group differences based on `tp` (i.e., innovative teaching program: control vs. intervention) - note: the `tp` variable should be converted as a factor
+
+8. Fit a model `m4` also including the interaction between `anxiety.cmc` and `tp`
+
+9. Inspect and interpret the `summary()` of models `m3` and `m4`
+
+10. What can we say from model `m4`? Does the innovative teaching program improve math achievement? What is the role of anxiety?
+
+```{r echo=FALSE,eval=FALSE}
+# SOLUTION TO EXERCISE #8
+
+# 1. download and read the studentData.csv dataset
+rm(list=ls()) # emptying the work environment
+getwd() # getting where your working directory is --> copy the file in there
+itp <- read.csv("studentData.csv")
+
+# 2. cluster mean center the variable `anxiety`
+head(itp) # remember: itp is the long-form dataset with individual observations (students with their math_grade and anxiety scores) are nested within clusters (classID)
+wide <- aggregate(anxiety ~ classID, data=itp, FUN=mean) # cluster means
+itp <- plyr::join(itp,wide,by="classID") # joining cluster means to the long-form dataset
+colnames(itp)[6] <- "anxiety.cm" # renaming variable to avoid double column names
+itp$anxiety.cmc <- itp$anxiety - itp$anxiety.cm # cluster mean centering: subtracting the cluster mean from original values
+
+# now we have anxiety (i.e., each student anxiety level), anxiety.cm (i.e., mean anxiety level for each class, identically repeating over all rows from the same class), and anxiety.cmc (i.e., cluster-mean-centered anxiety, where positive values indicate a student with a higher anxiety level than the average of his/her class, whereas negative values indicate students with lower anxiety levels than their class)
+
+# 3. Fit a null LMER model `m0` predicting `math_grade`
+library(lme4) # opening lme4 package
+m0 <- lmer(math_grade ~ (1|classID), data = itp)
+# note: model m0 includes the fixed intercept, the random intercept, and the residuals
+
+# 4. Compute and interpret the ICC
+tau2 <- summary(m0)$varcor$classID[[1]] # tau_00 squared = variance of the random intercept
+sigma2 <- summary(m0)$sigma^2 # sigma squared = variance of the residuals
+ICC <- tau2 / (tau2 + sigma2) # ICC = random intercept variance / total variance = random intercept variance / (random intercept variance + residual variance)
+ICC # ICC = 0.25 --> the 25% of the variance in math_grade is at the between-cluster level (i.e., math_grade mainly varies within cluster than between clusters)
+
+# 5. Fit a model `m1` with `math_grade` being predicted by `anxiety.cmc`
+m1 <- lmer(math_grade ~ anxiety.cmc + (1|classID), data = itp)
+ 
+# 6. Fit a model `m2` including a random slope for `anxiety.cmc`
+m2 <- lmer(math_grade ~ anxiety.cmc + (anxiety.cmc|classID), data = itp)
+
+# 7. Fit a model `m3` also including group differences based on `tp` (i.e., innovative teaching program: control vs. intervention) - note: the `tp` variable should be converted as a factor
+summary(itp$tp) # itp is a character vector
+itp$tp <- as.factor(itp$tp) # converting tp as a factor
+summary(itp$tp) # now it is a factor
+m3 <- lmer(math_grade ~ anxiety.cmc + tp + (anxiety.cmc|classID), data = itp)
+# note: I got a singular fit (message saying "boundary (singular) fit: see help('isSingular')") - this means that the model didn't converge well (but we ignore this for now)
+ 
+# 8. Fit a model `m4` also including the interaction between `anxiety.cmc` and `tp`
+m4 <- lmer(math_grade ~ anxiety.cmc * tp + (anxiety.cmc|classID), data = itp)
+m4 <- lmer(math_grade ~ anxiety.cmc + tp + anxiety.cmc:tp + (anxiety.cmc|classID), data = itp) # alternative way to write the same model
+
+# 9. Inspect and interpret the `summary()` of models `m3` and `m4`
+summary(m3)
+# interpretation:
+# - fixed intercept: the predicted ('mean') math_grade value when anxiety.cmc = 0 (i.e., average anxiety level within a given cluster) and tp = 0 (i.e., control group) is 7.81
+# - fixed anxiety slope: considering both control and intervention, a 1-unit increase in anxiety.cmc (i.e., higher anxiety than the class mean) predicts a decrease in math_grade by -2.35 points
+# note: we say "considering both control and intervention" because the interaction is not yet included - so the model makes a sort of average between the two groups
+# - fixed tp slope: when anxiety.cmc = 0 (i.e., average anxiety levels), the intervention group is predicted to show an average math_grade of 0.62 points higher than the average math_grade in the control group (i.e., 7.81 + 0.62 = 8.43)
+
+summary(m4)
+# interpretation:
+# - fixed intercept: the predicted ('mean') TST value when anxiety.cmc = 0 (i.e., average anxiety level) and tp = 0 (i.e., control group) is 7.85 minutes ---> same interpretation than in the additive model m3
+# - fixed anxiety slope: in the control group, a 1-unit increase in anxiety.cmc (i.e., higher anxiety than the class average) predicts a decrease in math_grade of -7.187 points
+# note: we say "in the control group" because the interaction is included in the model - so the model focuses this coefficient in the control group and quantifies the difference between the two groups in the interactive term below
+# - fixed tp slope: when anxiety.cmc = 0 (i.e., average anxiety level), the intervention group is predicted to show an average math_grade of 0.53 points higher than the average math_grade in the control group (i.e., 7.85 + 0.53 = 8.38) ---> same interpretation than in the additive model m3
+# - interaction (first interpretation): the relationship between anxiety.cmc and math_grade in the intervention group is 2.91 point-per-anxiety lower than in the control group (i.e., -1.48 + (-2.92) = -4.40); in other words, a 1-unit increase in axiety.cmc (higher anxiety than the class mean) predicts a math_grade reduction of -1.48 in the control group and a decrease of -4.40 minutes in the intervention group
+# - interaction (second interpretation): the math_grade difference between intervention and controls is 2.91 points smaller when anxiety.cmc increases by 1 unit (i.e., higher anxiety than the class mean) compared to when anxiety.cmc = 0 (i.e., average anxiety level); in other words, anxiety reduces the differences between the two groups, with students in the intervention groups getting slightly less improved scores than those in the control group
+
+# 10. What can we say from model `m4`?
+# Based on model m4, we can say that the innovative teaching program seems to increase math achievement (i.e., the t-value is 2.599, which is higher than 1.96)
+# Students with higher anxiety than the mean of their class seem to have a reduced beneficial effect of the innovative teaching program (interaction = -2.91), but such a reduction in the estimated effect is not 'substantial' (i.e., the t-value is -0.829, which is higher than -1.96)
+# So let's do the innovative teaching program in all classes! :)
+```
+
+## 9. Fixed effect visualization & effect plots
+
+\fontsize{8.5pt}{12}\selectfont
+Using models `m1`, `m2`, and `m3` from \color{blue}[exercise #8](#ex8)\color{black}:
+
+1. Visualize and interpret the **forest plot of the fixed effects** by using the `pot_model()` function from the `sjPlot` package
+
+2. Compute the 95% confidence intervals visualized in the plots that you have just generated
+
+3. Visualize and interpret the **fixed effect plots** by adding the argument `type="pred"` within the `plot_model()` function
+
+4. Which are the parameters of model `m1`? Which are those of model `m2` and model `m3`?
+
+```{r echo=FALSE,eval=FALSE}
+# SOLUTION TO EXERCISE #9
+
+# note: first run the code to solve exercise #8
+
+# 1. forest plot of the fixed effects by using the `pot_model()`
+library(sjPlot) # if not yet installed, first run install.packages("sjPlot")
+plot_model(m1) # here, we only have the coefficient estimated for anxiety.cmc, which is negative and does not include zero, so we can say that math_grade is 'significantly' lower in students with an anxiety level lower than the average anxiety level of their class
+plot_model(m2) # we can see a very similar situation: the fixed effect of anxiety is still negative and significantly lower than zero, even now that the model includes the corresponding random slope (i.e., cluster-specific variability in the slope estimate does not substantially impact the fixed slope)
+plot_model(m3) # now we have 2 fixed effects: anxiety.cmc - which is still negative but no longer significantly lower than zero - and tp - which is positive and show 95% confidence intervals excluding zero, so we can say that the difference between groups is significantly higher than zero
+
+# 2. Compute the 95% confidence intervals visualized in the plots that you have just generated
+
+# model m1
+(fixeffs <- summary(m1)$coefficients) # extracting fixed effects estimates and standard error
+(anx.slope <- fixeffs[2,1]) # fixed slope for anxiety.cmc
+(anx.slope_se <- fixeffs[2,2]) # standard error of the fixed slope for anxiety
+anx.slope - 1.96 * anx.slope_se # lower CI = -4.21
+anx.slope + 1.96 * anx.slope_se # upper CI = -4.19
+
+# model m2
+(fixeffs <- summary(m2)$coefficients) # extracting fixed effects estimates and standard error
+(anx.slope <- fixeffs[2,1]) # fixed slope for anxiety.cmc
+(anx.slope_se <- fixeffs[2,2]) # standard error of the fixed slope for anxiety
+anx.slope - 1.96 * anx.slope_se # lower CI = -6.51
+anx.slope + 1.96 * anx.slope_se # upper CI = -0.24
+
+# model m3
+(fixeffs <- summary(m3)$coefficients) # extracting fixed effects estimates and standard error
+(anx.slope <- fixeffs[2,1]) # fixed slope for anxiety.cmc
+(anx.slope_se <- fixeffs[2,2]) # standard error of the fixed slope for anxiety
+anx.slope - 1.96 * anx.slope_se # lower CI = -5.746
+anx.slope + 1.96 * anx.slope_se # upper CI = 1.03
+(tp.slope <- fixeffs[3,1]) # fixed slope for anxiety.cmc
+(tp.slope_se <- fixeffs[3,2]) # standard error of the fixed slope for anxiety
+tp.slope - 1.96 * tp.slope_se # lower CI = 0.287
+tp.slope + 1.96 * tp.slope_se # upper CI = 0.959
+
+
+# 3. Visualize and interpret the **fixed effect plots** by adding the argument `type="pred"` within the `plot_model()` function
+
+# m1
+plot_model(m1,type="pred") # the plot shows the regression line estimated for the relationship between anxiety.cmc and math_grade, showing that the latter is predicted to decrease when the former increases
+# what are the bands surrounding the line? they are the 95% confidence intervals, which are narrower in the center (i.e., more data points when anxiety.cmc is zero --> higher precision in the estimation) and wider in the tails (i.e., less data points when anxiety is highly higher or lower than the cluster mean --> lower precision in the estimation)
+# is the relationship significant? Yes because the math_grade value corresponding to the minimum anxiety.cmc value is not included in the intervals represented for the math_grade value corresponding to the maximum anxiety.cmc value, and viceversa
+
+# m2
+plot_model(m2,type="pred") # the plot is basically equivalent to the previous one but confidence intervals are overall narrower, probably due to the inclusion of the random slope that reduced the standard error associated with the slope for anxiety.cmc
+
+# m3
+plot_model(m3,type="pred")
+# the first plot is similar to the previous ones, but we can see that the inclusion of tp as an additional model predictor led to an increase of the uncertainty in parameter estimates (or a decrease in its precision), that is standard errors have became higher. This mainly affects the upper tail of the distribution, where confidence intervals become so large that they include the math_grade value corresponding to the minimum value of anxiety.cmc --> i.e., the relationship is no longer significant!
+# the second plot shows the predicted math_grade values in the two groups along with their confidence intervals. We can see that the predicted math_grade for the control group (i.e., the red dot on the left) is not included in the confidence intervals estimated for the intervention group (i.e., the dotted line on the right), and viceversa. So we can say that the two groups significantly differ in math_grade, or that the intervention group has a significantly higher math_grade than the control group
+ 
+# 4. Which are the parameters of model `m1`? Which are those of model `m2` and model `m3`?
+# model m1: fixed intercept, fixed slope for anxiety.cmc, variance of the random intercept, residual variance (i.e., 4 parameters)
+# model m2: fixed intercept, fixed slope for anxiety.cmc, variance of the random intercept, variance of the random slope, covariance between random intercept and random slope, residual variance (i.e., 6 parameters)
+# model m3: fixed intercept, fixed slope for anxiety.cmc, fixed slope for tp, variance of the random intercept, variance of the random slope, covariance between random intercept and random slope, residual variance (i.e., 7 parameters)
 ```
