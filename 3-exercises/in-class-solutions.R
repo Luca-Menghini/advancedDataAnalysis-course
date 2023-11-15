@@ -405,8 +405,8 @@ m0 <- lmer(TST ~ (1|ID), data = insa)
 # let's compute the ICC
 tau2 <- summary(m0)$varcor$ID[[1]] # tau_00 squared = variance of the random intercept
 sigma2 <- summary(m0)$sigma^2 # sigma squared = variance of the residuals
-ICC <- tau2 / (tau2 + sigma2) # ICC = random intercept variance / total variance = random intercept variance / (random interecpt variance + residual variance)
-ICC # ICC = 0.19 --> the 19% of the variance in TST is at the between-cluster level (i.e., TST mainly varies wtihin cluster than between clusters)
+ICC <- tau2 / (tau2 + sigma2) # ICC = random intercept variance / total variance = random intercept variance / (random intercept variance + residual variance)
+ICC # ICC = 0.19 --> the 19% of the variance in TST is at the between-cluster level (i.e., TST mainly varies within cluster than between clusters)
 
 # 4. Fit a model `m1` with `TST` being predicted by `stress.cmc`
 m1 <- lmer(TST ~ stress.cmc + (1|ID), data = insa)
@@ -461,8 +461,8 @@ summary(m4) # fixed effects include the fixed intercept (409.505), the fixed slo
 
 # interpretation (notice how it changes from the additive model m3 to the interactive model m4):
 # - intercept: the predicted ('mean') TST value when stress.cmc = 0 (i.e., average stress level) and insomnia = 0 (i.e., control group) is 409.505 minutes ---> same intepretation than in the additive model m3
-# - stress slope: in the control group, a 1-unit increase in stress.cmc (i.e., higher stress than usual) predicts a decrease in TST by -7.187 minutes
-# note: we say "in the control group" because the interaction is included in the model - so the model focuses this coefficeint in the control group and quantifies the difference between the two groups in the interactive term below
+# - stress slope: in the control group, a 1-unit increase in stress.cmc (i.e., higher stress than usual) predicts a decrease in TST of -7.187 minutes
+# note: we say "in the control group" because the interaction is included in the model - so the model focuses this coefficient in the control group and quantifies the difference between the two groups in the interactive term below
 # - insomnia slope: when stress.cmc = 0 (i.e., average stress levels), the insomnia group is predicted to show an average TST of 2.76 minutes higher than the average TST in the control group (i.e., 409.505 + 2.759 = 412.264 minutes) ---> same interpretation than in the additive model m3
 # - interaction (first interpretation): the relationship between stress.cmc and TST in the insomnia group is 2.923 minutes-per-stress higher than in the control group (i.e., -7.187 + 2.923 = -4.26); in other words, a 1-unit increase in stress.cmc (higher stress than usual) predicts a TST reduction of -7.187 minutes in the control group and a decrease  4.26 minutes in the insomnia group
 # - interaction (second interpretation): the TST difference between insomnia and controls is 2.923 minutes larger when stress.cmc increases by 1 unit (i.e., higher stress than usual) compared to when stress.cmc = 0 (i.e., average stress level); in other words, stress enlarges the differences beween the two groups, with insomnia sleeping further more hours than controls
@@ -470,3 +470,116 @@ summary(m4) # fixed effects include the fixed intercept (409.505), the fixed slo
 # Does `insomnia` moderate the within-individual relationship between `stress` and `TST`?
 # no, or well there is a positive interaction (2.923), such that stress.cmc decreases TST more in the control than in the insomnia group
 # yet, this interaction is not 'substantial' since the t-value is lower than 1.96
+
+# DAY 11 (Reading the Results section of a paper - pt1)
+#####################################################################################################
+
+# Juvrud et al (2021) - supplementary table S2
+# 1. Which variable identifies individual observations and which is the cluster variable?
+## individual observations are identified by trials (i.e., one observation per trial), whereas infants (subjects) identify the cluster variable
+# 2. Which predictors are at level 1 (within-cluster)? Which at level 2 (between-cluster)?
+## level-1 predictors are trial-level predictors: emotion manipulation (i.e., angry vs. fearful, etc.), SetSize (1 vs. 5), and face manipulation (familiar vs. stranger)
+## level-2 predictors are the mother ratings at the PANAS (i.e., since each infant only has 1 mother)
+## note: the table alone is not sufficient to answer these questions, i.e., you need to take a look at the paper (particularly the Stimuli and the Procedure sections)
+# 3. Do the authors report the random effects? Which ones?
+## No, the table only shows fixed effects (the authors did not report the variance of the random intercept or that of the residuals)
+# 4. Does the model include 1+ random slopes? For which predictor(s)?
+## No, the model does not include any random slope (just the random intercept).
+## note: again, this cannot be answered based on the Table because it doesn't show the random effects. You need to look at the paper (Data analysis subsection of the Method).
+## In this case, the authors say "We computed a LMM with participant as a random effect to allow for individual variability in baseline eye movement reaction times"
+## "individual variability in baseline RT" means random intercept
+## but they do not specify that the effects/relationships/differences of interest were allowed to randomly variate as well (i.e., no random slope)
+# 5. Do the authors report estimate SE, t-value, 95% CI?
+## yes, all these indices are reported in the table
+
+# DAY 12 (Infants’ pupil dilation - model fit and diagnostics)
+#####################################################################################################
+
+rm(list=ls()) # emptying the work environment
+
+# 1. Download and read the dataset
+library(osfr) # package to interact with the OSF platform
+proj <- "https://osf.io/p8nfh/" # link to the OSF project (see protocol paper & data dictionary)
+osf_download(osf_ls_files(osf_retrieve_node(proj))[5,],conflicts="overwrite") # download
+infants <- read.csv2("data/multiverse.csv",stringsAsFactors=TRUE) # read dataset
+colnames(infants)[c(18,17,19)] <- c("id","fam","pupil") # shortening variable names
+infants$pupil <- as.numeric(infants$pupil) # pupil as numeric
+
+# 2. explore the variables: mean, sd, freq., and correlations
+mean(infants$pupil)
+sd(infants$pupil)
+boxplot(infants$pupil)
+hist(infants$pupil)
+
+# computing the No. of observations per infant id
+table(infants$id) # number of individual observations per cluster
+
+# computing the No. of observations per fam category --> more or less 50/50
+table(infants$fam)
+
+# computing the No. of observation per fam and id cateogry --> all infants performed both labeled and unlabeled trials
+table(infants$fam,infants$id)
+
+# 3. Which variable identifies individual observations and which is the cluster variable? How many clusters?
+## Individual observations are the single pupul measures within each 1-sec trial (e.g., 1 each ms)
+## Clusters are infants (id). And we have 16 clusters
+ 
+## the cluster variables are the infants, indexed by the 'id' variable
+nlevels(as.factor(infants$id)) # number of clusters = 16
+
+# Which predictor(s) at lv1, which at lv2?
+# id is the only level-2 predictor (only varying across clusters)
+
+# fam is neither an individual-obs-level (level-1) variable (because it does not change within trials)
+# nor a cluster-level (level-2) variable (because it changes within clusters)
+# it is something in the middle
+
+# Fit a null LMER model m0 and compute the ICC for the variable pupil
+library(lme4)
+#      lmer(Yij   ~ (1|cluster), data) # null RI model synthax
+m0 <- lmer(pupil ~ (1|id), data=infants  ) # null model (or intercept-only model)
+sigma2 <- summary(m0)$sigma^2
+tau2 <- summary(m0)$varcor$id[[1]]
+ICC <- tau2 / (tau2 + sigma2)
+ICC 
+ICC*100 # icc in percentage
+# interpretation: pupil is a more within-level variable, it variates more within than between clusters
+# specifically, we estimated that the 31% of the variance in pupil is at the between-cluster level
+# whereas the remaining quote (1-31% = 69%) is within
+
+# 6. Fit a random-intercept model m1 that includes the fixed effect 'fam'
+m1 <- lmer(pupil ~ fam + (1|id), data=infants)
+
+# 7. Fit a random-slope model m2 (i.e., ‘free’ the random slope for fam)
+m2 <- lmer(pupil ~ fam + (fam|id), data=infants)
+
+# 8. check assumptions of model m2
+## a) normality and linearity of residuals
+hist(residuals(m2)) # they seem centered on zero (ok linearity)
+qqnorm(residuals(m2)); qqline(residuals(m2)) # they seem normally distributed (ok normality)
+## b) independence and heteroscedasticity considering the residuals
+plot(m2) # we can see a negative trend (ko independence) but no trends in the variability (ok homoscedasticity)
+## c) normality and linearity of random intercept
+RI <- ranef(m2)[[1]][,1] # extracting random intercept
+hist(RI) # centered on zero (ok linearity)
+qqnorm(RI); qqline(RI) # not very normally distributed (ko normality)
+RS <- ranef(m2)[[1]][,2] # extracting random slope
+hist(RS) # centered on zero (ok linearity)
+qqnorm(RS); qqline(RS) # more normally distributed than the random intercept (ok normality)
+## note: we cannot really evaluate linearity and normality because we have no level-2 predictors others than the cluster variable 'id'
+## d) absence multicollinearity
+car::vif(m2) # I got this error: Error in vif.merMod(m2) : model contains fewer than 2 terms. Why so?
+## that's because we only have 1 predictor (fam) so we cannot talk about excessively correlated predictors (that would require having 2+ predictors)
+## e) absence of influential cases
+## first, let's inspect the Cook's distance of each individual observation
+boxplot(cooks.distance(m2)) # we can see 1/2 individual observations with extreme Cook's distance (we should try removing them)
+##second, let's inspect the Cook's distance of each cluster
+library(influence.ME)
+plot(influence(m2, group="id"), which="cook") # we can see that participant #29 has an extreme Cook's distance (we should try removing her/him)
+
+# 9. Print, visualize, & interpret the fixed effects estimated by model m2: Is hypothesis HP1 confirmed?
+# not yet done: come tomorrow to get the answer! :)
+
+
+# DAY 12 (Reading the Results section of a paper - pt2)
+#####################################################################################################
