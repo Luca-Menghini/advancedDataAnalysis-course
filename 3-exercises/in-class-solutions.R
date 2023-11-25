@@ -474,23 +474,79 @@ summary(m4) # fixed effects include the fixed intercept (409.505), the fixed slo
 # DAY 11 (Reading the Results section of a paper - pt1)
 #####################################################################################################
 
+# Graham et al (2020) - Table 3
+# ____________________________________________________________________________
+
+# 1. Which variable identifies individual observations and which is the cluster variable?
+## individual observations are identified by children (i.e., one observation per child), whereas neighborhoods identify the cluster variable
+## note: this can be inferred from the Random Effects section of the table or by looking at the Analytical strategy section of the paper 
+
+# 2. Which predictors are at level 1 (within-cluster)? Which at level 2 (between-cluster)?
+## level-1 predictors are those shown under the 'Individual characteristics' section of the table: Race, Sex, Family type, Income, Mother's educational attainment, Perceived neighborhood disorder
+## level-2 predictors are those shown under the 'Neighborhoods characteristics' section of the table: Percent non-Hispanic Black,  Percent foreign born, Percent female head of household with children, Percent age 25+ with less than high school degree, Percent age 25+ with a master's degree or greater, Neighborhood economic stress scale	
+
+# 3. Do the authors report the random effects? Which ones?
+## Yes, the authors report the random intercept variance ("Variance among neighborhoods") and the residual variance ("Variance among individuals")
+
+# 4. Does the model include 1+ random slopes? For which predictor(s)?
+## No, the model does not include any random slope (just the random intercept).
+
+# 5. Do the authors report estimate SE, t-value, 95% CI?
+## no, the table only reports estimate and SE, but no t-values or 95% CI
+
+
+# Ersan & Rodriguez (2020) - Table 5
+# ____________________________________________________________________________
+
+# 1. Which variable identifies individual observations and which is the cluster variable?
+## individual observations are identified by students (i.e., one observation per student), whereas schools idenfity the cluster variable
+## note: you need to take a look at the paper to answer that (particularly the Analysis subsection of the method: "Our models have two levels: ...")
+
+# 2. Which predictors are at level 1 (within-cluster)? Which at level 2 (between-cluster)?
+## level-1 predictors are student-level predictors: ses (socioeconomic status), Engage, Litnum, Liking, and Preschool
+## level-2 predictors are M_ses (mean ses in each school) Instruction, Readiness, Conditions, Emphasis, and Safe
+## How to get that from Table 5: all level-1 predictor coefficients are reported with the Greek letter 'beta' and are decomposed into a 'slope intercept' (fixed slope) and a random slope (under the "random effects" section of the table), whereas level-2 predictors don't have the 'beta' coefficient and don't variate within cluster (note: only level-1 variables can variate within clusters)
+## How to get that more easily: just look at model 4 in Table 2 :)
+
+# 3. Do the authors report the random effects? Which ones?
+## Yes, the table reports the following random coefficients: the variance of the random intercept (Mean achievement, u_0j), the variance of the random slope for any level-1 predictor (u_1j, u_2j, u_3j, u_4j), and the residual variance (r_ij)
+## Yet, the table does not seem to report the correlations among random effects (i.e., the correlation between the random intercept and any random slope, the correlations among random slopes)
+
+# 4. Does the model include 1+ random slopes? For which predictor(s)?
+## Yes, the models include all possible random slopes, i.e., the random slope of any level-1 predictor included in a given model
+## e.g., since no level-1 predictors are included in Model 1, no random slope are included and reported
+## e.g., in Model 2, ses is the only level-1 predictor, so only its random slope is included and reported
+## e.g., in Model 4, four level-1 predictors are included and all random slopes are included and reported
+
+# 5. Do the authors report estimate SE, t-value, 95% CI?
+## No, the table only reports coefficient and standard error
+
+
 # Juvrud et al (2021) - supplementary table S2
+# ____________________________________________________________________________
+
 # 1. Which variable identifies individual observations and which is the cluster variable?
 ## individual observations are identified by trials (i.e., one observation per trial), whereas infants (subjects) identify the cluster variable
+## note: you need to take a look at the paper (method section) to answer this
+
 # 2. Which predictors are at level 1 (within-cluster)? Which at level 2 (between-cluster)?
 ## level-1 predictors are trial-level predictors: emotion manipulation (i.e., angry vs. fearful, etc.), SetSize (1 vs. 5), and face manipulation (familiar vs. stranger)
 ## level-2 predictors are the mother ratings at the PANAS (i.e., since each infant only has 1 mother)
 ## note: the table alone is not sufficient to answer these questions, i.e., you need to take a look at the paper (particularly the Stimuli and the Procedure sections)
+
 # 3. Do the authors report the random effects? Which ones?
 ## No, the table only shows fixed effects (the authors did not report the variance of the random intercept or that of the residuals)
+
 # 4. Does the model include 1+ random slopes? For which predictor(s)?
 ## No, the model does not include any random slope (just the random intercept).
 ## note: again, this cannot be answered based on the Table because it doesn't show the random effects. You need to look at the paper (Data analysis subsection of the Method).
 ## In this case, the authors say "We computed a LMM with participant as a random effect to allow for individual variability in baseline eye movement reaction times"
 ## "individual variability in baseline RT" means random intercept
 ## but they do not specify that the effects/relationships/differences of interest were allowed to randomly variate as well (i.e., no random slope)
+
 # 5. Do the authors report estimate SE, t-value, 95% CI?
 ## yes, all these indices are reported in the table
+
 
 # DAY 12 (Infants’ pupil dilation - model fit and diagnostics)
 #####################################################################################################
@@ -502,6 +558,10 @@ library(osfr) # package to interact with the OSF platform
 proj <- "https://osf.io/p8nfh/" # link to the OSF project (see protocol paper & data dictionary)
 osf_download(osf_ls_files(osf_retrieve_node(proj))[5,],conflicts="overwrite") # download
 infants <- read.csv2("data/multiverse.csv",stringsAsFactors=TRUE) # read dataset
+colnames(infants)[c(18,17,19)] <- c("id","fam","pupil") # shortening variable names
+infants$pupil <- as.numeric(infants$pupil) # pupil as numeric
+
+infants <- read.csv2("infantPupil.csv") # alternatively you can download the data from Moodle/Github and read it from you WD
 colnames(infants)[c(18,17,19)] <- c("id","fam","pupil") # shortening variable names
 infants$pupil <- as.numeric(infants$pupil) # pupil as numeric
 
@@ -557,8 +617,10 @@ m2 <- lmer(pupil ~ fam + (fam|id), data=infants)
 ## a) normality and linearity of residuals
 hist(residuals(m2)) # they seem centered on zero (ok linearity)
 qqnorm(residuals(m2)); qqline(residuals(m2)) # they seem normally distributed (ok normality)
-## b) independence and heteroscedasticity considering the residuals
+
+## b) independence and homoscedasticity considering the residuals
 plot(m2) # we can see a negative trend (ko independence) but no trends in the variability (ok homoscedasticity)
+
 ## c) normality and linearity of random intercept
 RI <- ranef(m2)[[1]][,1] # extracting random intercept
 hist(RI) # centered on zero (ok linearity)
@@ -567,6 +629,7 @@ RS <- ranef(m2)[[1]][,2] # extracting random slope
 hist(RS) # centered on zero (ok linearity)
 qqnorm(RS); qqline(RS) # more normally distributed than the random intercept (ok normality)
 ## note: we cannot really evaluate linearity and normality because we have no level-2 predictors others than the cluster variable 'id'
+
 ## d) absence multicollinearity
 car::vif(m2) # I got this error: Error in vif.merMod(m2) : model contains fewer than 2 terms. Why so?
 ## that's because we only have 1 predictor (fam) so we cannot talk about excessively correlated predictors (that would require having 2+ predictors)
@@ -578,8 +641,149 @@ library(influence.ME)
 plot(influence(m2, group="id"), which="cook") # we can see that participant #29 has an extreme Cook's distance (we should try removing her/him)
 
 # 9. Print, visualize, & interpret the fixed effects estimated by model m2: Is hypothesis HP1 confirmed?
-# not yet done: come tomorrow to get the answer! :)
+summary(m2)$coefficients # fixed effects with SE and t-values
+# we can say that the difference between labeled and unlabeled (-579) is not 'substantial' because |t| < 1.96
+library(sjPlot)
+plot_model(m2) # forest plot: we can say that the difference between labeled and unlabeled is not significant because zero is included in the confidence intervals 
+plot_model(m2,type="pred",terms="fam") # effect plot: we can say that the two conditions do not significantly differ because the mean of the first one is included in the confindence intervals of second one, and viceversa
 
 
-# DAY 12 (Reading the Results section of a paper - pt2)
+# DAY 13 (Infants’ pupil dilation model comparison)
 #####################################################################################################
+
+# 1. Fit models m0, m1, and m2 as in slide #66
+## see and run the code from the previous exercise
+
+# 2. We want to account the habituation effect on pupil dilation: fit a third model m3 that also includes time (time in ms over the trial), and a fourth model m4 including session (reflecting time on task)
+m3 <- lmer(pupil ~ fam + time + (fam|id), data=infants)
+m4 <- lmer(pupil ~ fam + time + session + (fam|id), data=infants)
+
+## note: I got a Warning message: Some predictor variables are on very different scales: consider rescaling 
+## Warning messages are not like Errors (i.e., only the latter means that the code did not work), but we should be aware of their meanings
+## In this case, it says that the variable time is measured on a very different scale (from 0 to 15776 milliseconds) than the variable fam (with just 2 levels) and session (from 1 to 9)
+summary(infants[,c("fam","time","session")]) # summary of the range of the variable scales
+## because of these huge scale differences, some parameters might be difficult to interpret (e.g., because they are like on the 0.000001 scale)
+summary(m4)$coefficients # note how small is the Estimate for time and its standard error, this is due to the very large scale of this variable compared to other variables
+## if these were our real analyses, we might have rescaled time, e.g., to express it in seconds rather than milliseconds
+## just for curiosity, let's take a look on how that would change the coefficients:
+infants$time_sec <- infants$time/1000 # time in seconds
+m4_sec <- lmer(pupil ~ fam + time_sec + session + (fam|id), data=infants) # refitting model m4 (note that now I'm not getting the Warning message)
+summary(m4_sec)$coefficients # now Estimate and Std. Error values are much more readable
+## note: in the original model, Estimate for time is the predicted change in pupil dilation for a 1-millisecond increase in time, whereas in model m4_sec is the predicted change for a 1-second increase in time!
+
+# 3. Evaluate model m4 diagnostics
+## normality and linearity of residuals
+hist(residuals(m4)) # normality: not perfectly symmetric but almost there; linearity: the distribution is centered on zero (ok)
+qqnorm(residuals(m4)); qqline(residuals(m4)) # qqplot shows some strong deviation from normality (if these were our real data we should have considered alternative family distributions, e.g., Gamma)
+## homoscedasticity and independence of residuals
+plot(m4) # the plot of residuals vs. fitted (i.e., predicted) values clearly shows a violation of the assumption of independence because we can see a clear negative trend --> this model might be wrong!
+# in contrast, we don't see strong deviations from homoscedasticity (i.e., the range/spreadness of the residuals is quite uniform over the range of fitted values)
+## optional: let's check the same assumptions by considering each predictor
+boxplot(residuals(m4)~infants$fam) # fam: no trends, no different variance (ok)
+plot(residuals(m4)~infants$time) # time: positive trend, lower variance for higher time values (ko)
+boxplot(residuals(m4)~infants$session) # time: no strong linear trend (ok) but some sessions (2 and 8) have lower variance (not ok with homoscedasticity)
+## we can conclude that the homoscedasticity and the independence are not met due to time and session 
+## extracting random effects and wide dataset
+wide <- infants[!duplicated(infants$id),] # wide dataset (1 row per infant)
+RI <- ranef(m4)[[1]][,1] # r. intercept
+RS <- ranef(m4)[[1]][,2] # r. slope
+## normality and linearity of random effects
+qqnorm(RI); qqline(RI) # random intercept shows some deviation from normality but is ok. It is also centered on zero (linearity ok)
+qqnorm(RS); qqline(RS) # more or less the same for the random slope
+## homoscedasticity and independence of random effects
+## In this case, it make no sense to plot random effects against predictors because all predictors are at level 1 and cannot be averaged by cluster (infant)
+## that is, it make no sense to compute the average session or time per infant; it also does not make sense to 'average' the fam variable by infant
+## so we don't need to test this assumption here
+
+## note: in real analyses, we should have found different ways to model these data (e.g., Gamma GLMER, GAM) because diagnostics are bad
+## but here we don't care about it because it's just an exercise :)
+
+# 4. Compare all models with the likelihood ratio test and the AIC: which is the best model?
+library(lmtest)
+lrtest(m0,m1,m2,m3,m4) # likelihood ratio test: all comparisons are significant, thus we select the most complex model m4
+## note: that means that the inclusion of each predictor is associated with a significant increase in the model likelihood compared to the model without that predictor
+## so all predictors significantly contribute to the model fit (its ability to predict data similar to the observed data)
+AIC(m0,m1,m2,m3,m4) ## AIC: the best model (with the lowest AIC) is model m4
+## note: here is how to select the lowest value: AIC(m0,m1,m2,m3,m4)[which(AIC(m0,m1,m2,m3,m4)$AIC==min(AIC(m0,m1,m2,m3,m4)$AIC)),]
+
+# 5. Print, visualize, and interpret the coefficients estimated by the selected model: which fixed effects are significant?
+summary(m4)$coefficients # here's the summary table, it shows t values higher than 1.96 for the intercept and the session slope, and a t value lower than -1.96 for time
+## although t-values are not enough to establish statistical significance, we can say that pupil dilation seems to 'substantially' decrease over time and 'substantially' increase over session, whereas the unlabeled-labeled difference is not 'substantial'
+library(sjPlot)
+plot_model(m4) # the forest plot shows a very small (but 'significant') negative effect of time (red = negative) and positive effect of session (blue = positive)
+## note: only confidence intervals of fam can be clearly shown because they are wide (so wide that they include zero, meaning that the differences by fam are not 'significant')
+## in contrast, the confidence intervals for time and session are very small (basically not visible in the plot); that's because we used very different scales for the predictors
+plot_model(m4,type="pred")[1] # effect plot of fam: since each mean (dots) is included in the other condition confidence intervals (dashed lines), we can conclude that the difference is not 'significant'
+plot_model(m4,type="pred")[2] # effect plot of time: since the mean effect (red line) when time is 0 is not included in the confidence intervals (pink band) corresponding to higher time values, and viceversa, we can conclude that this is a 'significant' negative relationship
+plot_model(m4,type="pred")[3] # effect plot of session: here, confidence intervals are very wide and the effect of session does not look 'significant' at all
+## note: the third plot is inconsistent with the summary table above: this is another confirmation that computing confidence intervals from LMER models can be very unreliable (see slide #69)
+
+# 6. Print and interpret the coefficient of determination R2 of the selected model
+library(MuMIn)
+r.squaredGLMM(m4)
+## marginal R2: fixed effects only predict the 1.6% of the variance in pupil dilation
+## conditional R2: fixed and random effects together predict the 28.8% of the variance in pupil dilation
+
+
+# DAY 13 (Reading the Results section of a paper - pt2)
+#####################################################################################################
+
+# Graham et al (2020) - Table 3
+# ____________________________________________________________________________
+
+# 1. Did the authors compare multiple models? Based on which criteria?
+## yes, the table shows 5 models, which are compared based on the AIC and the likelihood ratio test (chi2) - see the bottom of the table
+
+# 2. Do the authors report the likelihood ratio test of their models? Which is the best model?
+## yes, they report the likelihood ratio test, supporting Model 5 as the best model (i.e., the best model is the most complex model showing a significant 'chi2' statistics; since here all models have a significant 'chi2', as shown by the asterisks ***, we can conclude that the best model is the last model, model 5)
+
+# 3. Do the authors report the AIC and BIC indicators? Which is the best model?
+## the authors only report the AIC, supporting Model 5 a the best model (i.e., the model with the lowest AIC value: 151,848)
+
+# 4. Do the authors report the statistical significance of the estimated parameters? Which fixed effect is significant?
+## yes, they indicate the statistical significance of the parameters by using the asterisk
+## for instance, in model 1 there is a significant intercept and a significant slope for Race (all levels significantly differ from the reference) and sex but not for Family type
+
+# 5. Do the authors report the coefficient of determination? If yes, what proportion the y variance is explained by the models?
+## no, coefficeints of determinations are not reported in the table
+
+
+# Ersan & Rodriguez (2020) - Table 5
+# ____________________________________________________________________________
+
+# 1. Did the authors compare multiple models? Based on which criteria?
+## yes, the table shows 5 models, which are compared based on the explained variance (R squared) - see the bottom of the table
+
+# 2. Do the authors report the likelihood ratio test of their models? Which is the best model?
+## no, the table don't report the likelihood ratio test statistics
+
+# 3. Do the authors report the AIC and BIC indicators? Which is the best model?
+## no, the table don't report the AIC or the BIC
+
+# 4. Do the authors report the statistical significance of the estimated parameters? Which fixed effect is significant?
+## yes, they wrote "All fixed-effects parameters were significant at the alpha level of .01, except (†)" (see table notes)
+## so let's say they highlighted non-significant parameters because most of them were significant
+
+# 5. Do the authors report the coefficient of determination? If yes, what proportion the y variance is explained by the models?
+## not exactly, they report an estimated of the percent explained variance (which is the coeff. of determination) at each level, although they do not explicitly refer to the R2 coefficient of determination
+## the models explain from 4 to 18% of level-1 variance and from 16 to 72% of level-2 variance, respectively
+
+
+# Juvrud et al (2021) - supplementary table S2
+# ____________________________________________________________________________
+
+# 1. Did the authors compare multiple models? Based on which criteria?
+## no, the table only shows 1 model (and the paper does not mention any comparison)
+
+# 2. Do the authors report the likelihood ratio test of their models? Which is the best model?
+## no, the table don't report the likelihood ratio test statistics
+
+# 3. Do the authors report the AIC and BIC indicators? Which is the best model?
+## no, the table don't report the AIC or the BIC
+
+# 4. Do the authors report the statistical significance of the estimated parameters? Which fixed effect is significant?
+## yes, the table report the exact p-values under the "Sig." column
+# the significant fixed effects are those with a p-value lower than 0.05 (or with 95% CI excluding zero, but the two information are equivalent): Blurred, Happy*SetSize5, Blurred*SetSize5, and Fearful*PANAS*SetSize5,  
+
+# 5. Do the authors report the coefficient of determination? If yes, what proportion the y variance is explained by the models?
+## no, the table does not report the coefficient of determination (and the paper does not mention it)
