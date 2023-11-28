@@ -22,7 +22,7 @@ output:
     theme: Singapore
     slide_level: 2
     includes:
-      in_header: mystyle_ex.tex
+      in_header: mystyle.tex
 ---
 
 ```{r setup, include=FALSE}
@@ -718,4 +718,1045 @@ plot_model(m3,type="pred")
 # model m1: fixed intercept, fixed slope for anxiety.cmc, variance of the random intercept, residual variance (i.e., 4 parameters)
 # model m2: fixed intercept, fixed slope for anxiety.cmc, variance of the random intercept, variance of the random slope, covariance between random intercept and random slope, residual variance (i.e., 6 parameters)
 # model m3: fixed intercept, fixed slope for anxiety.cmc, fixed slope for tp, variance of the random intercept, variance of the random slope, covariance between random intercept and random slope, residual variance (i.e., 7 parameters)
+```
+
+# LMER recap
+
+## Summary exercises
+
+\fontsize{8.5pt}{12}\selectfont
+Exercises #10 and #11 summarize almost all contents that we have seen in Part 1. They are related to the same case study but the former includes some questions similar to those that you might find in the exam, whereas the latter requires you to analyze a multilevel dataset in R.
+
+\fontsize{7.5pt}{12}\selectfont
+Note: The reason for which I'm doing most exercises with R is because I find it the most effective way to consolidate the course contents: by concretely analyzing the data, you should better understand the theoretical stuff we see during lectures. However, it is understandable that you also want to get how the exam will be.
+
+## 10. Exam-like exercise: Internet abuse (1/16)
+
+\fontsize{7pt}{12}\selectfont 
+
+\color{blue}
+
+A research is conducted within a project on internet abuse prevention in primary-school children. Data were collected before and after a four-week intervention aiming at (1) reducing children **internet use** (IU), (2) improving the effectiveness of the **parental control** in reducing IU, controlling for children **sex**. Data collection involved 416 children from 14 classes within 7 schools (i.e., two classes per school; one that undertook the intervention and the other that did not). 
+
+\color{black}
+
+1. __What is the problem in analyzing such data with linear models (LM)?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) There is *no problem* in analyzing such data with LM 
+B) The local dependencies due to the nested data structure violate the LM assumption of *independence between observations*, possibly biasing the *standard errors*
+C) The local dependencies due to the nested data structure violate the LM assumption of *homoscedasticity*, possibly biasing the *t-values*
+D) The local dependencies due to the nested data structure violate the LM assumption of *independence between errors and predictors*, possibly biasing the *parameter estimates*
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: B
+```
+
+\fontsize{5pt}{12}\selectfont
+Source: Adapted from Pastore (2021). Analisi dei dati in contesti di comunità
+
+## 10. Exam-like exercise: Internet abuse (2/16)
+
+\fontsize{7pt}{12}\selectfont
+
+2. __Why is this a nested data structure?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) Because *schools* are nested *within* children
+B) Because *children* are nested *between* schools
+C) Because the *correlations* among children within the *same school* might be stronger than those between children from *different schools*
+D) Because the *correlations* between schools can bias the estimation of the *standard errors*
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: C
+## A is wrong because it is children that are nested within schools
+## B is wrong because children are nested *within* schools, not between
+## C is right and reports the definition of 'local dependency'
+## D is wrong because it is the correlations *within* schools that can bias the estimation of the standard errors
+``` 
+
+\fontsize{7pt}{12}\selectfont
+
+3. __Which is the dependent variable?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) Internet use
+B) Children
+C) Parental control
+D) Intervention
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: A 
+## i.e., the study description says that the intervention aims at reducing internet use
+``` 
+
+## 10. Exam-like exercise: Internet abuse (3/16)
+
+\fontsize{7pt}{12}\selectfont
+
+4. __Which is the cluster variable?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) Children
+B) Classes
+C) Schools
+D) Both classes and schools can be considered cluster variables
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: D
+## i.e., both classes and schools can indeed produce local dependencies in children scores
+```
+
+\fontsize{7pt}{12}\selectfont
+
+5. __How many clusters and individual observations?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) 7 clusters, 416 individual observations
+B) 7 clusters, 14 individual observations
+C) 416 clusters, 7 individual observations
+D) 416 clusters, 14 individual observations
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: A
+## i.e., although both schools (N=7) and classes (N=14) can be seen as clusters, the only options with a compatible number of clusters (7 or 14) are option (A) and (B), whereas the only option with the right number of individual observation is option (A)
+```
+
+## 10. Exam-like exercise: Internet abuse (4/16)
+
+\fontsize{7pt}{12}\selectfont
+
+6. __Which variables are at the individual-observation level (level 1)?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) All variables are at the individual-observation level
+B) No variables are at the individual-observation level
+C) Internet use, intervention, and sex
+D) Internet use, parental control, and sex
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: D
+## i.e., the intervention is implemented at the class level (level 2)
+## level-1 variables are all variables that variate across children within classes
+```
+
+\fontsize{7pt}{12}\selectfont
+
+7. __Which variables are at the cluster level (level 2)?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) All variables are at the cluster level
+B) No variables are at the cluster level
+C) Intervention
+D) Internet use, parental control, and sex
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: B
+## None of the variable is at the school level
+## note: intervention is at the class level (it says "that one class undertook the intervention and one did not", within each school)
+```
+
+## 10. Exam-like exercise: Internet abuse (5/16)
+
+\fontsize{7pt}{12}\selectfont
+
+Here are the first 4 rows of the dataset. `ID` = children identifier, `sex` = children sex ("f" or "m"), `phase` = intervention phase ("pre" or "post"), `IU` = internet use, `CG` = parental control, `school` = school identifier.
+```{r echo=FALSE}
+# reading data
+rm(list=ls()) # emptying the workspace
+load("data/attiva.RData") # loading data
+```
+```{r }
+head(attiva,4)
+```
+
+8. __What kind of dataset are we looking at?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) This is the wide-form dataset, with one row per class
+B) This is the long-form dataset, with one row per children 
+C) This is the wide-form dataset, with multiple rows per class
+D) This is the long-form dataset, with one row per school
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: B
+## option A is wrong because this is not the wide-form dataset and we have multiple rows per class
+## option B is right because this is the long-form dataset and we have one row per children
+## option C is wrong because this is not the wide-form dataset, although we have multiple row per class
+## option D is wrong because this dataset has multiple rows per school, although it is called 'long-form' dataset
+```
+
+## 10. Exam-like exercise: Internet abuse (6/16)
+
+```{r echo=FALSE,results='hide',warning=FALSE,message=FALSE}
+# cluster mean centering and level-specific correlations
+wide <- aggregate(attiva$IU, by=list(attiva$school), FUN=mean) # computing mean IU by school (cluster means)
+colnames(wide) <- c("school","IU.cm") # renaming variables
+wide$CG.cm <- aggregate(attiva$CG, by=list(attiva$school), FUN=mean)[,2] # adding cluster means of CG (note: I'm taking the second column [,2] from the output of the aggregate function) 
+wide # showing wide-form dataset
+library(plyr)
+attiva <- join(attiva,wide,by="school") # joining cluster means to long-form dataset
+attiva$IU.cmc <- attiva$IU - attiva$IU.cm # cluster mean centering IU
+attiva$CG.cmc <- attiva$CG - attiva$CG.cm # cluster mean centering CG
+
+# computing level-specific correlations
+rb <- cor(wide$IU.cm,wide$CG.cm) # cor between (-0.10)
+rw <- cor(attiva$IU.cmc,attiva$IU.cm) # cor within (0.00000000 ... 5) - basically zero
+```
+
+\fontsize{7pt}{12}\selectfont
+
+9. __The between-school correlation between internet use and parental control is `r round(rb,2)` while the within-school correlation is `r round(rw,2)`. What does that mean?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) A negative (weak) correlation is estimated between school means of internet use and parental control
+B) A negative (weak) correlation is estimated between children internet use and parental control within the same school
+C) Neither A nor B are true
+D) Both A and B are true
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: A
+## option B is wrong because that is the definition of the within-level correlation, which is zero
+## option C is wrong because option A is true (i.e., r = -0.10 is a weak negative correlation but it is not exactly zero)
+## option D is wrong because option C is false
+```
+
+\fontsize{7pt}{12}\selectfont
+
+10. __How can we compute within-school (level-1) correlations?__
+
+A) We correlate the raw children scores from the long-form dataset
+B) We correlate the school mean scores from the wide-form dataset
+C) We correlate the cluster-mean-centered scores from the long-form dataset
+D) We correlate the grand-mean-centered scores from the wide-form dataset
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: C
+## option A is wrong because we need to grand-mean-center the variables before correlating them
+## option B is wrong because that is how we compute level-2 correlations
+## option D is wrong because that is another way to compute level-2 correlations
+```
+
+## 10. Exam-like exercise: Internet abuse (7/16)
+
+```{r echo=FALSE,results='hide'}
+# null lmer model
+library(lme4)
+fit <- lmer(IU ~ (1|school), data=attiva) # fitting null LMER model
+
+# extracting tau2_00 and sigma2
+tau2 <- summary(fit)$varcor$school[[1]] # extracting the variance of the random intercept
+sigma2 <- summary(fit)$sigma^2 # extracting the residual variance
+
+# computing ICC
+icc.school <- tau2 / (tau2 + sigma2) # computing ICC
+```
+
+\fontsize{7pt}{12}\selectfont
+
+11. __The intraclass correlation coefficeint of internet use (IU) is `r round(icc.school,2)`. What does that mean?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) IU mainly variates between schools (95%) than within school (5%)
+B) IU mainly variates within school (95%) than between schools (5%)
+C) IU equally variates between and within school (50%)
+D) None of the previous options is correct
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: B
+## option A is wrong because the ICC tell us the proportion of between-cluster variability over the total variability --> an ICC of 0.05 means that the 5% of the variability is at the between-cluster level
+## option C is wrong because the ICC is different than 0.50
+## option D is wrong because option B is correct
+```
+
+\fontsize{7pt}{12}\selectfont
+
+12. __How can we estimate the ICC of a variable?__
+
+A) We divide the estimate of its between-cluster variability by its estimated total variability
+B) We subtract the estimate of its between-cluster variability from its estimated total variability
+C) We divide the estimate of its within-cluster variability by its estimated total variability
+D) We subtract the estimate of its within-cluster variability from its estimated total variability
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: A
+## option A is correct because ICC = tau2_00 (variance of the random intercept, estimate of the between-cluster variability) / (tau2_00 + sigma2) (estimate of the total variability)
+## option B is wrong because the former is *divided* by the latter, not *subtracted*
+## option C is wrong because tau2_00 is the estimate of the *between*-cluster variability, not *within*
+## option D is wrong because of the same reasons reported for option B and C
+```
+
+## 10. Exam-like exercise: Internet abuse (8/16)
+
+\fontsize{7pt}{12}\selectfont
+
+13. __Which of the following models is in line with the research goals? (i.e., evaluating intervention reducing internet use (IU) and improving the effectiveness of parental control, accounting for sex)__
+
+\fontsize{6pt}{12}\selectfont
+
+A) $IU_{ij} = \beta_{1}Intervention + \beta_{2j}Control + \beta_3Intervention\times Control + \beta_{4j}Sex$
+B) $IU_{ij} = \beta_{0j} + \beta_{1}Intervention + \beta_{2j}Control + \beta_{3j}Sex + \epsilon_{ij}$
+C) $Control_{ij} = \beta_{0j} + \beta_{1}Intervention + \beta_{2j}IU + \beta_3Intervention\times IU + \beta_{4j}Sex + \epsilon_{ij}$ 
+D) $IU_{ij} = \beta_{0j} + \beta_{1}Intervention + \beta_{2j}Control + \beta_3Intervention\times Control + \beta_{4j}Sex + \epsilon_{ij}$ 
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: D
+## A is wrong because it includes neither the intercept nor the error term
+## B is wrong because it does not include the interaction between intervention and control (i.e., second aim of improving the effectiveness of parental control)
+## C is wrong because the outcome variable is Control rather than IU
+## D is correct: we have the intercept and the errors, we have both the main effect of Intervention (goal 1) and its interaction with parental control (goal 2), and we have sex as a covariate
+```
+
+\fontsize{7pt}{12}\selectfont
+
+14. __How many fixed coefficients are estimated by that model?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) 4: 1 intercept, 3 slopes (intervention, parental control, and sex)
+B) 5: 1 intercept, 4 slopes (intervention, parental control, their interaction, and sex)
+C) 6: 1 fixed intercept, 1 variance of the random intercept, 4 slopes (intervention, parental control, their interaction, and sex)
+D) 7: 1 fixed intercept, 1 variance of the random intercept, 4 slopes (intervention, parental control, their interaction, and sex), 1 residual variance
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: B
+## A is wrong because it does not include the interaction between parental control and intervention
+## C is wrong because the random intercept is not a fixed coefficients
+## D is wrong because both the random intercept and the residual variances are not fixed coefficients
+```
+
+## 10. Exam-like exercise: Internet abuse (9/16)
+
+\fontsize{7pt}{12}\selectfont
+
+Here are the results of a first model that only tests whether the intervention was able to reduce internet use, controlling for sex.
+```{r echo=FALSE,warning=FALSE,message=FALSE, comment=NA, results=FALSE}
+fit1 <- lmer(IU ~ phase + CG + sex + (CG|school), data=attiva)
+
+# model summary from sjPlot
+library(sjPlot); library(html2latex)
+tab_model(fit1,show.se=TRUE, collapse.se=TRUE,string.est="b (SE)",show.r2=FALSE,dv.labels="",show.icc=FALSE,file = "temp1.html")
+
+# from html to latex
+html2pdf(filename = "temp1.html",table_width = 13, 
+         silent = TRUE, style = TRUE, build_pdf = TRUE, clean = TRUE, name_table = "table1")
+
+# from latex to Rmarkdown
+tex2Rmd("temp1.tex",output_file="table1.txt")
+```
+
+\fontsize{6pt}{12}\selectfont
+`r readr::read_file("table1.txt")`
+
+\fontsize{5pt}{12}\selectfont
+Note: `sjPlot` calls random effect variances $\tau$ rather than $\tau^2$
+
+## 10. Exam-like exercise: Internet abuse (10/16)
+
+\fontsize{7pt}{12}\selectfont
+Considering the table shown in the previous slide:
+
+15. __Was the intervention (variable `phase`) effective in reducing internet use?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) No, because the coefficient $\beta$ = 1.96 is positive
+B) Yes, because the coefficient $\beta$ = 1.96 is not lower than *t* = 1.96
+C) No, because the coefficient $\beta$ = -0.98 is lower than *t* = -1.96
+D) Yes, because the coefficient $\beta$ = -0.98 has a *p*-value lower than 0.05
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: D
+## option A is wrong because it is referred to the coefficient estimated for CG rather than that estimated for phase
+## option B is wrong for the same reason of option A and because it compares the coefficient estimate with the t-value, but they are not the same thing
+## option C is wrong because it compares the coefficient estimate with the t-value, but they are not the same thing
+## option D is correct because it is based on a recognized inferential criterion (i.e., the p-value), which indicates a significant effect (p < 0.05)
+```
+
+\fontsize{7pt}{12}\selectfont
+
+16. __What random effects are reported in the table?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) Residual variance, random intercept (RI), and random slope (RS)
+B) Residual variance, RI, RS, and correlation between RI and RS
+C) Residual variance, RI, RS, and ICC
+D) Residual variance, RI, RS, correlation between RI and RS, and ICC
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: B
+## option A is wrong because it does not include the correlation (rho) between RI and RS
+## option C is wrong for the same reason, and because the ICC is not a random effect
+## option D is wrong because ICC is not a random effect
+```
+
+## 10. Exam-like exercise: Internet abuse (11/16)
+
+\fontsize{7pt}{12}\selectfont
+Considering the table shown in the previous slide:
+
+17. __How can we interpret the coefficient estimated for `phase`?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) In the post-intervention group of children, the model predicts an IU value 0.98 points lower than in the pre-intervention group
+B) For a one-unit increase in `phase`, the model predicts a decrease in IU by 0.98
+C) In the post-intervention group of children, the model predicts an IU value 0.98 points higher than in the pre-intervention group
+D) For a one-unit increase in `phase`, the model predicts an increase in IU by 0.98
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: A
+## option A and D are wrong because they interpret phase as it was a quantitative predictor, whereas it is a categorical predictor
+## option C is wrong because the coefficient (-0.98) indicates lower IU in the post than in the pre-intervention group
+```
+
+\fontsize{7pt}{12}\selectfont
+
+18. __If we trust the p-values, which fixed effects are significant?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) Intercept, phase, and sex
+B) Intercept, phase, and CG
+C) Intercept, phase, CG, and random intercept
+D) Intercept, phase, sex, and random intercept
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: B
+## option A and D is wrong because sex is not significant, whereas CG is significant
+## option C and D are wrong because the random intercept is not a fixed effect
+```
+
+## 10. Exam-like exercise: Internet abuse (12/16)
+
+\fontsize{7pt}{12}\selectfont
+
+Here are the results of a second model that additionally tests whether the intervention was able to improve the effectiveness of the parental control in reducing internet use, controlling for sex.
+```{r echo=FALSE,warning=FALSE,message=FALSE, comment=NA, results=FALSE}
+fit2 <- lmer(IU ~ phase * CG + sex + (CG|school), data=attiva)
+
+# model summary from sjPlot
+library(sjPlot); library(html2latex)
+tab_model(fit2,show.se=TRUE, collapse.se=TRUE,string.est="b (SE)",show.r2=FALSE,dv.labels="",show.icc=FALSE,file = "temp2.html")
+
+# from html to latex
+html2pdf(filename = "temp2.html",table_width = 13, 
+         silent = TRUE, style = TRUE, build_pdf = TRUE, clean = TRUE, name_table = "table2")
+
+# from latex to Rmarkdown
+tex2Rmd("temp2.tex",output_file="table2.txt")
+```
+
+\fontsize{6pt}{12}\selectfont
+`r readr::read_file("table2.txt")`
+
+\fontsize{5pt}{12}\selectfont
+Note: `sjPlot` calls random effect variances $\tau$ rather than $\tau^2$
+
+## 10. Exam-like exercise: Internet abuse (13/16)
+
+\fontsize{7pt}{12}\selectfont
+Considering the table shown in the previous slide:
+
+19. __What coefficient has been added in this scond model compared to the first one?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) There is a new coefficient for the random slope for parental control
+B) There is a new coefficient for the main effect of the intervention
+C) There is a new coefficient for the interaction between intervention and parental control
+D) The two models are equivalent
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: C
+## option A and D are wrong because both the random slopes for parental control and the main effect of the intervention were already included in the first model
+## option D is wrong because the second model incudes the interaction, which was not included in the previous model
+```
+
+\fontsize{7pt}{12}\selectfont
+
+20. __Considering the significance of the coefficients shared by both models, what has changed?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) The coefficients estimated for phase and CG are no longer significant
+B) The coefficient estimated for phase is no longer significant 
+C) The coefficient estimated for CG is no longer significant
+D) Nothing has changed in the significance of the shared coefficients
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: B
+## option A and C are wrong because the coefficient for CG is significant in both models
+## option B is correct because the coefficient for phase is no longer significant (p > 0.05)
+## option D is wrong because something has changed (i.e., phase)
+```
+
+## 10. Exam-like exercise: Internet abuse (14/16)
+
+\fontsize{7pt}{12}\selectfont
+
+Here are some plots showing the diagnostics of the second model.
+```{r echo=FALSE,warning=FALSE,message=FALSE, comment=NA, results=FALSE,fig.width=12,fig.height=3}
+par(mfrow=c(1,4))
+qqnorm(residuals(fit),main="QQ plot residuals"); qqline(residuals(fit))
+plot(residuals(fit) ~ fitted(fit),main="Residuals vs. fitted")
+RS <- ranef(fit2)[[1]][,2]
+qqnorm(RS,main="QQ plot random slope"); qqline(RS)
+barplot(car::vif(fit2),ylim=c(0,10),main="Variance inflation factors"); abline(h=5)
+```
+
+\fontsize{7pt}{12}\selectfont
+
+21. __Which LMER assumptions are evaluated by these plots?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) Normality and linearity of residuals
+B) Independence and homoscedasticity of residuals
+C) Normality of random slope and absence of multicollinearity
+D) All other options are true
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: D
+```
+
+## 10. Exam-like exercise: Internet abuse (15/16)
+
+\fontsize{7pt}{12}\selectfont
+
+Here are some plots showing the diagnostics of the second model.
+```{r echo=FALSE,warning=FALSE,message=FALSE, comment=NA, results=FALSE,fig.width=12,fig.height=3}
+par(mfrow=c(1,4))
+qqnorm(residuals(fit),main="QQ plot residuals"); qqline(residuals(fit))
+plot(residuals(fit) ~ fitted(fit),main="Residuals vs. fitted")
+RS <- ranef(fit2)[[1]][,2]
+qqnorm(RS,main="QQ plot random slope"); qqline(RS)
+barplot(car::vif(fit2),ylim=c(0,10),main="Variance inflation factors"); abline(h=5)
+```
+
+\fontsize{7pt}{12}\selectfont
+
+22. __Which LMER assumptions are violated based on these plots?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) Normality is violated for both residuals (slightly) and random slopes (more evident)
+B) Homoscedasticity is violated for both residuals (more evident) and random slopes (slightly)
+C) Normality is violated for both residuals (slightly) and random intercepts (more evident)
+D) Normality of residuals (more evident) and absence of influential cases (slightly)
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: A
+## A is correct because residuals slightly deviate from normality (first plot) whereas the random slopes of the last two schools strongly deviate from normality
+## B is wrong because homoscedasticity of random slopes is not plotted so we don't know whether this assumption has been violated or not; moreover the variability of the residuals does not seem to strongly increase or decrease over the range of fitted values (i.e., homoscedasticity seems ok)
+## C is wrong because normality of the random intercept are not plotted so we don't know whether this assumption has been violated or not
+## D is wrong because influential cases are not plotted so we don't know whether this assumption has been violated or not
+```
+
+## 10. Exam-like exercise: Internet abuse (16/16)
+
+\fontsize{7pt}{12}\selectfont
+
+Now we repeat the analysis described in the previous slides by using R. First, download and read the `attiva.RData` dataset (note `rda` files can be read similar to `RData` files).
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+# likelihood ratio test
+lrt <- anova(fit1,fit2)
+chisq <- round(lrt$Chisq[2],2) # test statistic
+df <- lrt$Df[2] # degrees of freedom
+pval <- round(lrt$`Pr(>Chisq)`[2],2) # p-value
+
+# AIC
+aic <- AIC(fit1,fit2)
+```
+
+The likelihood ratio test and the Akaike Information Criterion (AIC) were used to compare the two models. The former resulted in a $\chi^2$ value of `r chisq` that with `r df` degrees of freedom is equivalent to a *p*-value of `r pval`. The latter resulted in an AIC value of `r round(aic[1,2],2)` for the first model and `r round(aic[2,2],2)` for the second model.
+
+23. __What conclusion can be drawn from the likelihood ratio test results?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) The first (simpler) model is better than the second (more complex) model
+B) The second (more complex) model is better than the first (simpler) model
+C) The two models are not different
+D) None of the preceding options are true
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: C
+## A is wrong because the likelihood ratio test compare the second model with the first one, not vice versa
+## B is wrong because the result is not significant (p > 0.05), meaning that the second model is not significantly better then the first one
+## C is correct because saying that the second model is not better than the first one is equivalent to saying that the two models are not significantly different
+## D is wrong because option C is true
+```
+
+\fontsize{7pt}{12}\selectfont
+
+24. __What conclusion can be drawn from the AIC results?__
+
+\fontsize{6pt}{12}\selectfont
+
+A) The first (simpler) model is better than the second (more complex) model
+B) The second (more complex) model is better than the first (simpler) model
+C) The two models are not different
+D) None of the preceding options are true
+
+```{r echo=FALSE,eval=FALSE}
+# right answer: A
+## A is correct because the AIC of the first model is lower than the AIC of the second model (AIC: the lower the better)
+## B is wrong because it says the opposite of what we found
+## C is wrong because the two AIC values are not equal (the two models are not equivalent)
+## D is wrong because option A is correct
+```
+
+## 11. R-based summary exercise
+
+\fontsize{7pt}{12}\selectfont
+
+Now we repeat the same steps described in the previous slides by using R. 
+
+1. Download and read the `attiva.RData` dataset from Moodle or Github: `ID` = children identifier, `sex` = children sex ("f" or "m"), `phase` = intervention phase ("pre" or "post"), `IU` = internet use, `CG` = parental control, `school` = school identifier.
+
+2. Explore the data (mean, SD, frequencies, and plots)
+
+3. Compute the level-specific correlations between 
+
+4. Create the variable `class` (identifying the class) by crossing `phase` and `school`. Then, compute the ICC of IU based on `school` and that based on `class`. What is the best cluster variable to be used?
+
+5. Fit a random-intercept model `m1` including `phase`, `CG`, and `sex` to be compared with a second model `m2` that also include the random slope for `CG` using the likelihood ratio test and the AIC. Which is the best model?
+
+6. Add the interaction between `phase` and `CG` to the model selected above and compare these two models with the likelihood ratio test and the AIC. Which is the best model?
+
+7. Evaluate the diagnostics of the selected model
+
+8. Print, visualize and interpret all the effects (fixed and random) estimated by the selected model
+
+```{r echo=FALSE,results='hide'}
+## SOLUTION EXERCISE #11
+
+# 1. Download and read the dataset from Moodle or Github
+rm(list=ls())
+load("data/attiva.RData") # reading file (note: I save it in the 'data' folder within my working directory)
+
+# 2. descriptive statistics and plots
+hist(attiva$IU) # IU is not really symmatrical (positive skeweness)
+mean(attiva$IU); sd(attiva$IU) # mean and sd IU
+hist(attiva$CG) # CG is more symmetrically distributed (although it is on a clearly discrete scale)
+mean(attiva$CG); sd(attiva$CG) # mean and sd CG
+plot(attiva$sex) # barplot of sex (more males than females)
+table(attiva$sex) # frequency of sexes 222 males, 190 females
+plot(attiva$phase) # phase is quite balanced (similar number of observations)
+table(attiva$phase) # frequency of phases it is actually perfectly balanced :)
+plot(attiva$school) # a lot of participants from school D, less in school E
+table(attiva$school) # frequency of schools
+
+# 3. cluster mean centering and level-specific correlations
+wide <- aggregate(attiva$IU, by=list(attiva$school), FUN=mean) # computing mean IU by school (cluster means)
+colnames(wide) <- c("school","IU.cm") # renaming variables
+wide$CG.cm <- aggregate(attiva$CG, by=list(attiva$school), FUN=mean)[,2] # adding cluster means of CG (note: I'm taking the second column [,2] from the output of the aggregate function) 
+wide # showing wide-form dataset
+library(plyr)
+attiva <- join(attiva,wide,by="school") # joining cluster means to long-form dataset
+attiva$IU.cmc <- attiva$IU - attiva$IU.cm # cluster mean centering IU
+attiva$CG.cmc <- attiva$CG - attiva$CG.cm # cluster mean centering CG
+(rb <- cor(wide$IU.cm,wide$CG.cm)) # cor between (-0.10)
+(rw <- cor(attiva$IU.cmc,attiva$IU.cm)) # cor within (0.00000000 ... 5) - basically zero
+
+# 4. crossing school and phase to create variable class and compute ICC
+table(attiva$school,attiva$phase) # here we can see that each school has two groups of children (two classes) in the "pre" e "post" phase, respectively
+attiva$class <- paste0(attiva$school,attiva$phase) # creating class by pasting school and phase
+attiva$class <- as.factor(attiva$class) # class as a factor
+plot(attiva$class)
+table(attiva$class) # much more cases in the Dpost and Dpre classes
+# ICC of UI based on school
+library(lme4)
+fit <- lmer(IU ~ (1|school), data=attiva) # fitting null LMER model
+tau2 <- summary(fit)$varcor$school[[1]] # extracting the variance of the random intercept
+sigma2 <- summary(fit)$sigma^2 # extracting the residual variance
+icc.school <- tau2 / (tau2 + sigma2) # computing ICC
+# ICC of UI based on school
+fit <- lmer(IU ~ (1|class), data=attiva) 
+tau2 <- summary(fit)$varcor$class[[1]] 
+sigma2 <- summary(fit)$sigma^2 
+icc.class <- tau2 / (tau2 + sigma2) 
+# printing ICC values
+icc.school # 0.05
+icc.class # 0.05 --> they are basically equivalent, so we can use any of the two cluster variables
+
+# 5. Fit a random-intercept model `m1` including `phase`, `CG`, and `sex` to be compared with a second model `m2` that also include the random slope for `CG` using the likelihood ratio test and the AIC. Which is the best model?
+m1 <- lmer(IU ~ phase + CG + sex + (1|school), data=attiva)
+m2 <- lmer(IU ~ phase + CG + sex + (CG|school), data=attiva)
+library(lmtest)
+lrtest(m1,m2) # m2 is not significantly better than m1 (the best model is m1 because it's simpler)
+AIC(m1,m2) # model m2 is better because it has lower AIC
+## note: the two criteria give different results. Here, we trust the AIC and we select the random slope model m2
+
+# 6. Add the interaction between `phase` and `CG` to the model selected above and compare these two models with the likelihood ratio test and the AIC. Which is the best model?
+m3 <- lmer(IU ~ phase + CG + sex + phase:CG + (CG|school), data=attiva) # adding interaction
+# m3 <- lmer(IU ~ phase*CG + sex + (CG|school), data=attiva) # similar way to write the same model
+lrtest(m2,m3) # m3 is not significantly better than m2 (the best model is m2 because it's simpler)
+AIC(m2,m3) # model m2 is better because it has lower AIC
+## note: the two criteria give consistent results, suggesting that m3 is not better than m2 (m2 is the best model)
+
+# 7. Evaluate the diagnostics of the selected model
+## normality and linearity of residuals
+hist(residuals(m2)) # centered on zero, slightly asymmetrical
+qqnorm(residuals(m2)); qqline(residuals(m2)) # some deviation from normality especially in the upper tail of the residual distribution (but overall OK)
+## linearity and homoscedasticity of residuals
+plot(m2) # no clear violation of linearity (no clear trend) or homoscedasticity (no different variance over fitted values) (OK)
+# from long to wide: 1 row per subject
+wide <- attiva[!duplicated(attiva$school),]
+# extract random effects
+RI <- ranef(m2)[[1]][,1] # r. intercept
+RS <- ranef(m2)[[1]][,2] # r. slope
+# normality and linearity of random effects
+qqnorm(RI); qqline(RI) # random intercept: only one school strongly deviate from normality (KO)
+qqnorm(RS); qqline(RS) # random slope: two schools in the upper tail substantially deviate from normality (KO)
+## note: it makes no sense to plot random effects vs. predictors as all predictors variate within clusters
+car::vif(m2) # absence of multicollinearity: no values with VIF > 5 (OK)
+barplot(car::vif(m2)); abline(h=5)
+boxplot(cooks.distance(m2)) # level-1 Cook's distances: we can see 2 extreme values (KO)
+library(influence.ME)
+plot(influence(m2, group="school"), which="cook") # level-2 Cook's distance: we can see that school D has an extreme value (KO)
+
+# 8. Print, visualize and interpret all the effects (fixed and random) estimated by the selected model
+# fixed effects
+summary(m2)$coefficients
+## Intercept: when phase = "pre", sex = "m", and CG = 0, the predicted value of IU is 9.45, which is 'substantially' higher than zero (t = 15.91)
+## phasepost: when CG = 0, considering both sexes, "post" is 0.98 units lower than "pre", which is a 'substantial' negative difference (t = -2.41)
+## CG: considering both sexes and intervention phases, a one-unit increase in CG predicts a 1.96-unit increase in IU, which is 'substantial' (t = 6.55)
+## sexf: considering both sexes, when CG = 0, female internet use is 0.19 units higher than male internet use, which is not 'substantial' (t = 0.44)
+summary(m2)$sigma^2 # residual variance (sigma2) - we don't interpret this
+summary(m2)$varcor$school[[1]] # random intercept variance (tau2_00) - we don't interpret this
+summary(m2)$varcor$school[[2]] # random slope variance (tau2_10) - we don't interpret this
+## plotting fixed effects
+library(sjPlot)
+plot_model(m2) # we can see that phase effect is significantly lower than zero and CG effect is significantly higher than zero (in both cases, confidence intervals don't include zero), whereas sex differences are not significant (zero is included within the 95% CI)
+plot_model(m2,type="pred") # effect plots are consistent with the forest plot, with the exception of phase: in the forest plot, 95% CI do not include zero (significant), whereas the effect plot show that each estimate is included in the 95% CI estimated for the other condition (not significant). Again, it appears that using p-value and 95% CI on the coefficients estimated by LM is not appropriate and can lead to inconsistencies
+plot_model(m2,type="re") # variability in random intercept and random slope - we don't interpret this
+```
+
+# SEM
+
+## 12. Variance, covariance, & correlation
+
+\fontsize{8pt}{12}\selectfont
+
+1. Simulate 100 values of a normally distributed variable `x1` with mean 10 and standard deviation 2 (note: use the `rnorm(n,mean,sd)` function where `n` is the sample size, `mean` is the simulated variable mean, and `sd` is the simulated variable standard deviation), then plot `x1`
+
+2. Simulate 100 values of a second normally distributed variable `x2` with mean 10 and standard deviation 10, then plot `x2`
+
+3. Try answering before running the code: Which variable has the highest **variance**?
+
+4. Simulate a third variable `x3` by adding a small random quantity to `x1`: `x3 <- x1 + rnorm(n = 100, mean = 0, sd = 1)`, then plot `x3`
+
+5. Simulate a fourth variable `x4` by adding a large random quantity to `x1`: `x4 <- x1 + rnorm(n = 100, mean = 0, sd = 20)`, then plot `x4`
+
+6. Try answering before running the code: Which variable has the highest variance?
+
+7. Try answering before running the code (but you can try plotting the variables): Which variable has the highest **covariance** with `x1`? Which has the lowest covariance?
+
+8. Try answering before running the code: Which variable has the highest **correlation** with `x1`? Which has the lowest correlation?
+
+```{r echo=FALSE,eval=FALSE}
+# 1. Simulate and plot 100 values of a normally distributed variable `x1` with mean 10 and sd 2
+x1 <- rnorm(n = 100, mean = 10, sd = 2) # simulating variable
+plot(x1) # plotting variable (maybe not the right plot, eh?)
+hist(x1) # now we're talking :)
+
+# 2. Simulate 100 values of a second normally distributed variable `x2` with mean 10 and standard deviation 10, then plot `x2`
+x2 <- rnorm(n = 100, mean = 10, sd = 10) # simulating variable
+hist(x2) # plotting
+
+# 3. Which variable has the highest **variance**?
+## since SD is the root of the variance, and since SD are 2 and 10 for x1 and x2, respectively, x2 has a higher variance than x1
+## this is also shown by the plots above, which we can visualize in a single plot (note: I'm setting xlim to have the same scale on the x axis and make the two plots more comparable:
+par(mfrow=c(2,1))
+hist(x1,xlim=c(min(x2),max(x2)))
+hist(x2,xlim=c(min(x2),max(x2)))
+## now let's verify this:
+var(x1)
+var(x2) # x2 has a higher variance than x1
+var(x2) > var(x1) # to make it even more eplicit :)
+
+# 4. Simulate a third variable `x3` by adding a small random quantity to `x1`: 
+x3 <- x1 + rnorm(n = 100, mean = 0, sd = 1)
+hist(x3) # x3 looks similar to x1 but it is centered on a higher value (because we added a quantity)
+
+# 5. Simulate a fourth variable `x4` by adding a large random quantity to `x1`: 
+x4 <- x1 + rnorm(n = 100, mean = 0, sd = 20)
+hist(x4) # x4 is centered on a higher value of x1 and it is also wider
+
+# 6. Which variable has the highest variance?
+## x4 will have a higher variance than x3 because we summed x1 with a quantity with a greater SD (sd = 20) than when we created x3 (sd = 1)
+## this is also shown by the plots above, which we can visualize in a single plot (note: I'm setting xlim to have the same scale on the x axis and make the two plots more comparable:
+par(mfrow=c(2,1))
+hist(x3,xlim=c(min(x4),max(x4)))
+hist(x4,xlim=c(min(x4),max(x4)))
+## now let's verify this:
+var(x3)
+var(x4) # x4 has a higher variance than x3
+var(x3) < var(x4) # to make it even more eplicit :)
+
+# 7. Which variable has the highest **covariance** with `x1`? Which has the lowest covariance?
+## both x3 and x4 have been created by adding a quantity to x1, so they should covary with x1 more strongly than x2, which is the least covarying variable
+## among x3 and x4, x3 should covary more strongly with x1 because the quantity that we added had a smaller SD than the quantity that we added when we created x4 (i.e., less random variability added to x1)
+## this can be seen in the plots below (although the differences between x2 and x4 might not be so evident)
+par(mfrow=c(1,3))
+plot(x1 ~ x2)
+plot(x1 ~ x3) # x3 shows the stronger covariance with x1
+plot(x1 ~ x4) 
+## now let's verify this:
+cov(x1,x2) # x2 shows the weaker covariance with x1
+cov(x1,x3)
+cov(x1,x4)
+## what? Does it look unexpected? It seems that x1 covaries more with x4 than with x3, how is that possible?
+## that's because COVARIANCE VALUES DEPEND ON THE SCALE OF EACH VARIABLE
+## since x4 has a larger scale (SD = x1 + 20) than x3 (SD = x1 + 1), its covariance is higher even if its relationship with x1 is lower --> that's why we need correlation ;)
+## rule: you cannot compare two relationships between 3 or 4 variables with the covariance
+
+# 8. Which variable has the highest **correlation** with `x1`? Which has the lowest correlation?
+## correlation is the standardized version of covariance, ranging from -1 to 1
+## with correlation, we can compare different relationships between variables using different scales
+## so, now we can expect what we wrongly predicted above:
+## - the strongest correlation between x1 and x3
+## - then, between x1 and x4 (due to the large variability)
+## - finally, between x1 and x2 (because x2 was created independently from x1)
+## let's see:
+cor(x1,x2) # the weakest correlation is between x1 and x2 (you got it)
+cor(x1,x3) # the strongest one is between x1 and x3 (exactly as predicted)
+cor(x1,x4) # the one between x1 and x4 is somewhere in the middle (great!)
+## now you got the difference between covariance and correlation ;)
+```
+
+## 13. Covariance & correlation matrix
+
+\fontsize{8pt}{12}\selectfont
+
+1. Download and read the *Pregnancy during pandemics* data, then select the columns 2, 5, and 14, and rename them as "age", "depr", and "threat" (see `2-multilevel.pdf` slide #10)
+
+2. Use the function `na.omit()` to remove all cases with missing values in one or more variables. How may observations have been removed?
+
+3. Describe and plot the included variables
+
+4. Compute the **covariance matrix** $S$ of the variable and use the logic operators `==` (is equal) and `!=` (is different) operators to check the two properties of the covariance matrix S (symmetry and main diagonal)
+
+5. Standardize all variables (\color{blue} $z_{x_i} = (x_i - \overline{x})/s_x$ \color{black}), plot them, and compute their mean and SD. What do you observe?
+
+6. Re-compute the covariance matrix on standardized variables. What do you observe?
+
+7. Compute the **correlation matrix** of the original variables and compare it with the covariance matrix computed from standardized variables. What do you observe?
+
+```{r echo=FALSE,eval=FALSE}
+# SOLUTION TO EXERCISE #13
+
+rm(list=ls()) # emptying the work environment
+
+# 1. Download and read the *Pregnancy during pandemics* data, then select the columns 2, 5, and 14, and rename them as "age", "depr", and "threat" (see `2-multilevel.pdf` slide #10)
+library(osfr) # package to interact with the Open Science Framework platform
+proj <- "https://osf.io/ha5dp/" # link to the OSF project
+osf_download(osf_ls_files(osf_retrieve_node(proj))[2, ],conflicts="overwrite") # download (note: you need to be connected to internet)
+preg <- read.csv("OSFData_Upload_2023_Mar30.csv") # read data
+preg <- preg[,c(2,5,14)] # selecting variables
+colnames(preg) <- c("age","depr","threat") # renaming variables
+
+# 2. Use the function `na.omit()` to remove all cases with missing values in one or more variables
+originalN <- nrow(preg) # original number of observations
+preg <- na.omit(preg) # removing rows with missing value in 1+ columns
+originalN - nrow(preg) # we removed 1,204 observations with 1+ missing value
+
+# 3. Describe and plot the included variables
+summary(preg) # different variables with different scales: age (17-49.7), depr (0-30), threat (0-100)
+lapply(preg,sd) # different variability (SD of 4.4, 5.5, 25.6, respectively)
+par(mfrow=c(1,3)) # 3 plots in the same panel
+hist(preg$age)
+hist(preg$depr)
+hist(preg$threat)
+
+# 4. Compute the **covariance matrix** S of the variable and use the logic operators `==` (is equal) and `!=` (is different) operators to check the two properties of the covariance matrix S (symmetry and main diagonal)
+S <- cov(preg) # computing covariance matrix
+S # here's the covariance matrix of the trhee variables
+## symmetry: S_ij = S_ji
+S[1,2] == S[2,1]
+S[1,3] == S[3,1]
+S[2,3] == S[3,2]
+## variances in the main diagonal
+S[1,1] == var(preg$age)
+S[2,2] == var(preg$depr)
+S[3,3] == var(preg$threat)
+
+# 5. Standardize all variables, plot them, and compute their mean and SD
+age_z <- ( preg$age - mean(preg$age) ) / sd(preg$age)
+depr_z <- ( preg$depr - mean(preg$depr) ) / sd(preg$depr)
+threat_z <- ( preg$threat - mean(preg$threat) ) / sd(preg$threat)
+## plotting standardized variables over original variables
+par(mfrow=c(2,3)) # 6 plots in the same panel
+hist(preg$age)
+hist(preg$depr)
+hist(preg$threat)
+hist(age_z)
+hist(depr_z)
+hist(threat_z) # both mean (0) and variability (1) have been changed but the shape is somehow very similar
+lapply(data.frame(age_z,depr_z,threat_z),mean) # the mean of each standardized variable is basically zero
+lapply(data.frame(age_z,depr_z,threat_z),sd) # the SD of each standardized variable is 1
+## that's because standardization forces a variable to have mean = 0 and SD = 1 (and thus, variance = 1)
+
+# 6. Re-compute the covariance matrix of the standardized variables
+S1 <- cov(data.frame(age_z,depr_z,threat_z))
+S1
+## the signs of covariances has remained the same of the original covariance matrix
+## the properties of the matrix are the same (symmetry; main diagonal = variance)
+## all values are bounded between -1 and +1
+## all main diagonal values are equal to 1
+## THIS IS A CORRELATION MATRIX!
+
+# 6. Compute the **correlation matrix** of the original variables and compare it with the covariance matrix computed from standardized variables.
+R <- cor(preg) # the correlation matrix R of the original variable is identical to the covariance matrix S1 of the standardized variables
+S1 == R # only two values are different (this is due to the original variables not being perfectly normally distributed)
+round(S1,2) == round(R,2) # but if we round at the second decimal, they are identical
+
+## now we got that correlation is equivalent to the covariance of the standardized variables :)
+```
+
+## 14. Reading a SEM plot
+
+\fontsize{8pt}{12}\selectfont
+In the figure below:
+
+1. How many **latent & observed** variables? Which ones?
+
+2. How many **endogenous & exogenous** variables? Which ones?
+
+3. How many **error terms**? Which ones? (note: this plot represents errors/residuals by using the third graphical notation shown in `3-multivariate.pdf` slide #21)
+
+4. How many **path coefficients** (i.e., single-headed arrows)? Which ones?
+
+5. Which path coefficients are included in the **measurement model**? Which ones in the **structural model**?
+
+6. How many estimated parameters, in total?
+
+```{r echo=FALSE}
+# SOLUTION TO EXERCISE #14
+
+# 1. How many **latent & observed** variables? Which ones?
+## 2 latent variables: F1 and F2 (represented by circles)
+## 7 observed variables: I1, I2, ..., I6, and x (represented by squares)
+
+# 2. How many **endogenous & exogenous** variables? Which ones?
+## 1 exogenous variable: x (i.e., the only variable that does not receive any arrow)
+## 8 endogenous variables: I1, I2, ..., I6, F1, and F2 (all receiving 1 arrow)
+
+# 3. How many **error terms**? Which ones? (note: this plot represents errors/residuals by using the third graphical notation shown in `3-multivariate.pdf` slide #21)
+## 8 error terms, i.e., one per each endogenous variable (I1, I2, ..., I6, F1, and F2)
+## note: only endogenous variables are represented with their error terms!
+
+# 4. How many **path coefficients** (i.e., single-headed arrows)?
+## 8 path coefficients: x -> F1, F1 -> F2, F1 -> I1,I2,I3, F2 -> I4,I5,I6
+## note: in this example, since there are no endogenous variables receiving 2 or more arrows, the number of path coefficients is equal to the number of endogenous variables
+
+# 5. Which path coefficients are included in the **measurement model**? Which ones in the **structural model**?
+## the path coefficients linking the latent variable F1 to the observed variables I1,I2,I3, and those linking the latent variable F2 to the observed variables I4,I5,I6 are included in the measurement model (i.e., the model linking latent variables to the observed variables assumed to reflect them)
+## the path coefficients linking x to F1 and F1 to F2 are included in the structural model (i.e., the model of structural relationships between the variables of interest)
+
+# 6. How many estimated parameters, in total?
+## number of estimated parameters 
+##      = number of path coefficients + number of estimated errors 
+##      = total number of arrows 
+##      = 16
+
+# this is to generate the figure
+ if (knitr::is_html_output())
+ {
+   knitr::include_graphics("https://www.methods.manchester.ac.uk/themes/survey-and-statistical-methods/structural-equation-models/structural.jpg")
+ } else {
+   knitr::include_url("https://www.methods.manchester.ac.uk/themes/survey-and-statistical-methods/structural-equation-models/structural.jpg")
+ }
+```
+
+## 15. Reading a path diagram (1/2)
+
+\fontsize{8pt}{12}\selectfont
+In the figure below (which indexes parameters using different letters than those we saw in class, but don't care about that):
+
+1. How many **latent & observed** variables? Which ones?
+
+2. How many **endogenous & exogenous** variables? Which ones?
+
+3. How many **error terms**? Which ones? (note: this plot represents errors/residuals by using the first graphical notation shown in `3-multivariate.pdf` slide #21)
+
+4. How many **path coefficients** (i.e., single-headed arrows)? Which ones?
+
+5. How many **covariances**?
+
+6. How many estimated parameters, in total?
+
+```{r echo=FALSE}
+# SOLUTION TO EXERCISE #15
+
+# 1. How many **latent & observed** variables? Which ones?
+## This is a path model and, thus, it only includes observed variables
+## Yet, due to the used graphical notation to represent errors, we can say that it includes two latent variables, namely the errors of the two endogenous variables y1 and y2
+
+# 2. How many **endogenous & exogenous** variables? Which ones?
+## 2 endogenous variables: y1 (receiving 2 single-headed arrows) and y2 (receiving 3 single-headed arrows)
+## 2 exogenous variables: x1 and x2 (receiving no single-headed arrows)
+## note: we might also consider the two errors zeta_1 and zeta_2 as exogenous variables, but this is due to the graphical notation used to represent errors
+
+# 3. How many **error terms**? Which ones?
+## 2 error terms, i.e., one per each endogenous variable (zeta1 for y1 and zeta2 for y2)
+## note: only endogenous variables are represented with their error terms!
+## with this graphical notation, we can also see the variance of x1 and x2 (i.e., the rounded double-headed arrows starting and ending at the same variable), but these are the variable variances, not the variances of their error
+## note: exogenous variables are assumed to be measured without error!
+
+# 4. How many **path coefficients** (i.e., single-headed arrows)?
+## 5 path coefficients: x1 -> y1, x1 -> y2, x2 -> y1, x2 -> y2, y1 -> y2
+
+# 5. How many **covariances**?
+## 1 covariance: x1 <-> x2 (covariances are represented by double-headed arrows linking two variables)
+
+# 6. How many estimated parameters, in total?
+## number of estimated parameters 
+##      = number of path coefficients (5) + number of estimated errors (2) + number of covariances (1)
+##      = 8
+## this was tricky because of the way the model is represented:
+## - for each error, it might seem that we need 2 parameters but only the error variance is a parameter (note that the relationship between error and variable is fixed to 1, so it doesn't count as a parameter to be estimated)
+## - we don't count the variances of the exogenous variables (actually, we shouldn't count event the covariance, but let's consider it for now... se slide #24)
+
+# this is to generate the figure
+ if (knitr::is_html_output())
+ {
+   knitr::include_graphics("https://stats.oarc.ucla.edu/wp-content/uploads/2021/02/m4b.png")
+ } else {
+   knitr::include_url("https://stats.oarc.ucla.edu/wp-content/uploads/2021/02/m4b.png")
+ }
+```
+
+## 15. Reading a path diagram (2/2)
+
+\fontsize{8pt}{12}\selectfont
+
+Which system of equations would you use to represent the model shown in the previous slide? (note 1: for better consistency, I'm using the same letters used in the figure, but don't care about it; note 2: variances and covariances are not reported in the equations)
+
+A) $$ \begin{cases} y_2 = \gamma_{21}x_1 + \gamma_{22}x_2 + \zeta_2 \\ y_1 = \gamma_{11}x_1 + \gamma_{12}x_2 + \zeta_1 \end{cases} $$
+
+B) $$ \begin{cases} y_2 = \gamma_{21}x_1 + \gamma_{22}x_2 + \zeta_2 \\ y_1 = \gamma_{11}x_1 + \gamma_{12}x_2 + \zeta_1 \\ x_2 = \beta_1x_1 + \gamma_{12}y_1 + \gamma_{22}y_2 + \epsilon_{x1} \end{cases} $$
+
+C) $$ y_2 = \gamma_{21}x_1 + \gamma_{22}x_2 + \beta_{21}y_1 + \zeta_2  $$
+
+D) $$ \begin{cases} y_2 = \gamma_{21}x_1 + \gamma_{22}x_2 + \beta_{21}y_1 + \zeta_2 \\ y_1 = \gamma_{11}x_1 + \gamma_{12}x_2 + \zeta_1 \end{cases} $$
+
+```{r echo=FALSE}
+# the correct answer is option D
+## we can discard options B and C because we know that the number of equations should be equal to the number of endogenous variables (here, two) (see slide #20)
+## then we can discard option A because it does not include the path coefficient beta_21 between y1 and y2
 ```
