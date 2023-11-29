@@ -695,45 +695,6 @@ This model can be graphically represented as a path diagram and further simplifi
 knitr::include_graphics("img/lm2path.png")
 ```
 
-\color{blue} How many parameters?
-
-## Linear model as a path diagram
-
-\fontsize{7pt}{12}\selectfont
-Let's fit a multiple linear model: \color{blue} $MAT = \beta_0 + \beta_1WM + \beta_2STM + \beta_3ASN + \epsilon$ \color{black}
-```{r }
-lm.fit <- lm(MAT ~ WM + STM + ANS, data = earlymath) # fitting LM
-```
-
-\begincols
-  \begincol{.7\textwidth}
-
-\fontsize{6.5pt}{12}\selectfont
-```{r eval=FALSE}
-summary(lm.fit)$coefficients # LM regression table
-```
-```{r echo=FALSE,comment=NA}
-round(summary(lm.fit)$coefficients,2) # LM regression table
-```
-
-  \endcol
-\begincol{.3\textwidth}
-
-Residual variance $\sigma^2$:
-```{r comment=NA}
-summary(lm.fit)$sigma^2
-```
-
-\color{white}_ \newline
-
-  \endcol
-\endcols
-
-This model can be graphically represented as a path diagram and further simplified by removing the \color{red} intercept $\beta_0$ \color{black} (note: **triangles represent constants**)
-```{r , echo = FALSE, out.width = "250px"}
-knitr::include_graphics("img/lm2path.png")
-```
-
 \color{blue} How many parameters? **Five**: Intercept, 3 slopes, residual variance
 
 ## Multivariate path models
@@ -782,19 +743,19 @@ knitr::include_graphics("img/sem6_colerror.png")
   \endcol
 \begincol{.5\textwidth}
 
-\fontsize{6.5pt}{12}\selectfont \color{blue}
-`r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` Alternative ways to represent errors: some highlight their latent nature (#1 and #2), some highlight their variance (#1 and #4), and some highlight both (#1). 
+\fontsize{6.5pt}{12}\selectfont 
+Alternative ways to represent errors: some highlight their latent nature (#1 and #2), some highlight their variance (#1 and #4), and some highlight both (#1). \color{red} You need to know them 
 ```{r , echo = FALSE, out.width = "120px"}
 knitr::include_graphics("img/sem_errors.png")
 ```
 
 \color{blue} \fontsize{5pt}{12}\selectfont 
-In this course, we use notation #4.
+In this course, we will mainly use notation #4.
 
   \endcol
 \endcols
 
-## Graphical notation (2/3): Arrows & coefficients
+## Graphical notation (2/3): Arrows & coefficients {#pathcoeff}
 
 \fontsize{7pt}{12}\selectfont \color{blue}
 $$ \begin{cases} MAT_1 = \color{red}\beta_{12}\color{black}WM_2 + \color{red}\beta_{13}\color{black}STM_3 + \color{red}\beta_{14}\color{black}ANS_4 + \color{red}\beta_{15}\color{black}QI_5 + \epsilon_1 \\ WM_2 = \color{red}\beta_{25}\color{black}QI_5 + \epsilon_2 \end{cases} $$ \color{black}
@@ -844,7 +805,7 @@ knitr::include_graphics("img/sem6_colcov.png")
 
 \fontsize{6.5pt}{12}\selectfont 
 
-- Covariances are usually *not* reported in the system of equations, but they are graphically represented with (rounded) **double-headed arrows**
+- Covariances are usually *not* reported in the system of equations, but they *can* be graphically represented with (rounded) **double-headed arrows**
 
 - __Endogenous variables cannot covary but their errors $\epsilon$ can__
 
@@ -854,6 +815,19 @@ knitr::include_graphics("img/covariances.png")
 
   \endcol
 \endcols
+
+## `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` Clarification on covariance terms in SEM
+
+\fontsize{7pt}{12}\selectfont
+Covariances $\gamma$ are intrinsic relationships between observed variables (we saw that SEM are fitted on the covariance matrix of observed variables). \newline
+
+In \color{blue} [slide #22](#pathcoeff) \color{black}, we saw that path models are assumed to be *complete* models (i.e., we don't include an arrow when a relationship is not expected). \newline 
+However, this rule only applies to single-headed arrows (path coefficients $\beta$), whereas it **does not applies to the covariances $\gamma$**. \newline
+Covariances $\gamma$ are always there, whether you estimate them or not. In contrast, if we don't specify a path coefficient $\beta$ between two variables, the two variables can only covariate but they are not in a symmetric relationship. \newline
+
+&rightarrow; the explicit inclusion of covariances $\gamma$ does not affect the estimation of the path coefficients $\beta$, it only means that the models estimate the covariance parameter and its standard errror, but we will see this later... \newline
+
+\color{blue}For the exam, you only need to know that double-headed arrows between two variables represent covariances, and that endogenous variables cannot covary but their errors can
 
 ## Regression, partial correlation, and path coefficients
 
@@ -911,7 +885,7 @@ Starting from *observed covariances* (or correlations), we can compute the value
 \fontsize{7pt}{12}\selectfont \color{blue}
 $r_{X_1,Y}$ = a + db + ec \color{black}&rightarrow; \color{blue}.70 = a + .24c + .20b \color{black}&rightarrow; \color{blue}a = .70 - .24c - .20b
 
-## Standardized vs. *un*standardized solution
+## Standardized vs. *Un*standardized solution
 
 \fontsize{7.5pt}{12}\selectfont 
 Path coefficients are **partial regression coefficients** (relationship between an exogenous *x* and an endogenous variable *y*, controlling for all other exogenous variable affecting *y*). Similar to LM, they can be either *un*standardized or standardized:
@@ -939,6 +913,215 @@ __Homework__ (optional):
 
 \fontsize{6pt}{12}\selectfont ____ \newline 
 For each exercise, the solution (or one of the possible solutions) can be found in dedicated chunk of commented code within the `exeRcises.Rmd` file
+
+# Model fit
+
+## In the last episodes...
+
+## Case study: Early mathematical abilities `r fontawesome::fa(name = "calculator",fill="#3333B2", height = "0.8em")`
+
+\begincols
+  \begincol{.45\textwidth}
+
+\fontsize{6.5pt}{12}\selectfont \color{white} _ \newline \newline \color{blue}
+
+A sample of 120 first-grade children (58 females; mean age: 6 years, 3 months) was assessed over the following variables: \newline
+
+  \endcol
+\begincol{.6\textwidth}
+
+```{r , echo = FALSE, out.width = "150px"}
+knitr::include_graphics("img/earlyMath.png")
+```
+
+  \endcol
+\endcols
+
+\fontsize{6.5pt}{12}\selectfont  \color{blue}
+
+- \color{blue}`MAT`: early mathematical abilities (e.g., comparison, classification) measured with the Early Numeracy Test
+
+- \color{blue}`QI`: intelligence level measured with the Wechsler Intelligence Scale for Children (WISC-III)
+
+- \color{blue}`WM`: working memory capacity measured with the Backward word recall task
+
+- \color{blue}`STM`: short-term memory capacity measured with the Forward word recall task
+
+- \color{blue}`ANS`: approximate number system = innate system for approximate quantity manipulation (e.g., approximate computations, comparing 2+ sets of elements \newline without counting), measured with several tasks
+
+\fontsize{7pt}{12}\selectfont
+RQ: **How much can MAT abilities be attributed to memory & ANS?** \newline
+
+\fontsize{5pt}{12}\selectfont \color{black} Source: Pastore (2021). Analisi dei dati in ambito di comunità
+
+## Data structure in multivariate analyses
+
+\fontsize{7.5pt}{12}\selectfont
+In SEM (including path analysis and CFA), data analyses are usually based on wide-form datasets with one row per participant:
+```{r , comment = NA}
+head(earlymath) # showing first 6 rows
+```
+
+Provided that we have **no missing data** (but there are ways to deal with that), such wide-form dataset is used by the model to automatically compute the **covariance matrix of observed variables**, which is the starting points to fit the models.
+
+```{r , comment = NA}
+cov(earlymath[,2:ncol(earlymath)])
+```
+
+\fontsize{6pt}{12}\selectfont \color{blue}
+`r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` Note: since the covariance matrix is the starting point, many software (including R) can fit SEM directly on the covariance matrix
+
+## Fitting a (bivariate) path model with R
+
+\fontsize{7pt}{12}\selectfont
+We will use the `lavaan` (\color{blue}*la*\color{black}tent \color{blue}*va*\color{black}riable \color{blue}*an*\color{black}alysis) package (\color{blue}[Rosseel, 2012](https://doi.org/10.18637/jss.v048.i02)\color{black}), which uses the `sem()` function to fit SEM with observed (path analysis) and/or latent variables.
+```{r , warning=FALSE, message=FALSE}
+library(lavaan)
+```
+
+Let's start with a bivariate model (with only one endogenous variable) to highlight the differences between path analysis and LM in the model specification:
+
+\begincols
+  \begincol{.4\textwidth}
+  
+__Linear model (LM)__
+
+```{r , comment=NA,eval=FALSE}
+# fitting model
+fit.lm <- lm(MAT ~ WM + STM + ANS, 
+             data = earlymath)
+# parameter estimates
+summary(fit.lm)$coefficients
+```
+```{r , comment=NA,echo=FALSE}
+# fitting model
+fit.lm <- lm(MAT ~ WM + STM + ANS, 
+             data = earlymath)
+# parameter estimates
+s <- round( summary(fit.lm)$coefficients, 2)
+rownames(s)[1] <- "(Int)"
+s
+```
+```{r , comment=NA,eval=FALSE}
+# residual variance sigma2
+summary(fit.lm)$sigma^2
+```
+```{r , comment=NA,echo=FALSE}
+# residual variance sigma2
+round(summary(fit.lm)$sigma^2,2)
+```
+
+  \endcol
+\begincol{.6\textwidth}
+
+__Path model (PM)__
+
+```{r , comment=NA,eval=FALSE}
+# specifying model
+mymodel <- 'MAT ~ WM + STM + ANS'
+# fitting model to the data
+fit.sem <- sem(model = mymodel, data = earlymath)
+parameterestimates(fit.sem) # par. estimates
+```
+```{r , comment=NA,echo=FALSE}
+# specifying model
+mymodel <- 'MAT ~ WM + STM + ANS'
+# fitting model to the data
+fit.sem <- sem(model = mymodel, data = earlymath)
+p <- parameterestimates(fit.sem) # par. estimates
+p[,4:ncol(p)] <- round(p[,4:ncol(p)],2)
+p
+```
+
+  \endcol
+\endcols
+
+## Path model summary
+
+\fontsize{7pt}{12}\selectfont
+
+\begincols
+  \begincol{.5\textwidth}
+  
+```{r , comment=NA}
+summary(fit.sem)
+```
+
+  \endcol
+\begincol{.5\textwidth}
+
+Here is the model summary:
+
+- __First lines__: info on convergence, parameter estimation method (ML), optimization (...), and number of estimated parameters (3 path coeff. + 1 residual variance)
+
+- __Model test User Model__: info on model fit (we will see this later)
+
+- __Parameter Estimates__: other info on parameter estimation method
+
+- __Regressions__: path coefficients estimated by the **structural model**, with their **standard error**, **z-value**, and **p-value**
+
+>- __Variances__: estimated **residual variance** of any **endogenous** variable
+
+  \endcol
+\endcols
+
+## Path model vs. linear model estimates
+
+\fontsize{7pt}{12}\selectfont
+We can see that the coefficients estimated by the path model are very similar to those estimated with LM:
+
+```{r , comment=NA}
+coef( fit.sem ) # path model estimates
+
+round(c( coef(fit.lm), sigma2 = summary(fit.lm)$sigma^2 ) ,3) # LM estimates 
+```
+
+__But where is the intercept?__
+
+In SEM, intercepts are usually not considered as 'direct' model parameters. To estimate them, we need to set `meanstructure = TRUE`
+```{r , comment=NA}
+fit.sem <- sem(model = mymodel, data = earlymath, meanstructure= TRUE)
+coef(fit.sem) # Here's the intercept!
+```
+
+Note: Path analysis coefficients can be interpreted identically to LM coefficients
+
+## Hands on `r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")` (part 1)
+
+\fontsize{7pt}{12}\selectfont
+
+1. Open the `earlymath` dataset from the `ADati package`
+
+```{r , eval=FALSE}
+# how to install the ADati package:
+library(devtools) # install and open the devtools package
+install_github("https://github.com/masspastore/ADati") # install the ADati pkg
+data(earlymath, package = "ADati") # load earlymath dataset from ADati pkg
+```
+
+2. Fit a LM `lm1` predicting `MAT` by `WM`, `STM`, `ANS`, and `QI`
+
+3. Fit a path model `pm1` with the same outcome and 'predictors'
+
+4. Print, interpret, and compare the parameters estimated by both models
+
+5. Inspect the predicted covariance matrix by running `inspect( fit.sem, "estimates" )$psi[ 2:4, 2:4 ]` and compare it with the covariance matrix of observed variables *S*
+
+6. Now standardize all variables, re-fit model `pm1`, and print the estimated parameters
+
+7. Now refit model `pm1` on the original variables by setting `std.lv = TRUE` and compare the estimated parameters to those estimated from the standardized variables
+
+## Standardized vs. *un*standardized solution
+
+## Fitting a (multivariate) path model with R
+
+## Interpreting model outputs
+
+## Hands on `r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")` (part 2)
+
+## Mediation analysis
+
+## Hands on `r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")` (part 3)
 
 # Resources
 
