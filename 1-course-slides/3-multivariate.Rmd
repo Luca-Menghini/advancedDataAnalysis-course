@@ -1240,7 +1240,7 @@ inspect( pm1, "estimates")[4]
 ## Fitting a (multivariate) path model with R
 
 \fontsize{7pt}{12}\selectfont
-As we saw in \color{blue} [slide #20](#multipath)\color{black}, path analysis uses **one equation per endogenous variable**, and so does the model syntax used by `lavaan`:
+As we saw in \color{blue} [slide #20](#multipath) \color{black}, path analysis uses **one equation per endogenous variable**, and so does the model syntax used by `lavaan`:
 
 \begincols
   \begincol{.5\textwidth}
@@ -1406,7 +1406,254 @@ model <- 'MAT ~ b*WM + c*QI + ANS + tony*STM
 
 ## Mediation analysis
 
+\fontsize{7pt}{12}\selectfont
+A **mediation model** is a multivariate model that attempts to identify and explain the relationship between a **predictor** (*X*) and an **outcome** variable (*Y*) when we hypothesize that a third variable (**mediator** *M*) can influence the direct relationship between *X* and *Y*. \newline
+
+\fontsize{8pt}{12}\selectfont
+__Note: mediation is different from moderation__ \newline
+
+\begincols
+  \begincol{.5\textwidth}
+
+\color{blue}
+__Mediation &rightarrow; indirect effect__ \fontsize{7pt}{12}\selectfont \color{black}
+
+A **mediator** is expected to be influenced by the predictor and to influence the outcome &rightarrow; **indirect effect** of the predictor *through* the mediator.
+
+```{r , comment=NA}
+model <- 'Y ~ M
+          M ~ X'
+```
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+library(DiagrammeR); library(DiagrammeRsvg); library(rsvg)
+
+tmp <- grViz(
+'digraph boxes_and_circles {
+  graph [layout = neato]
+  node [shape = box]
+  X [pos="-2,1!"]
+  M [pos="0,1!"]
+  Y [pos="2,1!"]
+  node [shape = plaintext]
+  eM [label = <&epsilon;<sub>M</sub>> pos="0,0!"]
+  eY [label = <&epsilon;<sub>Y</sub>> pos="2,0!"]
+  # edges
+  X->M
+  M->Y
+  eM->M
+  eY->Y}')
+
+# Convert to SVG, then save as png
+tmp = export_svg(tmp)
+tmp = charToRaw(tmp) # flatten
+rsvg_png(tmp, "img/med.png") # saved graph as png in current working directory
+```
+```{r , echo = FALSE, out.width = "110px",fig.align="center"}
+knitr::include_graphics("img/med.png")
+```
+  
+  \endcol
+\begincol{.5\textwidth}
+
+\color{blue}
+__Moderation &rightarrow; interaction__ \fontsize{7pt}{12}\selectfont \color{black}
+
+A **moderator** is expected to modulate the relationship between predictor and outcome (e.g., stronger/weaker relationship for higher levels of the moderators), without being necessarily related to *X* and *Y*.
+
+```{r , comment=NA}
+model <- 'Y ~ M * X'
+```
+```{r , echo = FALSE, out.width = "115px",fig.align="center"}
+knitr::include_graphics("img/mod.png")
+```
+
+  \endcol
+\endcols
+
+## Types of effects in a mediation model
+
+\fontsize{8pt}{12}\selectfont
+A mediation model involves three types of effects:
+
+- __Direct effects__: direct influence of the predictor *X* on the outcome *Y* \newline (path \color{red}*c*\color{black}), as indexed by regression/path coefficients $\beta$
+
+- __Indirect effects__: indirect influence of *X* on *Y* through a third variable *M* that mediates the two of them, computed as the **product of the direct effects** of *X* on *M* and *Y* (\color{red}$a \times b$ \color{black})
+
+- __Total effects__: sum of direct and indirect effects of *X* on *Y* (\color{red} $a \times b + c$\color{black})
+
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+library(DiagrammeR); library(DiagrammeRsvg); library(rsvg)
+
+tmp <- grViz(
+'digraph boxes_and_circles {
+  graph [layout = neato]
+  node [shape = box]
+  X [pos="-2,1!"]
+  M [pos="0,0!"]
+  Y [pos="2,1!"]
+  node [shape = plaintext]
+  eM [label = <&epsilon;<sub>M</sub>> pos="0,-1!"]
+  eY [label = <&epsilon;<sub>Y</sub>> pos="2,0!"]
+  # edges
+  X->M [label = <a>]
+  M->Y [label = <b>]
+  X->Y [label = <c>]
+  eM->M
+  eY->Y}')
+
+# Convert to SVG, then save as png
+tmp = export_svg(tmp)
+tmp = charToRaw(tmp) # flatten
+rsvg_png(tmp, "img/med2.png") # saved graph as png in current working directory
+```
+```{r , echo = FALSE, out.width = "150px"}
+knitr::include_graphics("img/med2.png")
+```
+
+Note: when the indirect effect is equal to zero (and thus, total effect = indirect effect), we talk about **full mediation**, otherwise we talk about **partial mediation**
+
+## Mediation analysis in lavaan
+
+\fontsize{7.5pt}{12}\selectfont
+
+\begincols
+  \begincol{.5\textwidth}
+
+First, we specify the model as we are used:
+```{r , comment=NA}
+model <- 'Y ~ X + M
+          M ~ X'
+```
+
+Second, to distinguish *direct* and *mediation* effects, we can rewrite the same model by splitting the first equation in two different equation (i.e., equivalent to the first one):
+```{r , comment=NA}
+model <- '# direct effect
+          Y ~ X
+          # mediation effects
+          Y ~ M
+          M ~ X'
+```
+
+\color{white}_\color{black} \newline \newline
+
+\fontsize{6.5pt}{12}\selectfont
+Note: the symbol \color{red} `:=` \color{black} stands for "*non-model parameter defined as*"
+
+  \endcol
+\begincol{.5\textwidth}
+
+Third, we label the effects:
+```{r , comment=NA}
+model <- '# direct effect
+          Y ~ c*X
+          # mediation effects
+          Y ~ b*M
+          M ~ a*X'
+```
+
+Finally, we define new parameters as the combination of the other parameters:
+```{r , comment=NA}
+model <- '# direct effect
+          Y ~ c*X
+          # mediation effects
+          Y ~ b*M
+          M ~ a*X
+          # indirect effect
+          ab := a*b
+          # total effect
+          tot := c + (a*b)'
+```
+
+  \endcol
+\endcols
+
+## Mediation model fit
+
+\fontsize{8pt}{12}\selectfont
+Here's our mediation model of `QI` (predictor), `WM` (mediator), and `MAT` (outcome):
+```{r , comment=NA}
+mymodel <- '# direct effect
+            MAT ~ c*QI
+            # mediation effects
+            MAT ~ b*WM
+            WM ~ a*QI
+            # indirect effect
+            ab := a*b
+            # total effect
+            tot := c + (a*b)'
+fit <- sem(model = mymodel, data = earlymath)
+```
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+library(DiagrammeR); library(DiagrammeRsvg); library(rsvg)
+
+tmp <- grViz(
+'digraph boxes_and_circles {
+  graph [layout = neato]
+  node [shape = box]
+  X [label = <QI> pos="-2,1!"]
+  M [label = <WM> pos="0,0!"]
+  Y [label = <MAT> pos="2,1!"]
+  node [shape = plaintext]
+  eM [label = <&epsilon;<sub>M</sub>> pos="0,-1!"]
+  eY [label = <&epsilon;<sub>Y</sub>> pos="2,0!"]
+  # edges
+  X->M [label = <a>]
+  M->Y [label = <b>]
+  X->Y [label = <c>]
+  eM->M
+  eY->Y}')
+
+# Convert to SVG, then save as png
+tmp = export_svg(tmp)
+tmp = charToRaw(tmp) # flatten
+rsvg_png(tmp, "img/med3.png") # saved graph as png in current working directory
+```
+```{r , echo = FALSE, out.width = "150px",fig.align='center'}
+knitr::include_graphics("img/med3.png")
+```
+
+## Mediation model output
+
+\fontsize{8pt}{12}\selectfont
+Here are the parameters estimated by our mediation model:
+```{r , comment=NA}
+parameterestimates(fit)[,1:8]
+```
+```{r , comment=NA, echo=FALSE}
+p <- parameterestimates(fit)[,1:8]
+```
+
+>- How to interpret them? Is this a partial or a full mediation?
+
+>- __Direct effect = \color{red}$c$\color{black}__ = `r round(p[1,5],3)` (SE = `r round(p[1,6],3)`), *z* = `r round(p[1,7],3)`, *p* = `r round(p[1,8],3)` &rightarrow; in this case it is positive and significant (i.e., it is a **partial mediation**)
+
+>- __Indirect effect = \color{red}$a \times b$\color{black}__ = `r round(p[7,5],3)` (SE = `r round(p[7,6],3)`), *z* = `r round(p[7,7],3)`, *p* = `r round(p[7,8],3)` &rightarrow; in this case it is positive and significant
+
+>- __Total effect = \color{red}$c + (a \times b)$\color{black}__ = `r round(p[8,5],3)` (SE = `r round(p[8,6],3)`), *z* = `r round(p[8,7],3)`, *p* = `r round(p[8,8],3)` &rightarrow; in this case it is positive and significant
+
 ## Hands on `r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")` (part 3)
+
+\fontsize{8pt}{12}\selectfont
+
+1. Modify the model specified in the last point of Part 2 by adding the indirect and total effect
+
+2. Print and interpret the estimated parameters
+
+3. Visualize the model by using the `semPaths(model_name)` function from the `semPlot` package
+
+## That's all for now!
+
+\fontsize{8pt}{12}\selectfont 
+__Questions?__ \newline
+
+__Homework__ (optional):
+
+- read the slides presented today \newline and write in the Moodle forum if you have any doubts
+
+- **exe`r fontawesome::fa(name = "r-project", fill="#3333B2",height = "1em")`cises 16-17** from `exeRcises.pdf` \newline \newline
+
+\fontsize{6pt}{12}\selectfont ____ \newline 
+For each exercise, the solution (or one of the possible solutions) can be found in dedicated chunk of commented code within the `exeRcises.Rmd` file
 
 # Resources
 
