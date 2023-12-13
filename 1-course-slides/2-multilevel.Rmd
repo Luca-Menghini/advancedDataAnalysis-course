@@ -45,10 +45,8 @@ rm(list=ls())
 
 - **Model evaluation**: Which are the assumptions of multilevel models? How to evaluate them? How to compare multiple models and select the best model? `r fontawesome::fa(name = "r-project", height = "1em")`
 
--  \color{blue} **Related**: Summaries & in-depth topics related to multilevel modeling (e.g., generalized and Bayesian LMER, power analysis) `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")`
-
 ___ \newline \fontsize{5pt}{12}\selectfont \color{blue}
-`r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` = not for the exam \color{black} \newline `r fontawesome::fa(name = "r-project", height = "1em")` = exercises with R (bring your laptop!)
+`r fontawesome::fa(name = "r-project", height = "1em")` = exercises with R (bring your laptop!)
 
 ## Linear regression models
 
@@ -2073,7 +2071,7 @@ tab_model(m4, show.se=TRUE, collapse.se=TRUE,string.est="b (SE)",show.r2=FALSE,d
 
 # from html to latex
 html2pdf(filename = "temp.html",table_width = 13, 
-         silent = TRUE, style = TRUE, build_pdf = TRUE, clean = TRUE, name_table = "table1")
+         silent = TRUE, style = TRUE, build_pdf = TRUE, clean = TRUE, name_table = "table")
 
 # from latex to Rmarkdown
 tex2Rmd("temp.tex")

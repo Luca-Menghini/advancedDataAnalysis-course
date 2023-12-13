@@ -32,16 +32,19 @@ output:
 
 - **Path analysis**: Introduction to path analysis (aka SEM with observed variables) and focus on *mediation models*
 
-- **Data structure**: How to approach a multivariate data structure, how to manipulate and pre-process multivariate data `r fontawesome::fa(name = "r-project", height = "1em")`
+- **Model fit & mediation**: How to fit a path analysis in R, to interpret model results, to conduct a mediation analysis `r fontawesome::fa(name = "r-project", height = "1em")`
 
-- **Model fit & evaluation**: How to fit a path analysis in R, to evaluate model fit, compare multiple models, and interpret model results `r fontawesome::fa(name = "r-project", height = "1em")`
+\color{blue}
 
-- **`cfa()`**: How to conduct a confirmatory factor analysis (CFA) and to interpret its results `r fontawesome::fa(name = "r-project", height = "1em")`
+- **`cfa()`**: How to conduct a confirmatory factor analysis (CFA) and to interpret its results `r fontawesome::fa(name = "microscope", height = "1em")`
 
-- \color{blue} **Related topics**: In-depth topics related to multivariate modeling (e.g., cross-lagged panel models, multilevel and Bayesian SEM) `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")`
+- **Model evaluation**: How to evaluate model fit and compare multiple models `r fontawesome::fa(name = "microscope", height = "1em")`
+
+\color{black}
 
 ___ \newline \fontsize{5pt}{12}\selectfont \color{blue}
-`r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` = not for the exam \color{black} \newline `r fontawesome::fa(name = "r-project", height = "1em")` = exercises with R (bring your laptop!)
+`r fontawesome::fa(name = "microscope", height = "1em")` = not for the exam \newline \color{black}
+`r fontawesome::fa(name = "r-project", height = "1em")` = exercises with R (bring your laptop!)
 
 # sem() intro
 
@@ -1510,7 +1513,7 @@ rsvg_png(tmp, "img/med2.png") # saved graph as png in current working directory
 knitr::include_graphics("img/med2.png")
 ```
 
-Note: when the indirect effect is equal to zero (and thus, total effect = indirect effect), we talk about **full mediation**, otherwise we talk about **partial mediation**
+Note: **when the direct effect is equal to zero** (and thus, total effect = indirect effect), we call it \color{violet} **full mediation**\color{black}, otherwise we call it \color{violet} **partial mediation**
 
 ## Mediation analysis in lavaan
 
@@ -1623,9 +1626,10 @@ parameterestimates(fit)[,1:8]
 p <- parameterestimates(fit)[,1:8]
 ```
 
->- How to interpret them? Is this a partial or a full mediation?
+\color{blue}
+How to interpret them? Is this a partial or a full mediation? \color{black}
 
->- __Direct effect = \color{red}$c$\color{black}__ = `r round(p[1,5],3)` (SE = `r round(p[1,6],3)`), *z* = `r round(p[1,7],3)`, *p* = `r round(p[1,8],3)` &rightarrow; in this case it is positive and significant (i.e., it is a **partial mediation**)
+- __Direct effect = \color{red}$c$\color{black}__ = `r round(p[1,5],3)` (SE = `r round(p[1,6],3)`), *z* = `r round(p[1,7],3)`, *p* = `r round(p[1,8],3)` &rightarrow; in this case it is positive and significant (i.e., thus, it is a **partial mediation**)
 
 >- __Indirect effect = \color{red}$a \times b$\color{black}__ = `r round(p[7,5],3)` (SE = `r round(p[7,6],3)`), *z* = `r round(p[7,7],3)`, *p* = `r round(p[7,8],3)` &rightarrow; in this case it is positive and significant
 
@@ -1662,11 +1666,7 @@ For each exercise, the solution (or one of the possible solutions) can be found 
 \fontsize{8pt}{12}\selectfont
 The present slides are partially based on: \fontsize{6pt}{12}\selectfont
 
-- Altoè, G. (2023) Corso Modelli lineari generalizzati ad effetti misti - 2023. \color{blue} https://osf.io/b7tkp/ \color{black}
-
 - Beaujean, A. A. (2014) Latent Variable Modeling Using R. A Step-by-Step Guide. New York: Routledge
-
-- Finch, W. H., Bolin, J. E., Kelley, K. (2014). Multilevel Modeling Using R (2nd edition). Boca Raton: CRC Press
 
 - Pastore, M. (2015). Analisi dei dati in psicologia (e applicazioni in R). Il Mulino.
 
