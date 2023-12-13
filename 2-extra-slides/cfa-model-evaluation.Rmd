@@ -1,0 +1,535 @@
+---
+title: 'ADVANCED DATA ANALYSIS \newline FOR PSYCHOLOGICAL SCIENCE'
+subtitle: 'Extra slides: CFA and SEM evaluation'
+author:  |
+ |
+ | **Luca Menghini Ph.D.** \fontsize{9pt}{7.2}\selectfont
+ |
+ | luca.menghini@unipd.it
+ |
+ |
+ | ***
+ | Master degree in Developmental and Educational Psychology 
+ |
+ | University of Padova
+ |
+ | 2023-2024
+ |
+ | ![](img/logo.PNG){width=1.7in}
+output:
+  beamer_presentation:
+    fonttheme: serif
+    theme: Singapore
+    slide_level: 2
+    includes:
+      in_header: mystyle.tex
+---
+
+# CFA
+
+## Confirmatory factor analysis (CFA)
+
+\fontsize{7.5pt}{12}\selectfont
+
+- A CFA model is a SEM that includes **both observed & latent variables**
+
+- In 'full' SEM, the measurement model **forms the latent variables** \newline (also called *latent factors* or just *factors*) to be used in the structural model
+
+- In CFA, there is **no structural model** (no directional relationship between latent variables) but **just the measurement model**: \newline &rightarrow; CFA focuses on \color{violet} the relationships between latent and observed variables \color{black} 
+
+- Such relationships are called **factor loadings** and are considered as quantitative indicators of the **construct validity** of a set of indicators (e.g., items of a scale)
+
+```{r , echo = FALSE,fig.width=12,fig.height=3,out.width="280px",fig.align='center'}
+knitr::include_graphics("img/cfa1.PNG")
+```
+
+\fontsize{5pt}{12}\selectfont
+Source: Moran et al (2021) \color{blue} [doi.org/10.1007/s00520-020-05568-w](https://doi.org/10.1007/s00520-020-05568-w)
+
+## Factor structure
+
+\begincols
+  \begincol{.4\textwidth}
+  
+```{r , echo = FALSE,fig.width=12,fig.height=3,out.width="130px"}
+knitr::include_graphics("img/cfa2.PNG")
+```
+  
+  \endcol
+\begincol{.6\textwidth}
+
+\fontsize{8pt}{12}\selectfont
+A **factor structure** is one of the possible structures of relationships between a number of observed variables that are said to measure one or more particular latent factors. \newline 
+
+The factor structure of a CFA model defines:
+
+1. the __number__ of latent variables (one-factor vs. two-factor, vs. N-factor model)
+
+2. the __relationships__ between each particular observed variable and the corresponding latent variable (for models with 2+ latent)
+
+  \endcol
+\endcols
+
+\color{white}_\color{black}\newline
+
+\fontsize{8pt}{12}\selectfont
+Starting from a covariance matrix of observed variables, CFA tests the \newline __goodness of fit__ of an hypothesized factor structure (or set of alternative structures) and provides estimates of the resulting **factor loadings**
+
+## Confirmatory vs. Exploratory factor analysis
+
+\fontsize{7.5pt}{12}\selectfont
+Confirmatory factor analysis is called "*confirmatory*" due to the assumptions on the underlying factor structure: \newline
+
+\begincols
+  \begincol{.5\textwidth}
+
+\fontsize{8pt}{12}\selectfont \color{violet}
+__Exploratory factor analysis (EFA)__ \color{black} \newline
+
+\fontsize{7.5pt}{12}\selectfont
+There are **no hypotheses on the factor structure** (unknown number of factors and factor loadings) \newline
+
+Thus, we do not *impose* any predefined structure on the model (data-driven approach), but **the structure is the output** \newline
+
+In psychological testing, EFA is often used in the **initial stages** of measure development
+
+  \endcol
+\begincol{.5\textwidth}
+
+\fontsize{8pt}{12}\selectfont \color{violet}
+__Confirmatory factor analysis (CFA)__ \color{black}
+
+\fontsize{7.5pt}{12}\selectfont
+There is prior knowledge of the theory, empirical research, or both, to **postulate the factor structure a priori** and test the hypothesis statistically \newline
+
+Used to **verify** the hypothesized relationship pattern and **test/quantify** the hypotheses on the factor loadings \newline
+
+Often used in the **later stages** of measure development (including adaptation into other languages)
+
+  \endcol
+\endcols
+
+## Reflective vs. Formative models
+
+```{r , echo = FALSE,fig.width=12,fig.height=3,out.width="250px",fig.align='center'}
+knitr::include_graphics("img/reflective.PNG")
+```
+
+\fontsize{7.5pt}{12}\selectfont
+
+\begincols
+  \begincol{.5\textwidth}
+
+
+__Reflective latent variables__ are thought to *cause* observed variable variances and covariances \newline
+
+Basic idea: There is a (small number of) latent variable(s) within a given domain (e.g., personality) that influence each of its observed indicators (*parallel forms*) producing the observed covariance matrix
+
+  \endcol
+\begincol{.5\textwidth}
+
+__Formative latent variables__ are thought to be *the result* of observed variable covariation (similar to multiple regression) \newline
+
+Less common in psychological testing, useful for measures such as **symptom checklists**, whose items are *not* considered as *parallel forms* (i.e., you can have one symptom but not the others) 
+
+  \endcol
+\endcols
+
+## Case study: Children mental abilities `r fontawesome::fa(name = "magnifying-glass-chart",fill="#3333B2", height = "0.8em")`
+
+\begincols
+  \begincol{.65\textwidth}
+
+\fontsize{7pt}{12}\selectfont 
+‘Classic’ \color{blue} [Holzinger and Swineford (1939)](https://books.google.it/books/about/A_Study_in_Factor_Analysis.html?id=io6cMQEACAAJ&redir_esc=y) \color{black} dataset used in many SEM papers and books. It is included in the `lavaan` pkg and consists of a subset of **9 mental ability test scores** from 301 7th- and 8th-grade children .
+```{r , eval=FALSE}
+data(HolzingerSwineford1939,package="lavaan")
+hs39 <- HolzingerSwineford1939 # shortening data name
+head(hs39,3) # showing first 3 lines
+```
+```{r , echo=FALSE,comment=NA}
+data(HolzingerSwineford1939,package="lavaan") # loading dataset
+hs39 <- HolzingerSwineford1939[,c(1,7:ncol(HolzingerSwineford1939))]
+head(round(hs39,2),3) # showing first 3 lines
+```
+
+\color{white}_\color{black} \newline
+
+Hypothesized underlying **three-factor structure** with a *visual* (items *x1*, *x2*, *x3*), a *textual* (items *x4*, *x5*, *x6*), and a *speed* factor (items *x7*, *x8*, and *x9*)
+
+  \endcol
+\begincol{.35\textwidth}
+
+```{r , echo = FALSE,out.width="100px"}
+knitr::include_graphics("img/hs39.PNG")
+```
+
+  \endcol
+\endcols
+
+## Model identification (1/3)
+
+\fontsize{7pt}{12}\selectfont 
+
+```{r , echo = FALSE,out.width="200px",fig.align='center'}
+knitr::include_graphics("img/identification.PNG")
+```
+
+- To quantify/form latent variables, we need to use some observed information (i.e., the covariance matrix of observed variables) to estimate something that cannot be observed
+
+- However, we cannot estimate a number of **unknown parameters** that is lower than the number of **non-redundant information in the data** (\color{violet}ident. rule\color{black})
+
+- The **number of non-redundant information** in the covariance matrix *S* of *p* observed variables can be computed as \color{violet} *p( p+1) / 2* \color{black}
+
+- The **number of parameters** can be determined by... well, you know how `r fontawesome::fa(name = "smile",fill="blue", height = "0.8em")`
+
+## Model identification (2/3)
+
+\fontsize{7pt}{12}\selectfont 
+
+```{r , echo = FALSE,out.width="200px",fig.align='center'}
+knitr::include_graphics("img/identification.PNG")
+```
+
+- In CFA models, the difference between the number of non-redundant information (*p( p+1) / 2*) and the number of parameters to estimate are called \color{violet} **degrees of freedom** (*df*) \color{black} of the model
+
+- When *df < 0*, the model is **underidentified** and *we cannot uniquely estimate* the parameters
+
+- When *df = 0*, the model is **just-identified** and there should be *unique estimates* for each parameter (`r fontawesome::fa(name = "microscope",fill="blue", height = "0.8em")` \color{blue} note: LM models are just-identified models\color{black})
+
+- When *df > 0*, the model is **overidentified**, providing both *unique estimates* and *measures of model fit* (see Model evaluation)
+
+- We want our model to be overidentified.
+
+## Model identification (3/3)
+
+\fontsize{7pt}{12}\selectfont 
+
+```{r , echo = FALSE,out.width="200px",fig.align='center'}
+knitr::include_graphics("img/identification2.PNG")
+```
+
+- With **4+ indicators per latent variable,** ***df*** **would be = 0**
+
+- With **3 indicators per latent variable,** ***df*** **would be < 0*** 
+
+However, we can *constrain* some parameters to **set the latent variable's scale**: 
+
+- We can constrain the LV variance to 1 &rightarrow; **standardization of the latent variable** (note: if the observed variables are standardized as well, we're using the *standardized solution*)
+  
+- We can constrain a single factor loading for each LV to an arbitrary value (usually, 1) &rightarrow; **marker value** (used to determinate the latent variable variance) \newline
+
+## Model identification in our case study
+
+\fontsize{8pt}{12}\selectfont 
+In our example we have 9 observed variables (*p* = 9):
+
+- how many unknown parameters? \newline \color{blue} 9 loadings + 9 errors + 3 variances + 3 covariances = 24* \color{black}
+
+- how many non-redundant information in the observed covariance matrix? \newline \color{blue} *p( p + 1) / 2* = 9 (9 + 1) / 2 = 45 \color{black}
+
+\begincols
+  \begincol{.65\textwidth}
+
+\fontsize{7pt}{12}\selectfont 
+```{r , eval=FALSE}
+cov(hs39[,paste0("x",1:9)]) # observed covar. matrix
+```
+```{r , echo=FALSE,comment=NA}
+p <- cov(hs39[,paste0("x",1:9)])
+p[upper.tri(p)] <- NA
+round(p,2)
+```
+  \endcol
+\begincol{.35\textwidth}
+
+```{r , echo = FALSE,out.width="90px"}
+knitr::include_graphics("img/hs39.PNG")
+```
+
+  \endcol
+\endcols
+
+\fontsize{5pt}{12}\selectfont 
+*Note: in CFA, also latent variable variances and covariances count as unknown parameters
+
+## Fitting a CFA in R
+
+\fontsize{8pt}{12}\selectfont 
+`lavaan` uses the symbol \color{red} `=~` \color{black} to set a latent variable as ***reflective of*** a number of observed variables.
+
+\begincols
+  \begincol{.65\textwidth}
+
+\fontsize{7pt}{12}\selectfont 
+```{r , warning=FALSE,message=FALSE}
+library(lavaan)
+mymodel <- 'visual =~ x1 + x2 + x3
+            textual =~ x4 + x5 + x6
+            speed =~ x7 + x8 + x9'
+fit <- cfa(mymodel, data=hs39)
+```
+  \endcol
+\begincol{.35\textwidth}
+
+```{r , echo = FALSE,out.width="100px"}
+knitr::include_graphics("img/hs39.PNG")
+```
+
+  \endcol
+\endcols
+
+## CFA model output: unstandardized solution
+
+\fontsize{7pt}{12}\selectfont 
+```{r , eval=FALSE}
+parameterestimates(fit)
+```
+```{r , echo=FALSE}
+p <- parameterestimates(fit)
+knitr::kable(p[,1:7],digits=2)
+```
+
+## CFA model output: standardized solution
+
+\fontsize{7pt}{12}\selectfont 
+```{r , eval=FALSE}
+standardizedsolution(fit)
+```
+```{r , echo=FALSE}
+p <- standardizedsolution(fit)
+knitr::kable(p[,1:7],digits=2)
+```
+
+
+## `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` Parameter matrices
+
+\fontsize{7pt}{12}\selectfont
+Let's see how parameter matrices change with a CFA:
+
+\fontsize{6pt}{12}\selectfont
+
+\begincols
+  \begincol{.5\textwidth}
+
+$\lambda$ = matrix of **factor loadings**
+```{r , comment=NA}
+inspect( fit, "estimates")[1]
+```
+$\psi$ = matrix of **latent variable (co)variances** 
+```{r , comment=NA}
+inspect( fit, "estimates")[3]
+```
+
+  \endcol
+\begincol{.5\textwidth}
+
+$\theta$ = matrix of **observed variable (co)variances**
+```{r , comment=NA}
+inspect( fit, "estimates")[2]
+```
+$\beta$ = matrix of **regression coefficients** (paths)
+```{r , comment=NA}
+inspect( fit, "estimates")[4]
+```
+
+  \endcol
+\endcols
+
+# Model evaluation
+
+## Multivariate model evaluation
+
+\fontsize{7.5pt}{12}\selectfont 
+With 'model evaluation' we refer to two main procedures:
+
+- **Model diagnostics**: Evaluating whether the model fits the data consistently with the underlying ***model assumptions***
+
+- **Fit evaluation**: Evaluating the goodness of fit of the model to the data
+
+- **Model comparison**: Evaluating whether the model fits substantially better or worse than alternative models &rightarrow; ***model selection*** (choosing the best model) \newline
+
+### Data analysis pipeline
+
+1. Data exploration & descriptives
+
+2. Model fit
+
+3. Model diagnostics
+
+4. Model comparison
+
+5. Model selection & coefficient interpretation
+
+6. Result visualization
+
+## SEM assumptions
+
+\fontsize{7.5pt}{12}\selectfont 
+Similar to LM(ER), SEM require that some **assumptions about the data** \newline hold true. Otherwise, we cannot trust the estimated parameters or any other result. \newline
+
+\fontsize{7.5pt}{12}\selectfont
+Assumptions common to LM: \newline
+\fontsize{6.5pt}{12}\selectfont
+**1. Linearity**: expected (mean) value of residuals is zero
+
+**2. Normality**: residuals are normally distributed
+
+**3. Homoscedasticity**: residual variance is constant over the levels of fitted values
+
+**4. Independence** between residuals and fitted values
+
+**5. Absence of influential observations** (multivariate outliers)
+
+**6. Absence of multicollinearity**: no linear relationship between different predictors
+
+## Evaluating SEM assumptions
+
+\fontsize{7.5pt}{12}\selectfont
+Here, we see just an example for the endogenous variable `x1` from the previous example.
+```{r , comment=NA,warning=FALSE,message=FALSE,fig.width=10,fig.height=3}
+library(influence.SEM)
+outres <- sem.fitres( fit ) # computing residuals
+head(outres[,c("x1","hat.x1","e.x1")]) # residuals (e) = observed - predicted (hat)
+```
+```{r , comment=NA,warning=FALSE,message=FALSE,fig.width=10,fig.height=3,eval=FALSE}
+plot( e.x1 ~ hat.x1, data = outres, pch = 19) # violation of independence
+qqnorm( outres$e.x1, pch = 19 ); qqline( outres$e.x1, col = "red") # normality quite ok
+plot( sqrt( abs( e.x1 ) ) ~ hat.x1, data = outres ) # omoscedasticity ok
+plot( genCookDist( fit, data = HolzingerSwineford1939 ), pch = 19 ) # some influential case
+```
+```{r , comment=NA,warning=FALSE,message=FALSE,fig.width=10,fig.height=2.5,echo=FALSE}
+par( mfrow = c( 1, 4 ) )
+plot( e.x1 ~ hat.x1, data = outres, pch = 19) # violation of independence
+qqnorm( outres$e.x1, pch = 19 ); qqline( outres$e.x1, col = "red") # normality quite ok
+plot( sqrt( abs( e.x1 ) ) ~ hat.x1, data = outres ) # omoscedasticity ok
+plot( genCookDist( fit, data = HolzingerSwineford1939 ), pch = 19 ) # some influential case
+```
+
+## Evaluating SEM goodness of fit
+
+\fontsize{7.5pt}{12}\selectfont
+The general principle behind the evaluation of the goodness of fit of a SEM is based on the **comparison** between the **observed covariance matrix $S$** and the **predicted covariance matrix $\hat{\Sigma(\theta)}$** that is implied by the models based on parameter estimates $\theta$
+
+The smaller the distance between $S$ and $\hat{\Sigma(\theta)}$, the better goodness of fit
+
+When the model is not saturated (*df > 0*), there are several **fit indices** to evaluate such distance either based on residuals or on the difference between the target and a baseline model, such as:
+
+- Root-Mean-Square Error of Approximation (RMSEA) &rightarrow; should be < 0.06
+
+- Standardized root mean square residual (SRMR) &rightarrow; should be < 0.08
+
+- Comparative fit index (CFI) &rightarrow; should be > 0.95
+
+```{r , comment=NA,warning=FALSE,message=FALSE,fig.width=10,fig.height=3}
+inspect(fit,"fit")[c("rmsea","srmr","cfi")]
+```
+
+## Model comparison based on fit indices
+
+\fontsize{7.5pt}{12}\selectfont
+The same **fit indices** can be used to **compare multiple models** and find the one that shows the better fit.
+
+```{r , comment=NA,warning=FALSE,message=FALSE,fig.width=10,fig.height=3}
+# model 1: 3 factors
+mymodel1 <- 'visuoTextual =~ x1 + x2 + x3
+             textual =~ x4 + x5 + x6
+             speed =~ x7 + x8 + x9'
+fit1 <- cfa(mymodel1, data=hs39)
+
+# model 2: 2 factors
+mymodel2 <- 'visuoTextual =~ x1 + x2 + x3 + x4 + x5 + x6
+             speed =~ x7 + x8 + x9'
+fit2 <- cfa(mymodel2, data=hs39)
+
+# model comparison (model 1 is better)
+rbind(inspect(fit1,"fit")[c("rmsea","srmr","cfi")],
+      inspect(fit2,"fit")[c("rmsea","srmr","cfi")])
+```
+
+## Model comparison based on information criteria
+
+\fontsize{7.5pt}{12}\selectfont
+SEM can also be compared based on the same information criteria that we saw in Part 1: the Akaike Information Criterion (AIC) and the Bayesian Information Criterion (BIC).
+
+```{r , comment=NA,warning=FALSE,message=FALSE,fig.width=10,fig.height=3}
+AIC(fit1,fit2) # AIC: the lower the better -> m1 is better
+MuMIn::Weights(AIC(fit1,fit2)) # AIC weight: the higher the better
+
+BIC(fit1,fit2) # BIC: the lower the better -> m1 is better
+MuMIn::Weights(BIC(fit1,fit2)) # BIC weight: the higher the better
+```
+
+## Model comparison based on likelihood ratio test
+
+\fontsize{7.5pt}{12}\selectfont
+Even the likelihood ratio test (see Part 1) can be used to compare two nested SEM:
+
+```{r , comment=NA,warning=FALSE,message=FALSE,fig.width=10,fig.height=3}
+anova(fit1,fit2) # in this case it is significant, but...
+```
+
+## Coefficient of determination in SEM
+
+\fontsize{7.5pt}{12}\selectfont
+SEM allow to compute a **coefficient of determination** $R^2$ for each endogenous variable. The interpretation is identical to that shown in Part 1.
+
+```{r , comment=NA,warning=FALSE,message=FALSE,fig.width=10,fig.height=3}
+inspect( fit1 , 'rsquare' ) 
+```
+
+Interpretation: the model explains from 18 to 73% of the variance in the obs variables
+
+## `r fontawesome::fa(name = "trophy", fill="#3333B2",height = "1em")` That's all for now (and forever)! :) `r fontawesome::fa(name = "trophy", fill="#3333B2",height = "1em")`
+
+# Resources
+
+## Credits
+
+\fontsize{8pt}{12}\selectfont
+The present slides are partially based on: \fontsize{6pt}{12}\selectfont
+
+- Beaujean, A. A. (2014) Latent Variable Modeling Using R. A Step-by-Step Guide. New York: Routledge
+
+- Pastore, M. (2015). Analisi dei dati in psicologia (e applicazioni in R). Il Mulino.
+
+- Pastore, M. (2021). Analisi dei dati in ambito di comunità
+
+## Achronyms & Greek letters
+
+\begincols
+  \begincol{.45\textwidth}
+
+\fontsize{6pt}{12}\selectfont
+
+- CFA: confirmatory factor analysis
+
+- LM: linear models/modeling
+
+- LV: latent variable
+
+- OV: observed variable
+
+- SEM: structural equation models/modeling
+
+>- SS: sum of squares
+
+  \endcol
+\begincol{.6\textwidth}
+
+\fontsize{6pt}{12}\selectfont
+
+- $\beta$ = *beta*, indexing path coefficients (or regression coefficients)
+
+- $\epsilon$ = *epsilon*, indexing the error of an observed variable
+
+- $\sigma$ = *sigma*, indexing the variance $\sigma^2$ of the errors $\epsilon$
+
+- $\eta$ = *eta*, indexing latent variables
+
+- $\theta$ = *theta*, indexing overall model parameters
+
+>- ciao
+
+  \endcol
+\endcols
