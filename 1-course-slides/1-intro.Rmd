@@ -177,15 +177,13 @@ Students should have good knowledge about basic concepts linked to probability t
 
 9. Observed variables & path analysis
 
-10. Data preparation `r fontawesome::fa(name = "r-project", height = "1em")`
+10. Model fit and coefficient interpretation `r fontawesome::fa(name = "r-project", height = "1em")`
 
-11. Model evaluation & selection `r fontawesome::fa(name = "r-project", height = "1em")`
+11. Mediation analysis `r fontawesome::fa(name = "r-project", height = "1em")`
 
-12. Coefficient interpretation `r fontawesome::fa(name = "r-project", height = "1em")`
+12. \color{blue} Latent variables & CFA `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")`
 
-13. Latent variables & CFA `r fontawesome::fa(name = "r-project", height = "1em")`
-
-15. \color{blue} Multilevel SEM, Bayesian SEM, power analysis `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` \newline \newline
+13. \color{blue} Model evaluation and comparison `r fontawesome::fa(name = "microscope", fill = "blue", height = "1em")` \newline \newline
 
   \endcol
 \endcols
