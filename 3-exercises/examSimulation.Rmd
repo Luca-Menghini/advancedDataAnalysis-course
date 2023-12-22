@@ -1,0 +1,713 @@
+---
+title: "Advanced Data Analysis for Psychological Science"
+subtitle: "Exam simulation"
+author: "Luca Menghini"
+date: "2023-12-14"
+output: pdf_document
+      
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## Content
+
+This is a simulation of the exam for the course entitled "*Advanced Data Analysis for Psychological Science*" (University of Padova, Academic year 2023-24). As clarified in the `1-intro.pdf` slides and the `exam-information.pdf` file on Moodle, both the final exam and the current simulation are written and consist of **31 multi-choice questions** to be answered in **40 minutes**.
+
+## Questions
+
+1. __When can we talk about 'nested data structures'?__
+
+    a) When multiple individuals are nested within clusters
+  
+    b) When multiple clusters are nested within individual
+  
+    c) When multiple clusters and individuals are nested within each other
+  
+    d) When multiple individuals are nested within statistical units \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (a)
+# individual observations are nested within clusters
+
+# (b) is wrong because it is the opposite rlationship
+
+# (c) is wrong because it is only in one direction (individual within clusters, not the opposite)
+
+# (d) is wrong because in this context individual (observations) and statistical units are used as synonyms
+```
+
+
+2. __Which linear model (LM) assumption is violated with clustered data?__
+
+    a) Linearity
+    
+    b) Normality
+    
+    c) Independence of observations
+    
+    d) Independence between errors and predictors \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# with clustered/nested data, individual observations belonging to the same cluster are not indipendent
+
+# (a) is wrong because linearity (residuals centered on zero) is an assumption shared by both LM and LMER 
+
+# (b) is wrong because normality (of the residuals) is an assumption shared by both LM and LMER
+
+# (d) is wrong because independence of residuals from predictors is an assumption shared by both LM and LMER
+```
+
+3. __Which of the following is NOT a nested data structure?__
+
+    a) School principals within schools
+    
+    b) Students within schools
+    
+    c) Classes within schools
+    
+    d) Teachers within schools \newline
+    
+\color{red}edit: this question was debated in class because it assumes that a school can only have one school principal. If we consider that schools can have multiple school principals, then all the options would be right. In the actual exam, you will not find such ambiguous questions. \color{black} \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (a)
+# because nested data structures require multiple observations per claster, whereas there can only be one single school principal in each school - however, this was debated in class (see the note in the text above)
+
+# (b), (c), and (d) are all examples of nested data structure (i.e., multiple observations nested within clusters, with 2+ observations per cluster) is wrong because linearity (residuals centered on zero) is an assumption shared by both LM and LMER 
+```  
+
+4. __You are hired by a school principal to assess whether teachers' self-efficacy (x) impact on students' achievement (y). Which is the cluster variable?__
+
+    a) Teacher self-efficacy
+    
+    b) Students' classes
+    
+    c) Student self-efficacy
+    
+    d) Teacher's classes \newline
+    
+```{r echo=FALSE}
+# RIGHT ANSWER: (b)
+# because the dependent variable (Y) is measured at the student level, so students are the statistical unit (or individual observation variable) whereas students' classes are the cluster variable
+
+# (a) is wrong because self-efficacy is not a categorical variable that allows to group individual observations into clusters
+
+# (c) is wrong for the same reasons of (a) and because student self-efficacy was not even measured
+
+# (d) is wrong because students are the statistical unit, not teachers. Moreover, one teacher can teach to multiple classes, whereas nested data structures require that any given observation belongs to only one cluster
+```
+
+5. __Which of the following is NOT a potential consequence of using a statistical model that neglects the local dependencies in the data?__
+
+    a) Biased random effects
+    
+    b) Biased standard errors
+    
+    c) Biased p-value
+    
+    d) Biased confidence intervals \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (a)
+# because if we neglect local dependencies then we are not using a LMER model, so we have no random effects to be biased
+
+# (b) is wrong because it is precisely the standard error that is biased when nested data structures are analyzed with LM rather than LMER
+
+# (c) is wrong because p-values are computed from the standard error, so if standard errors are biased even the p-value is biased
+
+# (d) is wrong because confidence intervals are computed from the standard error, so if standard errors are biased even the confidence intervals are biased
+```  
+    
+6. __Which of the following parameters is a fixed effect?__
+
+    a) Intercept
+    
+    b) Residual variance
+    
+    c) Cluster variability around the intercept
+    
+    d) None of the other options \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (a)
+# because the intercept is fixed (i.e., applies to the whole dataset), while its random components (random intercept) is estimated separately
+
+# (b) is wrong because residual variance is assumed to be a random effect
+
+# (c) is wrong because it describes the random intercept
+
+# (d) is wrong because (a) is right
+```     
+    
+7. __You want to investigate the relationship between child attachment (independent variable `x1`) and health (dependent variable `y`) in families with 3 or more children, controlling for child's age (`x2`) and the number of children in each family (`x3`). Which of the following is NOT a random effect?__
+    
+    a) Differences between families in the mean health of their children
+    
+    b) Differences between families in the relationships between attachment and health
+    
+    c) Mean relationship between attachment and health 
+    
+    d) None of the other options \newline
+    
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because that option describes the fixed slope, that is the slope estimated for the effect of attachment considering the whole sample regardless of the cluster
+
+# (a) is wrong because that is the random intercept
+
+# (b) is wrong because that is the random slope 
+
+# (d) is wrong because (c) is right
+```   
+    
+8. __Considering the research described in question #7, which of the following variables is at the cluster level (level 2)?__
+
+    a) Attachment
+    
+    b) Health
+    
+    c) Number of children
+    
+    d) Age \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because children are the individual observations and families are the clusters. While attachment, health, and age are measured at the child level (level 1), the number of children in each family is the only variable measured at the cluster (family) level
+
+# (a), (b), and (d) are wrong because they all identify level-1 variables
+``` 
+    
+9. __Considering the research described in question #7, which of the following variables should be included in a model to estimate the random intercept?__
+
+    a) Attachment and family
+    
+    b) Health and family
+    
+    c) Attachment and child
+    
+    d) Health and child \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (b)
+# because the random intercept is estimated as the differences between each cluster (family) mean in the dependent variable (health) and the grand mean of the same variable (fixed intercept). So the cluster variable and the dependent variable are needed to estimate the random intercept (e.g., think about the null model)
+
+# (a) is wrong because it does not include the dependent variable (health)
+
+# (c) is wrong for the same reasons and because it doesn ot include the cluster variable (family)
+
+# (d) is wrong because it does not include the cluster variable (family)
+``` 
+
+10. __Considering the research described in question #7, you got a level-2 correlation between child attachment and health of 0.30 and a level-1 correlation of -0.10. What does that mean?__
+
+    a) A negative correlation is estimated between family means of attachment and health
+    
+    b) A positive correlation is estimated between attachment and health within each family
+    
+    c) Neither (a) nor (b) are true
+    
+    d) Both (a) and (b) are true \newline
+    
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because the correlation between families (level 2) is positive (and not negative as in option (a)) whereas the within-family correlation (level 1) is negative (and not positive as in option (b))
+```    
+    
+11. __How can we compute the correlation between two variables at the within-cluster level?__
+
+    a) By correlating the two variables expressed in their original scale
+    
+    b) By correlating the cluster means of the two variables
+    
+    c) By correlating the cluster-mean-centered values of the two variables
+    
+    d) By correlating the grand-mean-centered values of the two variables \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because it is by subtracting the cluster mean for each observation belonging to that cluster that we isolate the within-cluster component of a variable, and by correlating two cluster-mean-centered variables we get he within-cluster correlation
+
+# (a) is wrong because that would be a mix of within- and between-cluster correlation
+
+# (b) is wrong because that would be the between-cluster correlation
+
+# (d) is wrong because that would also be the between-cluster correlation
+```    
+    
+12. __Which dataset should you use to compute between-cluster correlations?__
+
+    a) The long-form dataset
+    
+    b) The wide-form dataset
+    
+    c) Both the long- and the wide-form dataset can be used
+    
+    d) Neither the long- nor the wide-form dataset can be used \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (b)
+# because we would need to correlate the cluster means with just one value per cluster, and that is the wide-form dataset
+
+# (a) is wrong because that imply multiple observations per cluster
+
+# (b) is wrong because we just need the wide-form
+
+# (d) is wrong because the wide-form is fine :)
+```        
+    
+13. __The variable `x` shows an intraclass correlation coefficient (ICC) of 0.30. What does that mean?__
+
+    a) `x` varies more within than between clusters
+    
+    b) `x` varies more between than within clusters
+    
+    c) `x` equally varies between and within clusters
+    
+    d) `x` only varies within clusters \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (a)
+# because the ICC tell us the percentage of between-cluster variance. Here 0.30 means 30% between-cluster variance and the remaining 70% within-cluster. So within-cluster variance is higher than between-cluster variance and the variable X varies more within than between.
+
+# (b) is wrong because that would require an ICC > 0.5
+
+# (c) is wrong because that would require an ICC = 0.5
+
+# (d) is wrong because that would require an ICC = 0
+```       
+    
+14. __For a given variable, both the residual variance and the variance of the random intercept are equal to 20. How much is the ICC?__
+
+    a) 0.20
+    
+    b) 20
+    
+    c) 0.50
+    
+    d) 1 \newpage
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because the ICC is computed as the ratio between the random intercept variance (tau_00^2) and the sum of the random intercept variance and the residual variance (tau_00^2 + sigma^2), so 20 / (20 + 20) = 20 / 40 = 1/2 = 0.5
+```  
+
+The following questions are related to a study where a group of healthy **adolescents** (\color{blue}`subjID`\color{black}) were involved in a 10-day ambulatory protocol where they reported they daily levels of **study load** (\color{blue}`SL`\color{black}, 7-point Likert scale), day-time **anxiety** (\color{blue}`Anx`\color{black}, 7-point Likert scale), evening **relaxation** (\color{blue}`Relax`\color{black}, 7-point Likert scale), and evening **blood pressure** (\color{blue}`BP`\color{black}, measured in mmHg). The following results were obtained from two alternative models predicting `BP` by the other variables while controlling for the adolescent **smoking status** (\color{blue}`Smoker`\color{black}, Yes/No):
+
+```{r echo=FALSE,message=FALSE,eval=FALSE}
+rm(list=ls())
+load("data/diary_aggregated.RData")
+diary <- diary[,c("ID","SBP_aft","RRel","WL","EE","smoker")]
+colnames(diary) <- c("subjID","BP","Relax","SL","Anx","Smoker")
+diary$Smoker <- as.factor(gsub("Quit_less","No",gsub("Quit_more","No",diary$Smoker)))
+library(lme4); library(sjPlot); library(html2latex)
+fit1 <- lmer(BP ~ SL + Anx + Smoker + (1|subjID), data = diary)
+fit2 <- lmer(BP ~ SL * Anx + Smoker + (1|subjID), data = diary)
+tab_model(fit1,fit2,show.ngroups = FALSE,
+          show.se=TRUE, collapse.se=TRUE,string.est="b (SE)",dv.labels="",show.icc=FALSE,show.aic=TRUE)
+```
+```{r , echo = FALSE,out.width="500px",fig.align='center'}
+knitr::include_graphics("img/exam1.PNG")
+```
+
+15. __Which are the random effects?__
+
+    a) Random intercept and smoking status
+    
+    b) Random intercept and random slope
+    
+    c) Random intercept and residual variance
+    
+    d) Random intercept and fixed intercept \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because the table only includes two random effects: tau_00 (random intercept variance) and sigma^2 (residual variance).
+
+# (a) is wrong because smoking status is a level-2 predictors with a fixed effect only
+
+# (b) is wrong because there is no random slope
+
+# (d) is wrong because the fixed intercept is not a random effect
+```    
+    
+16. __How many parameters are included in the first model (shown on the left)?__
+
+    a) Four: 1 intercept + 3 slopes (SL, Anx, Smoker)
+    
+    b) Five: 1 intercept + 3 slopes (SL, Anx, Smoker) + 1 residual variance
+    
+    c) Six: 1 intercept + 3 slopes (SL, Anx, Smoker) + 1 residual variance + 1 random intercept
+    
+    d) Seven: 1 intercept + 3 slopes (SL, Anx, Smoker) + 1 residual variance + 1 random intercept + 1 interaction between SL and Anx \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because the number of values under the Estimate column in the first model is six
+
+# (a) is wrong because it does not consider random effects althoug they are in fact model parameters
+
+# (b) is wrong because it does not consider the random intercept
+
+# (d) is wrong because the interaction is only included in the second model
+``` 
+    
+17. __Which is the best model according to the Akaike information criterion (AIC)__?
+
+    a) The first model (on the left)
+    
+    b) The second model (on the right)
+    
+    c) The two models are equivalent
+    
+    d) The AIC does not allow to compare two models \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (a)
+# because the lower the AIC the better, and the first model has the lowest AIC
+
+# (b) is wrong because the second model has a higher AIC than the second
+
+# (c) is wrong because the two AIC are not equal
+
+# (d) is wrong because the AIC does allow to compare two models
+```    
+    
+18. __What is the interpretation of the `Smoker` coefficient in the first model?__
+
+    a) For a one-unit increase in the smoking status, blood pressure is predicted to *decrease* by 0.80 mmHg
+    
+    b) For a one-unit increase in the smoking status, blood pressure is predicted to *increase* by 0.80 mmHg
+    
+    c) On average, smokers are predicted to show a blood pressure 0.80 mmHg *lower* than non-smokers
+    
+    d) On average, smokers are predicted to show a blood pressure 0.80 mmHg *higher* than non-smokers \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because the label "[Yes]" indicates that the level [Yes] is compared to the reference level [No], so the parameter estimates -0.80 is "[Yes] - [No]", and since it is negative it implies that [Yes] is lower than [No]
+
+# (a) is wrong because Smoker is a categorical predictor variable and that is the interpretation for a quantitative variable
+
+# (b) is wrong for the same resons
+
+# (d) is wrong because the result is a negative value
+```   
+    
+19. __What is the interpretation of the `SL` $\times$ `Anx` coefficient in the second model?__
+
+    a) For a one-unit increase in *study load*, the relationship between *anxiety* and blood pressure is predicted to increase by 0.19
+    
+    b) For a one-unit increase in *anxiety*, the relationship between *study load* and blood pressure is predicted to increase by 0.19
+    
+    c) Both (a) and (b) are true
+    
+    d) Neither (a) nor (b) are true \newline
+    
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because interaction are symmetrical (i.e., the variables moderate each other) so it can be interpreted in both ways
+```   
+    
+20. __What percentage of blood pressure variance is explained by the two models, considering both fixed and random effects?__
+
+    a) 1.5% by the first model, 71.4% by the second model
+    
+    b) 1.5% by the first model, 1.6% by the second model
+    
+    c) 71.4% by the first model, 71.5% by the second model
+    
+    d) 1.6% by the first model, 71.5% by the second model \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because conditional R^2 quantifies the variance in the dependent variable explained by both fixed and random effects. Conditional R^2 are 0.714 and 0.715 for the first and the second model, respectively. So by multiplying them by 100 it becomes 71.4% and 71.5% of explained variance
+
+# (a) is wrong because those are the marginal and the conditional R^2 of the first model
+
+# (b) is wrong because those are the marginal R^2, only accounting for fixed effects (and not considering random effects)
+
+# (d) is wrong because those are the marginal and the conditional R^2 of the second model
+```       
+    
+21. __Which of the following statements on structural equation models (SEM) is FALSE?__
+
+    a) A SEM is a multivariate model formalized by a system of equations
+    
+    b) A SEM can include both observed and latent variables
+    
+    c) A SEM cannot include only one 'dependent' variable 
+    
+    d) A SEM can include multiple 'dependent' variables \newline
+    
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because we saw that linear regression (i.e., with just one dependent variable) can be thought as a particular case of SEM that uses one equatiation only. So a SEM can include only one endogenous variable
+
+# (a) is TRUE because SEM use systems of equations
+
+# (b) is TRUE because SEM can include both latent and observed variales
+
+# (d) is TRUE because SEM can include multiple endogenous variables
+```   
+
+22. __Which of the following statements on latent variables (LV) is TRUE?__
+
+    a) A latent variable is always estimated with an error component
+    
+    b) A latent variable cannot have an error component
+    
+    c) A latent variable is always estimated by using one or more observed variables
+    
+    d) A latent variable cannot be estimated by using one or more observed variables \newline
+    
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because latent variables are always estimated by using 1+ observed variables
+
+# (a) is FALSE because latent variables can be exogenous and in that case they have no error
+
+# (b) is FALSE because latent variables can be endogenous and in that case they have an error
+
+# (d) is FALSE because latent variables are always estimated by using 1+ observed variables
+```  
+
+23. __Which of the following statements on endogenous variables is TRUE?__
+
+    a) An endogenous variable is always estimated with an error component
+    
+    b) An endogenous variable cannot have an error component
+    
+    c) An endogenous variable cannot be latent
+    
+    d) An endogenous variable is not directly 'caused' from inside the model \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (a)
+# because endogenous variables, contrarily to exogenous variables, are always estimated with an error component (i.e., residual variance unexplained by the model)
+
+# (b) is FALSE because endogenous variables always have an error component
+
+# (c) is FALSE because both latent and observed variables can be endogenous
+
+# (d) is FALSE because that is the definition of an exogenous variable
+```    
+
+
+24. __Which of the following statements on confirmatory factor analysis (CFA) is FALSE?__
+
+    a) A CFA model is a SEM that only includes the measurement part of the model
+    
+    b) A CFA model should have at least one latent variable
+    
+    c) A CFA model should have at least one observed variable
+    
+    d) A CFA model is a SEM that only inlcudes the structural part of the model \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (d)
+# because the CFA only includes the measurement part (not the structural part)
+
+# (a) is TRUE because that's exactly a CFA model
+
+# (b) is TRUE because a CFA cannot have observed variables only (that's a path model)
+
+# (c) is TRUE because latent variables cannot be estimated without observed variables
+```    
+    
+25. __Which of the following statements on the observed variance-covariance matrix (*S*) is FALSE?__
+
+    a) *S* is the starting point of path analysis, but it is not the starting point of confirmatory factor analysis
+    
+    b) *S* is a symmetrical matrix (i.e., same covariance values above and below the main diagonal)
+    
+    c) The main diagonal of *S* includes the observed variances
+    
+    d) When the variables are standardized, *S* is a correlation matrix \newpage
+    
+```{r echo=FALSE}
+# RIGHT ANSWER: (a)
+# because the variance-covariance matrix S is the starting point of both CFA and path analysis
+
+# all other options are true
+```
+    
+The following questions are related to the model represented below:
+
+```{r echo=FALSE,message=FALSE,warning=FALSE}
+library(DiagrammeR); library(DiagrammeRsvg); library(rsvg)
+tmp <- grViz(
+'digraph boxes_and_circles {
+  graph [layout = neato]
+  node [shape = oval]
+  E1 [label = <&eta;<SUB>1</SUB>> pos="-0.5,0!"]
+  E2 [label = <&eta;<SUB>2</SUB>> pos="0.5,0!"]
+  node [shape = box]
+  x1 [label = <x<SUB>1</SUB>> pos="-2,1!"]
+  x2 [label = <x<SUB>2</SUB>> pos="-2,0!"]
+  x3 [label = <x<SUB>3</SUB>> pos="-2,-1!"]
+  x4 [label = <x<SUB>4</SUB>> pos="2,1!"]
+  x5 [label = <x<SUB>5</SUB>> pos="2,0!"]
+  x6 [label = <x<SUB>6</SUB>> pos="2,-1!"]
+  node [shape = plaintext]
+  e1 [label = <&epsilon;<SUB>1</SUB>> pos="-3,1!"]
+  e2 [label = <&epsilon;<SUB>2</SUB>>pos="-3,0!"]
+  e3 [label = <&epsilon;<SUB>3</SUB>>pos="-3,-1!"]
+  e4 [label = <&epsilon;<SUB>4</SUB>> pos="3,1!"]
+  e5 [label = <&epsilon;<SUB>5</SUB>>pos="3,0!"]
+  e6 [label = <&epsilon;<SUB>6</SUB>>pos="3,-1!"]
+  z2 [label = <&zeta;<SUB>2</SUB>>pos="0.5,0.8!"]
+  # edges
+  E1->x1 
+  E1->x2 
+  E1->x3
+  E2->x4
+  E2->x5
+  E2->x6
+  E1->E2
+  e1->x1
+  e2->x2
+  e3->x3
+  e4->x4
+  e5->x5
+  e6->x6
+  z2->E2}')
+# Convert to SVG, then save as png
+tmp = export_svg(tmp)
+tmp = charToRaw(tmp) # flatten
+rsvg_png(tmp, "img/sem5.png") # saved graph as png in current working directory
+```
+```{r , echo = FALSE, out.width = "300px",fig.align="center"}
+knitr::include_graphics("img/sem5.png")
+```
+
+26. __How many endogenous variables are included in the model?__
+
+    a) 2
+    
+    b) 4
+    
+    c) 6
+    
+    d) 7 \newline
+    
+    ```{r echo=FALSE}
+# RIGHT ANSWER: (d)
+# because there are 7 variables that receive at least one single-headed arrow
+```
+    
+27. __How many parameters are estimated by the model?__
+
+    a) 6
+    
+    b) 7
+    
+    c) 14
+    
+    d) 15 \newpage
+    
+```{r echo=FALSE}
+# RIGHT ANSWER: (a)
+# there are 6 factor loadings + 7 residual variances + 1 path between the two latent variables
+# 6 + 7 + 1 = 14 (but you can just count the number of arrows!)
+```
+
+The following questions are related to a model of the "*Pregnancy during pandemics*" data where young mother postnatal **depression** (\color{blue}`depr`\color{black}, measured on a Likert scale) is predicted by the mother **fear of being infected** by COVID-19 (\color{blue}`threat`\color{black}, measured on a Likert scale), the need to go into **intensive care unit** (\color{blue}`NICU`\color{black}, Yes/No), and mothers' **age** (\color{blue}`age`\color{black}, measured in years). Moreover, the model is used to test whether `threat` mediates the relationship between `NICU` and `depr`. The path diagram and the summary table of the models are reported below:
+
+```{r echo=FALSE,message=FALSE,warning=FALSE,out.width="300px",fig.align='center'}
+rm(list=ls())
+library(lavaan);library(semPlot);library(semTable)
+load("4-data/pregnancy.RData") 
+model <- 'depr ~ c*threat + age
+          depr ~ b*NICU
+          threat ~ a*NICU + age
+          indirect.effect := a*b
+          total.effect := c + (a*b)'
+fit <- sem(model,data=preg)
+semPaths(fit,sizeMan=10,nCharNodes = 0)
+pars <- parameterestimates(fit)[c(1:7,11:12),c(1:3,5:8)]
+knitr::kable(pars,digits=2)
+```
+
+    
+28. __How many exogenous variables are included in the model?__
+
+    a) 1
+    
+    b) 2
+    
+    c) 3
+    
+    d) 4 \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (b)
+# because there are only 2 variables that do not receive any single-headed arrow
+```
+  
+29. __How can we interpret the parameter estimate reported in the second row of the table (i.e., `depr ~ age`)?__
+
+    a) Depression and age are predicted to negatively covary by -0.08
+    
+    b) For a one-unit increase in depression, age is predicted to decrease by 0.08 years
+    
+    c) For a one-year increase in age, depression is predicted to decrease by 0.08 units
+    
+    d) Age is predicted to mediate the relationship between fear of being infected and depression \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (c)
+# because it is age that predicts depression and not viceversa
+
+# (a) is wrong because they do not covary (double-headed arrow) but are in a directional relationship (single-headed)
+
+# (b) is wrong because it is age that predicts depression and not viceversa
+
+# (d) is wrong because it is threat that mediates the relationship between age and depression
+```
+ 
+30. __What is indexed by the parameter estimate reported in the sixth row of the table (i.e., `depr ~~ depr`)__
+
+    a) The estimated variance of depression
+    
+    b) The estimated residual variance of depression
+    
+    c) The estimated covariance between depression and the other variables
+    
+    d) The estimated direct effect of `threat` on depression \newline
+
+```{r echo=FALSE}
+# RIGHT ANSWER: (b)
+# because depression is an endogenous variable and the variance of an endogenous variable is its residual covariance
+
+# (a) is FALSE because depression is not exogenous
+
+# (c) is FALSE because the synthax "depr ~~ depr" means "covariance between depr and itself" = depr (residual) variance
+
+# (d) is FALSE because that is indexed by "depr ~ threat" (with one "~" only)
+```
+    
+31. __How can we interpret the results on the mediation between `NICU` and `depr`?__
+
+    a) `threat` fully mediates the relationship between `NICU` and `depr`
+    
+    b) `NICU` is not directly related to `depr`
+    
+    c) `threat` is not directly related to `depr`
+    
+    d) `threat` partially mediates the relationship between `NICU` and `depr`
+    
+    ```{r echo=FALSE}
+# RIGHT ANSWER: (d)
+# because both the indirect and the direct effect are significant (i.e., significant indirect effect means that there is a mediation; signiicant direct effect means that the mediation is not full but it is partial)
+    
+# (a) is FALSE because the direct effect is significant
+
+# (b) is FALSE because the direct effect is significant
+
+# (c) is FALSE because "depr ~ threat" is significant
+```
