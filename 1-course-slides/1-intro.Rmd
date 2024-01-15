@@ -509,7 +509,7 @@ knitr::kable(data.frame(Session=paste(1:5,c("Jan","Feb","Jun","Jul","Sept"),sep=
 ## Exam structure & contents
 
 \fontsize{8pt}{12}\selectfont
-The final exam will be **written**, computerized (on Moodle), and will last **40 min**. The exam will consist of **31 closed-ended (multi-choice) questions** on:
+The final exam will be **written**, computerized (on Moodle), and will last **50 min**. The exam will consist of **31 closed-ended (multi-choice) questions** on:
 
 - theoretical topics covered by the course 
 
