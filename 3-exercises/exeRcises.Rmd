@@ -848,7 +848,7 @@ D) Internet use, parental control, and sex
 
 \fontsize{7pt}{12}\selectfont
 
-7. __Which variables are at the cluster level (level 2)?__
+7. __Which variable(s) are at the cluster level (level 2)?__
 
 \fontsize{6pt}{12}\selectfont
 
@@ -858,8 +858,8 @@ C) Intervention
 D) Internet use, parental control, and sex
 
 ```{r echo=FALSE,eval=FALSE}
-# right answer: B
-## None of the variable is at the school level
+# right answer: C
+## the intervention was delivered at the class level, which i a cluster variables
 ## note: intervention is at the class level (it says "that one class undertook the intervention and one did not", within each school)
 ```
 
