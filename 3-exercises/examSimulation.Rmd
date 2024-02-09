@@ -611,7 +611,7 @@ knitr::include_graphics("img/sem5.png")
     d) 15 \newpage
     
 ```{r echo=FALSE}
-# RIGHT ANSWER: (a)
+# RIGHT ANSWER: (c)
 # there are 6 factor loadings + 7 residual variances + 1 path between the two latent variables
 # 6 + 7 + 1 = 14 (but you can just count the number of arrows!)
 ```
